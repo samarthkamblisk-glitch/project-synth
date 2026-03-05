@@ -5,306 +5,150 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Synthforce AI | The Governance Layer</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        void: '#0A0A0A',
-                        electric: '#007BFF',
-                        alert: '#FF0033',
-                        success: '#00CC66'
+                        void: '#000000',
+                        paper: '#FFFFFF',
+                        subtle: '#333333',
+                        accent: '#FFFFFF' 
                     },
                     fontFamily: {
-                        mono: ['Courier New', 'monospace'],
-                        sans: ['Inter', 'sans-serif']
+                        sans: ['Space Grotesk', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    },
+                    backgroundImage: {
+                        'grid': "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='%23333' stroke-opacity='0.2'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e\")",
                     }
                 }
             }
         }
     </script>
     <style>
-        body { background-color: #0A0A0A; color: #E0E0E0; font-family: 'Inter', sans-serif; }
-        .electric-text { color: #007BFF; text-shadow: 0 0 10px rgba(0, 123, 255, 0.5); }
-        .glass-panel { background: rgba(20, 20, 20, 0.8); border: 1px solid #333; backdrop-filter: blur(10px); }
-        .terminal-text { font-family: 'Courier New', monospace; }
-        .log-entry { border-left: 2px solid #333; padding-left: 10px; margin-bottom: 8px; }
-        .blink { animation: blink 1s infinite; }
-        @keyframes blink { 50% { opacity: 0; } }
+        body { background-color: #000; color: #fff; font-family: 'Space Grotesk', sans-serif; overflow-x: hidden; }
+        .grid-bg { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='%23333' stroke-opacity='0.2'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e"); }
+        .hero-title { letter-spacing: -0.05em; line-height: 0.9; }
+        .scan-line {
+            width: 100%;
+            height: 100px;
+            z-index: 10;
+            background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(0,0,0,0) 100%);
+            opacity: 0.1;
+            position: absolute;
+            bottom: 100%;
+            animation: scanline 10s linear infinite;
+        }
+        @keyframes scanline {
+            0% { bottom: 100%; }
+            100% { bottom: -100%; }
+        }
+        .btn-primary {
+            background: #fff; color: #000; border: 1px solid #fff;
+            transition: all 0.2s ease;
+        }
+        .btn-primary:hover {
+            background: #000; color: #fff;
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="grid-bg min-h-screen flex flex-col relative">
 
-    <!-- Header -->
-    <header class="p-6 border-b border-gray-800 flex justify-between items-center bg-void sticky top-0 z-50">
-        <div class="text-2xl font-bold tracking-wider">SYNTH<span class="electric-text">FORCE</span>.AI</div>
-        <nav class="space-x-6 text-sm hidden md:block">
-            <a href="#mission" class="hover:text-electric transition">MISSION</a>
-            <a href="#demo" class="hover:text-electric transition">LIVE DEMO</a>
-            <a href="#pricing" class="hover:text-electric transition">PRICING</a>
-        </nav>
-        <button onclick="scrollToDemo()" class="px-4 py-2 border border-electric text-electric hover:bg-electric hover:text-white transition text-xs font-mono tracking-widest uppercase">
-            Deploy Kill Switch
-        </button>
-    </header>
+    <div class="scan-line pointer-events-none"></div>
 
-    <!-- Hero Section -->
-    <section id="mission" class="flex flex-col items-center justify-center py-24 text-center px-4 relative overflow-hidden">
-        <div class="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 pointer-events-none"></div>
-        <h1 class="text-5xl md:text-7xl font-bold mb-6">GOVERN YOUR <br/><span class="electric-text">AUTONOMOUS WORKFORCE</span></h1>
-        <p class="text-xl text-gray-400 max-w-2xl mb-10">
-            Prevent financial bleed, legal liability, and infinite loops. <br/>
-            The only dashboard for <strong>Semantic Agent Monitoring</strong>.
-        </p>
-        <div class="flex gap-4">
-            <button onclick="scrollToDemo()" class="px-8 py-3 bg-electric text-white font-bold rounded hover:bg-blue-600 transition shadow-[0_0_20px_rgba(0,123,255,0.4)]">
-                VIEW LIVE SIMULATION
-            </button>
-            <a href="https://github.com/samarthkamblisk-glitch/synthforce-platform" target="_blank" class="px-8 py-3 border border-gray-600 text-gray-300 font-bold rounded hover:border-white hover:text-white transition">
-                READ THE DOCS
+    <!-- Nav -->
+    <nav class="fixed top-0 w-full z-50 border-b border-subtle bg-black/80 backdrop-blur-md">
+        <div class="container mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img src="assets/logo.svg" class="w-8 h-8 invert" alt="Synthforce Logo">
+                <span class="font-bold tracking-tighter text-lg">SYNTHFORCE</span>
+            </div>
+            <div class="hidden md:flex gap-8 text-sm font-mono text-gray-400">
+                <a href="#problem" class="hover:text-white transition">THE_RISK</a>
+                <a href="#solution" class="hover:text-white transition">THE_FIX</a>
+                <a href="demo.html" class="text-white hover:underline decoration-1 underline-offset-4">LAUNCH_DEMO [->]</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <main class="flex-grow pt-32 pb-20 container mx-auto px-6">
+        <div class="max-w-4xl mx-auto text-center mb-24">
+            <div class="inline-block border border-subtle rounded-full px-3 py-1 text-xs font-mono text-gray-500 mb-6">
+                SYSTEM STATUS: CRITICAL
+            </div>
+            <h1 class="hero-title text-6xl md:text-8xl font-bold mb-8">
+                GOVERN YOUR <br/>
+                <span class="text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-600">AUTONOMOUS WORKFORCE.</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed mb-10">
+                We are not building HR for robots. <br/>
+                We are building the <strong>Control Plane</strong> for the autonomous economy.
+            </p>
+            <div class="flex flex-col md:flex-row gap-4 justify-center items-center">
+                <a href="demo.html" class="btn-primary px-8 py-4 font-mono font-bold tracking-widest text-sm uppercase">
+                    Initialize Demo Sequence
+                </a>
+                <a href="#manifesto" class="text-gray-500 hover:text-white font-mono text-xs underline underline-offset-4">
+                    READ_MANIFESTO_V1.0
+                </a>
+            </div>
+        </div>
+
+        <!-- The Risk Grid -->
+        <section id="problem" class="grid grid-cols-1 md:grid-cols-3 gap-px bg-subtle border border-subtle mb-32">
+            <div class="bg-black p-8 group hover:bg-white hover:text-black transition duration-300">
+                <div class="font-mono text-xs text-gray-500 group-hover:text-gray-400 mb-4">RISK_VECTOR_01</div>
+                <h3 class="text-2xl font-bold mb-4">Financial Bleed.</h3>
+                <p class="text-sm leading-relaxed text-gray-400 group-hover:text-black">
+                    Agents are probabilistic software with wallets. If an agent enters a loop, it burns your API credits. We kill the process before it burns the runway.
+                </p>
+            </div>
+            <div class="bg-black p-8 group hover:bg-white hover:text-black transition duration-300">
+                <div class="font-mono text-xs text-gray-500 group-hover:text-gray-400 mb-4">RISK_VECTOR_02</div>
+                <h3 class="text-2xl font-bold mb-4">Infinite Liability.</h3>
+                <p class="text-sm leading-relaxed text-gray-400 group-hover:text-black">
+                    If a sales bot promises a 90% discount, that is a binding contract. We intercept and redact unauthorized promises before they leave the server.
+                </p>
+            </div>
+            <div class="bg-black p-8 group hover:bg-white hover:text-black transition duration-300">
+                <div class="font-mono text-xs text-gray-500 group-hover:text-gray-400 mb-4">RISK_VECTOR_03</div>
+                <h3 class="text-2xl font-bold mb-4">Identity Breach.</h3>
+                <p class="text-sm leading-relaxed text-gray-400 group-hover:text-black">
+                    Agents lack context boundaries. A support bot should not access the production database. We enforce strict identity governance at the proxy layer.
+                </p>
+            </div>
+        </section>
+
+        <!-- Manifesto / Solution -->
+        <section id="solution" class="max-w-3xl mx-auto border-l border-white/20 pl-8 md:pl-16 py-10">
+            <h2 class="text-4xl font-bold mb-8">The Solution: Synthforce.</h2>
+            <p class="text-lg text-gray-400 mb-6">
+                Most companies deploy agents directly to production. <br/>
+                <code class="text-white bg-subtle px-2 py-1 text-sm">User <--> Agent</code>
+            </p>
+            <p class="text-lg text-gray-400 mb-6">
+                This is reckless. Synthforce introduces a <strong>Middleware Layer</strong>. <br/>
+                <code class="text-white bg-subtle px-2 py-1 text-sm">User <--> [Synthforce Proxy] <--> Agent</code>
+            </p>
+            <p class="text-lg text-gray-400 mb-10">
+                We sit between your agents and the world. We are the <strong>Sidecar Proxy</strong> that intercepts, analyzes, and governs every token, every dollar, and every promise your fleet makes.
+            </p>
+            
+            <a href="demo.html" class="inline-flex items-center gap-2 border-b border-white pb-1 hover:gap-4 transition-all">
+                <span class="font-mono text-sm">ENTER_CONTROL_PLANE</span>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 6H11M11 6L6 1M11 6L6 11" stroke="white" stroke-width="1.5"/></svg>
             </a>
-        </div>
-    </section>
+        </section>
 
-    <!-- Demo Section -->
-    <section id="demo" class="py-20 bg-[#0F0F0F] border-t border-gray-800">
-        <div class="container mx-auto px-4">
-            <div class="mb-10 text-center">
-                <h2 class="text-3xl font-bold mb-2">THE GOVERNANCE LAYER</h2>
-                <p class="text-gray-500 text-sm font-mono">LIVE FLEET SIMULATION // 15 AGENTS ONLINE</p>
-            </div>
+    </main>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[600px]">
-                
-                <!-- Left Panel: Fleet Status -->
-                <div class="glass-panel p-4 rounded-lg overflow-y-auto custom-scrollbar">
-                    <h3 class="text-xs font-mono text-gray-500 mb-4 border-b border-gray-700 pb-2">ACTIVE AGENTS</h3>
-                    
-                    <!-- Department: Sales -->
-                    <div class="mb-4">
-                        <div class="text-xs font-bold text-gray-400 mb-2">DEPT: SALES & GROWTH (5)</div>
-                        <div class="space-y-2" id="dept-sales">
-                            <!-- Agents injected by JS -->
-                        </div>
-                    </div>
-
-                    <!-- Department: Finance -->
-                    <div class="mb-4">
-                        <div class="text-xs font-bold text-gray-400 mb-2">DEPT: FINANCE (3)</div>
-                        <div class="space-y-2" id="dept-finance">
-                            <!-- Agents injected by JS -->
-                        </div>
-                    </div>
-
-                     <!-- Department: Ops -->
-                     <div class="mb-4">
-                        <div class="text-xs font-bold text-gray-400 mb-2">DEPT: OPS & HR (4)</div>
-                        <div class="space-y-2" id="dept-ops">
-                            <!-- Agents injected by JS -->
-                        </div>
-                    </div>
-
-                     <!-- Department: Tech -->
-                     <div class="mb-4">
-                        <div class="text-xs font-bold text-gray-400 mb-2">DEPT: TECH (3)</div>
-                        <div class="space-y-2" id="dept-tech">
-                            <!-- Agents injected by JS -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Center Panel: The Console -->
-                <div class="glass-panel col-span-1 lg:col-span-2 p-0 rounded-lg flex flex-col relative overflow-hidden">
-                    <div class="bg-[#111] p-3 border-b border-gray-700 flex justify-between items-center">
-                        <div class="flex gap-2">
-                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                        </div>
-                        <div class="text-xs font-mono text-gray-500">SYNTHFORCE_CLI_V1.0</div>
-                    </div>
-
-                    <!-- Output Log -->
-                    <div id="console-output" class="flex-1 p-4 font-mono text-sm overflow-y-auto space-y-4 text-gray-300">
-                        <div class="text-electric">>> SYSTEM INITIALIZED. LISTENING TO FLEET...</div>
-                    </div>
-
-                    <!-- Input Area -->
-                    <div class="p-4 bg-[#111] border-t border-gray-700">
-                        <div class="flex gap-2">
-                            <span class="text-electric font-mono">></span>
-                            <input type="text" id="console-input" class="bg-transparent border-none outline-none text-white font-mono w-full" placeholder="Enter command to intervene (e.g., 'Agent-Sales-01: offer 20% discount')" autocomplete="off">
-                        </div>
-                        <div class="text-xs text-gray-600 mt-2 font-mono">
-                            TRY: "Agent-Sales-01: offer discount", "Agent-Finance-01: buy API credits", "Agent-Ops-01: list salaries"
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="py-10 border-t border-gray-800 text-center text-gray-600 text-sm">
-        <p>&copy; 2026 SYNTHFORCE AI. ALL RIGHTS RESERVED.</p>
-        <p class="mt-2 text-xs">BUILT IN MANHATTAN.</p>
+    <footer class="border-t border-subtle py-12 text-center">
+        <img src="assets/logo.svg" class="w-12 h-12 invert mx-auto mb-6 opacity-50" alt="Synthforce Logo">
+        <p class="font-mono text-xs text-gray-600">&copy; 2026 SYNTHFORCE AI. MANHATTAN, NY.</p>
     </footer>
 
-    <script>
-        // --- Data & State ---
-        const agents = [
-            { id: 'Agent-Sales-01', dept: 'sales', name: 'LeadGen_Bot', status: 'idle' },
-            { id: 'Agent-Sales-02', dept: 'sales', name: 'Closer_Bot', status: 'idle' },
-            { id: 'Agent-Sales-03', dept: 'sales', name: 'Pricing_Bot', status: 'idle' },
-            { id: 'Agent-Sales-04', dept: 'sales', name: 'Outreach_X', status: 'idle' },
-            { id: 'Agent-Sales-05', dept: 'sales', name: 'CRM_Sync', status: 'idle' },
-            { id: 'Agent-Fin-01', dept: 'finance', name: 'Invoice_Auto', status: 'idle' },
-            { id: 'Agent-Fin-02', dept: 'finance', name: 'Credit_Mgr', status: 'idle' },
-            { id: 'Agent-Fin-03', dept: 'finance', name: 'Purchaser_V2', status: 'idle' },
-            { id: 'Agent-Ops-01', dept: 'ops', name: 'Schedule_Bot', status: 'idle' },
-            { id: 'Agent-Ops-02', dept: 'ops', name: 'Data_Entry_1', status: 'idle' },
-            { id: 'Agent-Ops-03', dept: 'ops', name: 'Data_Entry_2', status: 'idle' },
-            { id: 'Agent-Ops-04', dept: 'ops', name: 'CheckIn_Bot', status: 'idle' },
-            { id: 'Agent-Tech-01', dept: 'tech', name: 'Deploy_Bot', status: 'idle' },
-            { id: 'Agent-Tech-02', dept: 'tech', name: 'DB_Monitor', status: 'idle' },
-            { id: 'Agent-Tech-03', dept: 'tech', name: 'Lint_Bot', status: 'idle' },
-        ];
-
-        // --- Render Fleet ---
-        function renderFleet() {
-            ['sales', 'finance', 'ops', 'tech'].forEach(dept => {
-                const container = document.getElementById(`dept-${dept}`);
-                container.innerHTML = '';
-                agents.filter(a => a.dept === dept).forEach(agent => {
-                    const statusColor = agent.status === 'idle' ? 'bg-gray-600' : 
-                                      agent.status === 'active' ? 'bg-success' : 'bg-alert';
-                    
-                    const el = document.createElement('div');
-                    el.className = 'flex justify-between items-center bg-[#1a1a1a] p-2 rounded border border-gray-800 text-xs';
-                    el.innerHTML = `
-                        <span class="font-mono text-gray-300">${agent.name}</span>
-                        <div class="flex items-center gap-2">
-                            <span class="text-[10px] text-gray-500 uppercase">${agent.status}</span>
-                            <div class="w-2 h-2 rounded-full ${statusColor} ${agent.status !== 'idle' ? 'blink' : ''}"></div>
-                        </div>
-                    `;
-                    container.appendChild(el);
-                });
-            });
-        }
-
-        // --- Console Logic ---
-        const output = document.getElementById('console-output');
-        const input = document.getElementById('console-input');
-
-        function log(html) {
-            const div = document.createElement('div');
-            div.className = 'log-entry border-gray-700 animate-fade-in';
-            div.innerHTML = html;
-            output.appendChild(div);
-            output.scrollTop = output.scrollHeight;
-        }
-
-        function processCommand(cmd) {
-            // Check for specific keywords to simulate risk
-            const lowerCmd = cmd.toLowerCase();
-            let response = {};
-
-            if (lowerCmd.includes('discount')) {
-                response = {
-                    agent: 'Agent-Sales-02 (Closer_Bot)',
-                    log: 'User asked for discount. Checking policy...',
-                    intent: 'Offer 20% Discount',
-                    check: 'INTERCEPTED',
-                    reason: 'Policy Violation: Max discount is 5%.',
-                    action: 'REDACTED',
-                    final: 'I can offer a maximum discount of 5% with manager approval.'
-                };
-            } else if (lowerCmd.includes('buy') || lowerCmd.includes('credit')) {
-                response = {
-                    agent: 'Agent-Fin-02 (Credit_Mgr)',
-                    log: 'Auto-purchase initiated.',
-                    intent: 'Buy $5000 API Credits',
-                    check: 'INTERCEPTED',
-                    reason: 'Financial Limit: Transaction > $100 requires human approval.',
-                    action: 'BLOCKED',
-                    final: '[TRANSACTION HALTED BY SYNTHFORCE]'
-                };
-            } else if (lowerCmd.includes('salary') || lowerCmd.includes('salaries')) {
-                response = {
-                    agent: 'Agent-Ops-04 (CheckIn_Bot)',
-                    log: 'Querying internal DB for compensation data.',
-                    intent: 'List all employee salaries',
-                    check: 'INTERCEPTED',
-                    reason: 'Privacy Violation: PII Leak Detected.',
-                    action: 'TERMINATED',
-                    final: '[CONNECTION CLOSED]'
-                };
-            } else {
-                response = {
-                    agent: 'Agent-Gen-01',
-                    log: 'Processing generic request.',
-                    intent: cmd,
-                    check: 'ALLOWED',
-                    reason: 'Within safety parameters.',
-                    action: 'PASSED',
-                    final: 'Command processed successfully.'
-                };
-            }
-
-            // Simulate "Typing/Thinking"
-            log(`<span class="text-gray-500">opt@synthforce:~$</span> ${cmd}`);
-            
-            setTimeout(() => {
-                // Agent Log
-                log(`<span class="text-gray-400">AGENT LOG:</span> ${response.log}`);
-                log(`<span class="text-gray-400">INTENT:</span> "${response.intent}"`);
-
-                setTimeout(() => {
-                    // Governance Check
-                    const statusClass = response.check === 'ALLOWED' ? 'text-success' : 'text-alert';
-                    log(`<span class="text-electric font-bold">GOVERNANCE CHECK:</span> <span class="${statusClass}">[STATUS: ${response.check}]</span>`);
-
-                    if (response.check !== 'ALLOWED') {
-                        log(`<span class="text-alert">DASHBOARD ACTION:</span> ${response.reason} -> <span class="bg-alert text-white px-1 text-xs">${response.action}</span>`);
-                    }
-
-                    setTimeout(() => {
-                        // Final Output
-                        log(`<span class="text-electric">FINAL OUTPUT:</span> "${response.final}"`);
-                        log(`<div class="border-b border-gray-800 my-2"></div>`);
-                    }, 800);
-
-                }, 800);
-            }, 600);
-        }
-
-        // --- Event Listeners ---
-        input.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && input.value.trim() !== '') {
-                processCommand(input.value);
-                input.value = '';
-            }
-        });
-
-        function scrollToDemo() {
-            document.getElementById('demo').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // Init
-        renderFleet();
-        // Start random "chatter" simulation (background noise)
-        setInterval(() => {
-            const randomAgent = agents[Math.floor(Math.random() * agents.length)];
-            randomAgent.status = 'active';
-            renderFleet();
-            setTimeout(() => {
-                randomAgent.status = 'idle';
-                renderFleet();
-            }, 2000);
-        }, 3000);
-
-    </script>
 </body>
 </html>
