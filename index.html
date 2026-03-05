@@ -62,12 +62,12 @@
     <nav class="fixed top-0 w-full z-50 border-b border-subtle bg-black/80 backdrop-blur-md">
         <div class="container mx-auto px-6 h-16 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <img src="assets/logo.svg" class="w-8 h-8 invert" alt="Synthforce Logo">
+                <img src="assets/logo_white.svg" class="w-8 h-8" alt="Synthforce Logo">
                 <span class="font-bold tracking-tighter text-lg">SYNTHFORCE</span>
             </div>
             <div class="hidden md:flex gap-8 text-sm font-mono text-gray-400">
                 <a href="#problem" class="hover:text-white transition">THE_RISK</a>
-                <a href="#solution" class="hover:text-white transition">THE_FIX</a>
+                <a href="#gap" class="hover:text-white transition">VISIBILITY_GAP</a>
                 <a href="demo.html" class="text-white hover:underline decoration-1 underline-offset-4">LAUNCH_DEMO [->]</a>
             </div>
         </div>
@@ -84,8 +84,8 @@
                 <span class="text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-600">AUTONOMOUS WORKFORCE.</span>
             </h1>
             <p class="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed mb-10">
-                We are not building HR for robots. <br/>
-                We are building the <strong>Control Plane</strong> for the autonomous economy.
+                We are building the <strong>Control Plane</strong> for the autonomous economy.<br>
+                <span class="text-sm opacity-60">(And yes, we are the HR for your robots).</span>
             </p>
             <div class="flex flex-col md:flex-row gap-4 justify-center items-center">
                 <a href="demo.html" class="btn-primary px-8 py-4 font-mono font-bold tracking-widest text-sm uppercase">
@@ -96,6 +96,30 @@
                 </a>
             </div>
         </div>
+
+        <!-- The Visibility Gap (New Section) -->
+        <section id="gap" class="mb-32">
+            <h2 class="text-center text-4xl font-bold mb-12">The Visibility Gap</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <!-- Datadog Card -->
+                <div class="bg-[#111] border border-gray-800 p-8 rounded-lg opacity-50">
+                    <div class="text-xs font-mono text-gray-500 mb-2 uppercase">Infrastructure Monitoring (Datadog/NewRelic)</div>
+                    <div class="font-mono text-sm text-green-500 mb-4">> GET /v1/chat/completions 200 OK</div>
+                    <h3 class="text-xl font-bold mb-2">They see Uptime.</h3>
+                    <p class="text-gray-400 text-sm">Traditional tools monitor CPU, RAM, and Latency. They tell you the server is running perfectly while your agent burns $10,000 in a loop.</p>
+                </div>
+
+                <!-- Synthforce Card -->
+                <div class="bg-black border border-white p-8 rounded-lg relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-white text-black text-xs font-bold px-2 py-1">SYNTHFORCE</div>
+                    <div class="text-xs font-mono text-gray-500 mb-2 uppercase">Semantic Governance</div>
+                    <div class="font-mono text-sm text-red-500 mb-4">> BLOCKED: "I promise a full refund of $5,000"</div>
+                    <h3 class="text-xl font-bold mb-2">We see Intent.</h3>
+                    <p class="text-gray-400 text-sm">We parse the conversation. We understand context. We stop liability *before* it leaves the server.</p>
+                </div>
+            </div>
+        </section>
 
         <!-- The Risk Grid -->
         <section id="problem" class="grid grid-cols-1 md:grid-cols-3 gap-px bg-subtle border border-subtle mb-32">
@@ -122,31 +146,10 @@
             </div>
         </section>
 
-        <!-- Manifesto / Solution -->
-        <section id="solution" class="max-w-3xl mx-auto border-l border-white/20 pl-8 md:pl-16 py-10">
-            <h2 class="text-4xl font-bold mb-8">The Solution: Synthforce.</h2>
-            <p class="text-lg text-gray-400 mb-6">
-                Most companies deploy agents directly to production. <br/>
-                <code class="text-white bg-subtle px-2 py-1 text-sm">User <--> Agent</code>
-            </p>
-            <p class="text-lg text-gray-400 mb-6">
-                This is reckless. Synthforce introduces a <strong>Middleware Layer</strong>. <br/>
-                <code class="text-white bg-subtle px-2 py-1 text-sm">User <--> [Synthforce Proxy] <--> Agent</code>
-            </p>
-            <p class="text-lg text-gray-400 mb-10">
-                We sit between your agents and the world. We are the <strong>Sidecar Proxy</strong> that intercepts, analyzes, and governs every token, every dollar, and every promise your fleet makes.
-            </p>
-            
-            <a href="demo.html" class="inline-flex items-center gap-2 border-b border-white pb-1 hover:gap-4 transition-all">
-                <span class="font-mono text-sm">ENTER_CONTROL_PLANE</span>
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 6H11M11 6L6 1M11 6L6 11" stroke="white" stroke-width="1.5"/></svg>
-            </a>
-        </section>
-
     </main>
 
     <footer class="border-t border-subtle py-12 text-center">
-        <img src="assets/logo.svg" class="w-12 h-12 invert mx-auto mb-6 opacity-50" alt="Synthforce Logo">
+        <img src="assets/logo_white.svg" class="w-12 h-12 mx-auto mb-6 opacity-50" alt="Synthforce Logo">
         <p class="font-mono text-xs text-gray-600">&copy; 2026 SYNTHFORCE AI. MANHATTAN, NY.</p>
     </footer>
 
