@@ -2,9 +2,16 @@
     <!-- Circle -->
     <circle cx="50" cy="50" r="45" stroke="white" stroke-width="4" fill="none"/>
     
-    <!-- Top Part of S -->
-    <path d="M70 35 L 45 35 L 35 45 L 35 60 L 50 70 L 65 60 L 65 50" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Top Hook (Goes Over) -->
+    <path d="M70 32 L35 32 L35 50 L55 68" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
     
-    <!-- Bottom Part of S (Interlocking) -->
-    <path d="M30 65 L 55 65 L 65 55 L 65 40 L 50 30 L 35 40 L 35 50" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Bottom Hook (Goes Under - Drawn in parts to simulate weave) -->
+    <!-- Part 1: Bottom Right to Middle Right -->
+    <path d="M30 68 L65 68 L65 50 L58 43" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Part 2: Middle to Top Left (The Tuck) -->
+    <path d="M50 35 L45 32" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Cut lines to emphasize interlocking (Black strokes on top) -->
+    <path d="M35 50 L55 68" stroke="black" stroke-width="2" fill="none"/>
+    <path d="M65 50 L45 32" stroke="black" stroke-width="2" fill="none"/>
 </svg>
