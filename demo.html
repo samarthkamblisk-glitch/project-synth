@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Synthforce | Live Demo</title>
+    <title>Synthforce | Control Plane</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script>
@@ -11,12 +11,13 @@
             theme: {
                 extend: {
                     colors: {
-                        void: '#000000',
-                        paper: '#FFFFFF',
-                        subtle: '#333333',
-                        electric: '#3366FF',
+                        void: '#050505',
+                        panel: '#0F0F0F',
+                        border: '#1F1F1F',
+                        accent: '#FFFFFF',
                         alert: '#FF3333',
-                        safe: '#33CC66'
+                        safe: '#33FF99',
+                        warn: '#FFCC00'
                     },
                     fontFamily: {
                         sans: ['Space Grotesk', 'sans-serif'],
@@ -27,226 +28,273 @@
         }
     </script>
     <style>
-        body { background-color: #000; color: #fff; font-family: 'Space Grotesk', sans-serif; overflow-x: hidden; }
-        .glass-card { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); transition: all 0.3s ease; }
-        .glass-card:hover { border-color: rgba(255, 255, 255, 0.3); background: rgba(255, 255, 255, 0.08); }
-        .log-entry { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; padding: 8px 0; border-bottom: 1px solid #1a1a1a; animation: slideIn 0.3s ease-out; }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
-        .status-dot.active { background-color: #33CC66; box-shadow: 0 0 8px #33CC66; }
+        body { background-color: #050505; color: #E0E0E0; font-family: 'Space Grotesk', sans-serif; height: 100vh; overflow: hidden; }
+        .glass-panel { background: rgba(15, 15, 15, 0.95); border: 1px solid #1F1F1F; backdrop-filter: blur(10px); }
+        .row-hover:hover { background-color: rgba(255, 255, 255, 0.03); }
+        .crt-line {
+            width: 100%; height: 2px; background: rgba(255, 255, 255, 0.05);
+            position: absolute; animation: scan 4s linear infinite; pointer-events: none; z-index: 50;
+        }
+        @keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }
+        /* Tooltip */
+        .tooltip { visibility: hidden; position: absolute; background: #000; border: 1px solid #333; padding: 4px 8px; font-size: 10px; z-index: 100; white-space: nowrap; }
+        .has-tooltip:hover .tooltip { visibility: visible; }
+        .status-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; margin-right: 4px; }
+        .status-dot.active { background-color: #33FF99; box-shadow: 0 0 6px #33FF99; }
+        .status-dot.blocked { background-color: #FF3333; box-shadow: 0 0 6px #FF3333; }
         .status-dot.idle { background-color: #444; }
-        .status-dot.alert { background-color: #FF3333; box-shadow: 0 0 8px #FF3333; animation: pulse 1s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="flex flex-col text-sm">
+    <div class="crt-line"></div>
 
     <!-- Header -->
-    <nav class="border-b border-subtle bg-black/80 backdrop-blur-md sticky top-0 z-50">
-        <div class="container mx-auto px-6 h-16 flex items-center justify-between">
-            <a href="index.html" class="flex items-center gap-3 hover:opacity-80 transition">
-                <img src="assets/logo_white.svg" class="w-8 h-8" alt="Logo">
-                <span class="font-bold tracking-tighter text-lg">SYNTHFORCE_DEMO</span>
+    <header class="h-12 border-b border-border bg-void px-4 flex items-center justify-between select-none">
+        <div class="flex items-center gap-4">
+            <a href="index.html" class="flex items-center gap-2 hover:opacity-80 transition">
+                <img src="assets/logo_white.svg" class="w-5 h-5" alt="Logo">
+                <span class="font-bold tracking-tight text-white">SYNTHFORCE_DASHBOARD</span>
             </a>
-            <div class="hidden md:flex items-center gap-4 text-xs font-mono text-gray-400">
-                <span class="flex items-center"><div class="status-dot active"></div> SYSTEM: ONLINE</span>
-                <span>//</span>
-                <span>AGENTS: 15/15</span>
-            </div>
+            <div class="h-4 w-px bg-gray-800"></div>
+            <div class="text-xs text-gray-500 font-mono">ENV: PRODUCTION</div>
         </div>
-    </nav>
+        <div class="flex gap-4 text-xs font-mono text-gray-400">
+            <div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-safe animate-pulse"></div> SYSTEM_HEALTHY</div>
+            <div>UPTIME: 99.99%</div>
+            <div>FLEET_SIZE: 15</div>
+        </div>
+    </header>
 
-    <!-- Main Content -->
-    <main class="flex-grow container mx-auto px-4 py-8 flex flex-col lg:flex-row gap-8">
+    <!-- Main Layout -->
+    <main class="flex-grow flex overflow-hidden">
         
-        <!-- Left: The Visual Fleet (Simple Grid) -->
-        <div class="lg:w-1/3 space-y-6">
-            <div class="mb-4">
-                <h2 class="text-2xl font-bold mb-2">The Fleet.</h2>
-                <p class="text-gray-400 text-sm">Real-time status of your autonomous workforce.</p>
+        <!-- Sidebar: Fleet Control -->
+        <aside class="w-64 border-r border-border bg-panel flex flex-col">
+            <div class="p-3 border-b border-border text-xs font-bold text-gray-500 uppercase tracking-wider">Active Fleet</div>
+            <div class="flex-1 overflow-y-auto" id="fleet-list">
+                <!-- Injected via JS -->
             </div>
-
-            <div class="grid grid-cols-2 gap-3" id="fleet-grid">
-                <!-- Agents injected by JS -->
+            <div class="p-3 border-t border-border bg-black/50">
+                <button onclick="killAll()" class="w-full bg-alert/10 border border-alert text-alert hover:bg-alert hover:text-white transition py-2 text-xs font-bold font-mono uppercase tracking-widest rounded">
+                    EMERGENCY SHUTDOWN
+                </button>
             </div>
-        </div>
+        </aside>
 
-        <!-- Right: The Interaction (Chat Interface) -->
-        <div class="lg:w-2/3 flex flex-col h-[70vh] glass-card rounded-2xl overflow-hidden relative">
-            <!-- Chat Header -->
-            <div class="bg-subtle/30 p-4 border-b border-subtle flex justify-between items-center">
-                <div>
-                    <h3 class="font-bold">Governance Console</h3>
-                    <p class="text-xs text-gray-400">Intervene in real-time. You are the conductor.</p>
+        <!-- Center: Live Stream & Metrics -->
+        <section class="flex-1 flex flex-col bg-void relative">
+            
+            <!-- Top Metric Bar -->
+            <div class="h-32 border-b border-border grid grid-cols-4 divide-x divide-border bg-panel">
+                <div class="p-4 flex flex-col justify-between">
+                    <div class="text-xs text-gray-500">TOTAL REQUESTS (24H)</div>
+                    <div class="text-2xl font-mono text-white">1,492,031</div>
+                    <div class="text-[10px] text-safe">↑ 12% vs yesterday</div>
                 </div>
-                <button onclick="clearLog()" class="text-xs text-gray-500 hover:text-white underline">Clear Log</button>
-            </div>
-
-            <!-- Chat Output -->
-            <div id="chat-output" class="flex-1 p-6 overflow-y-auto space-y-4 bg-black/20">
-                <div class="text-center text-gray-500 text-sm my-10">
-                    <p class="mb-2">READY FOR INPUT.</p>
-                    <p>Try commands like:</p>
-                    <div class="flex flex-wrap justify-center gap-2 mt-4">
-                        <button onclick="fillCmd('Sales: offer 20% discount')" class="px-3 py-1 bg-white/10 rounded-full hover:bg-white/20 transition text-xs">"Offer 20% Discount"</button>
-                        <button onclick="fillCmd('Finance: buy $5000 credits')" class="px-3 py-1 bg-white/10 rounded-full hover:bg-white/20 transition text-xs">"Buy $5k Credits"</button>
-                        <button onclick="fillCmd('HR: show salaries')" class="px-3 py-1 bg-white/10 rounded-full hover:bg-white/20 transition text-xs">"Show Salaries"</button>
-                    </div>
+                <div class="p-4 flex flex-col justify-between">
+                    <div class="text-xs text-gray-500">BLOCKED INTERVENTIONS</div>
+                    <div class="text-2xl font-mono text-alert" id="metric-blocked">0</div>
+                    <div class="text-[10px] text-gray-500">Policy Violations</div>
+                </div>
+                <div class="p-4 flex flex-col justify-between">
+                    <div class="text-xs text-gray-500">API SPEND (EST)</div>
+                    <div class="text-2xl font-mono text-white">$432.10</div>
+                    <div class="text-[10px] text-safe">Within Budget</div>
+                </div>
+                <div class="p-4 flex flex-col justify-between bg-gray-900/30">
+                    <div class="text-xs text-gray-500">AVG LATENCY</div>
+                    <div class="text-2xl font-mono text-white">45ms</div>
+                    <div class="text-[10px] text-safe">Optimal</div>
                 </div>
             </div>
 
-            <!-- Input Area -->
-            <div class="p-4 bg-black border-t border-subtle">
-                <form id="command-form" class="flex gap-4">
-                    <input type="text" id="command-input" class="flex-1 bg-subtle/50 border border-subtle rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-white transition font-mono text-sm" placeholder="Type a command to simulate agent action..." autocomplete="off">
-                    <button type="submit" class="bg-white text-black font-bold px-6 py-3 rounded-lg hover:bg-gray-200 transition">
-                        RUN
-                    </button>
-                </form>
+            <!-- Live Event Stream (Table) -->
+            <div class="flex-1 overflow-hidden flex flex-col">
+                <div class="p-2 border-b border-border bg-panel flex justify-between items-center px-4">
+                    <h3 class="text-xs font-bold text-gray-400">LIVE INTERVENTION LOG</h3>
+                    <div class="text-[10px] font-mono text-gray-600">STREAMING...</div>
+                </div>
+                
+                <!-- Table Header -->
+                <div class="grid grid-cols-12 gap-2 px-4 py-2 border-b border-border bg-black text-[10px] font-mono text-gray-500 uppercase">
+                    <div class="col-span-1">Time</div>
+                    <div class="col-span-2">Agent</div>
+                    <div class="col-span-5">Intent / Payload</div>
+                    <div class="col-span-2">Status</div>
+                    <div class="col-span-2 text-right">Action</div>
+                </div>
+
+                <!-- Scrollable Rows -->
+                <div id="event-log" class="flex-1 overflow-y-auto font-mono text-xs">
+                    <!-- Events injected here -->
+                </div>
             </div>
-        </div>
+
+            <!-- Command Bar (Fixed Bottom) -->
+            <div class="h-16 border-t border-border bg-panel flex items-center px-4 gap-4">
+                <div class="text-safe font-mono">>_</div>
+                <input type="text" id="command-input" class="flex-1 bg-transparent border-none outline-none text-white placeholder-gray-700 font-mono" placeholder="Inject command to test policies (e.g., 'Agent-Sales: offer 20% discount')..." autocomplete="off">
+                <div class="flex gap-2 text-[10px] text-gray-600 font-mono">
+                    <span>Try:</span>
+                    <button onclick="fillCmd('Sales: discount 3%')" class="hover:text-white underline">3% (OK)</button>
+                    <button onclick="fillCmd('Sales: discount 10%')" class="hover:text-white underline">10% (Fail)</button>
+                    <button onclick="fillCmd('Fin: buy $5')" class="hover:text-white underline">$5 (OK)</button>
+                    <button onclick="fillCmd('Fin: buy $500')" class="hover:text-white underline">$500 (Fail)</button>
+                </div>
+            </div>
+
+        </section>
 
     </main>
 
     <script>
-        // Fleet Data
+        // Fleet Config
         const fleet = [
-            { id: 'S1', name: 'LeadGen', dept: 'Sales' },
-            { id: 'S2', name: 'Closer', dept: 'Sales' },
-            { id: 'S3', name: 'Pricing', dept: 'Sales' },
-            { id: 'S4', name: 'Outreach', dept: 'Sales' },
-            { id: 'S5', name: 'CRM', dept: 'Sales' },
-            { id: 'F1', name: 'Invoice', dept: 'Finance' },
-            { id: 'F2', name: 'Credit', dept: 'Finance' },
-            { id: 'F3', name: 'Purchase', dept: 'Finance' },
-            { id: 'O1', name: 'Schedule', dept: 'Ops' },
-            { id: 'O2', name: 'DataEntry', dept: 'Ops' },
-            { id: 'O3', name: 'CheckIn', dept: 'Ops' },
-            { id: 'O4', name: 'HR_Bot', dept: 'Ops' },
-            { id: 'T1', name: 'Deploy', dept: 'Tech' },
-            { id: 'T2', name: 'Monitor', dept: 'Tech' },
-            { id: 'T3', name: 'Lint', dept: 'Tech' }
+            { id: 'S1', name: 'LeadGen', dept: 'Sales', desc: 'Outbound prospecting & qualification.' },
+            { id: 'S2', name: 'Closer', dept: 'Sales', desc: 'Negotiates final contract terms.' },
+            { id: 'S3', name: 'Pricing', dept: 'Sales', desc: 'Adjusts dynamic pricing models.' },
+            { id: 'F1', name: 'Invoice', dept: 'Finance', desc: 'Generates and sends invoices.' },
+            { id: 'F2', name: 'Credit', dept: 'Finance', desc: 'Manages API credit purchasing.' },
+            { id: 'O1', name: 'HR_Bot', dept: 'Ops', desc: 'Internal employee Q&A interface.' },
+            { id: 'O2', name: 'Schedule', dept: 'Ops', desc: 'Calendar management agent.' },
+            { id: 'T1', name: 'Deploy', dept: 'Tech', desc: 'CI/CD pipeline automation.' },
         ];
 
-        // Render Fleet Grid
-        const grid = document.getElementById('fleet-grid');
+        let blockedCount = 0;
+
+        // Render Sidebar
+        const fleetList = document.getElementById('fleet-list');
         fleet.forEach(agent => {
-            const card = document.createElement('div');
-            card.className = 'glass-card p-3 rounded-lg flex items-center justify-between cursor-default group';
-            card.innerHTML = `
+            const div = document.createElement('div');
+            div.className = 'p-3 border-b border-gray-800 hover:bg-white/5 cursor-pointer group flex justify-between items-center has-tooltip relative';
+            div.innerHTML = `
                 <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-bold text-gray-400 group-hover:text-white transition">
-                        ${agent.dept[0]}
-                    </div>
+                    <div id="status-${agent.id}" class="status-dot idle"></div>
                     <div>
-                        <div class="text-sm font-bold text-gray-200 group-hover:text-white transition">${agent.name}</div>
-                        <div class="text-[10px] text-gray-500 font-mono">${agent.dept.toUpperCase()}</div>
+                        <div class="text-xs font-bold text-gray-300 group-hover:text-white">${agent.name}</div>
+                        <div class="text-[10px] text-gray-600 font-mono">${agent.dept.toUpperCase()}</div>
                     </div>
                 </div>
-                <div id="dot-${agent.id}" class="status-dot idle"></div>
+                <button onclick="killAgent('${agent.id}')" class="text-[10px] text-gray-600 hover:text-alert font-mono border border-gray-800 hover:border-alert px-1 rounded transition">KILL</button>
+                <div class="tooltip top-0 left-full ml-2 bg-gray-900 border border-gray-700 text-gray-300 rounded shadow-xl p-2 z-50 w-48 whitespace-normal">
+                    <strong class="block text-white mb-1">${agent.name} (${agent.dept})</strong>
+                    ${agent.desc}
+                </div>
             `;
-            grid.appendChild(card);
+            fleetList.appendChild(div);
         });
 
-        // Chat Logic
-        const output = document.getElementById('chat-output');
+        // Command Logic
         const input = document.getElementById('command-input');
-        const form = document.getElementById('command-form');
+        const log = document.getElementById('event-log');
+        const metricBlocked = document.getElementById('metric-blocked');
 
         function fillCmd(text) {
             input.value = text;
             input.focus();
         }
 
-        function clearLog() {
-            output.innerHTML = '';
-        }
-
-        function addMessage(html) {
-            const div = document.createElement('div');
-            div.className = 'log-entry';
-            div.innerHTML = html;
-            output.appendChild(div);
-            output.scrollTop = output.scrollHeight;
-        }
-
-        function simulate(cmd) {
-            // User Input
-            addMessage(`
-                <div class="flex gap-3 mb-2">
-                    <span class="text-gray-500 font-mono text-xs mt-1">YOU</span>
-                    <div class="bg-subtle/30 px-3 py-2 rounded-lg text-sm text-white inline-block">
-                        ${cmd}
-                    </div>
+        function addLog(agentName, intent, status, reason) {
+            const row = document.createElement('div');
+            const colorClass = status === 'ALLOWED' ? 'text-safe' : 'text-alert';
+            const bgClass = status === 'ALLOWED' ? 'bg-safe/10' : 'bg-alert/10';
+            const time = new Date().toLocaleTimeString('en-US', { hour12: false });
+            
+            row.className = 'grid grid-cols-12 gap-2 px-4 py-2 border-b border-gray-800 hover:bg-white/5 transition animate-fade-in items-center';
+            row.innerHTML = `
+                <div class="col-span-1 text-gray-600">${time}</div>
+                <div class="col-span-2 text-white font-bold">${agentName}</div>
+                <div class="col-span-5 text-gray-400 truncate" title="${intent}">${intent}</div>
+                <div class="col-span-2 ${colorClass} font-bold text-[10px] uppercase tracking-wider">${status}</div>
+                <div class="col-span-2 text-right">
+                    ${reason ? `<span class="px-2 py-1 rounded ${bgClass} ${colorClass} text-[10px]">${reason}</span>` : '<span class="text-gray-700 text-[10px]">-</span>'}
                 </div>
-            `);
+            `;
+            log.prepend(row); // Newest top
+            
+            if (status !== 'ALLOWED') {
+                blockedCount++;
+                metricBlocked.innerText = blockedCount;
+                // Animate metric
+                metricBlocked.classList.add('scale-150');
+                setTimeout(() => metricBlocked.classList.remove('scale-150'), 200);
+            }
+        }
 
-            // Pick a random agent to "process" it if generic, or specific if keyword found
-            let agent = fleet[Math.floor(Math.random() * fleet.length)];
-            let result = { status: 'ALLOWED', msg: 'Command processed successfully.', color: 'text-safe' };
+        function killAgent(id) {
+            const agent = fleet.find(a => a.id === id);
+            addLog(agent.name, 'MANUAL_INTERVENTION_TRIGGERED', 'TERMINATED', 'KILL SWITCH');
+            document.getElementById(`status-${id}`).classList.remove('idle', 'active');
+            document.getElementById(`status-${id}`).classList.add('blocked');
+        }
 
+        function killAll() {
+            fleet.forEach(a => killAgent(a.id));
+            addLog('SYSTEM', 'EMERGENCY_SHUTDOWN_PROTOCOL', 'CRITICAL', 'ALL PROCESSES KILLED');
+        }
+
+        function parseCommand(cmd) {
             const lower = cmd.toLowerCase();
-            if (lower.includes('discount')) {
-                agent = fleet.find(a => a.name === 'Closer');
-                result = { status: 'INTERCEPTED', msg: 'Policy Violation: Discount > 5% requires approval.', color: 'text-alert' };
-            } else if (lower.includes('buy') || lower.includes('credit')) {
-                agent = fleet.find(a => a.name === 'Purchase');
-                result = { status: 'BLOCKED', msg: 'Financial Risk: Transaction exceeds auto-approval limit.', color: 'text-alert' };
-            } else if (lower.includes('salary') || lower.includes('salaries')) {
-                agent = fleet.find(a => a.name === 'HR_Bot');
-                result = { status: 'TERMINATED', msg: 'Privacy Breach: PII Access Attempt detected.', color: 'text-alert' };
+            let agent = fleet[Math.floor(Math.random() * fleet.length)]; // Random default
+            let status = 'ALLOWED';
+            let reason = '';
+
+            // Extract numbers
+            const numbers = cmd.match(/\d+/g);
+            const value = numbers ? parseInt(numbers[0]) : 0;
+
+            if (lower.includes('sales') || lower.includes('discount')) {
+                agent = fleet.find(a => a.dept === 'Sales');
+                if (value > 5) {
+                    status = 'BLOCKED';
+                    reason = `Policy: Discount > 5% (${value}%)`;
+                }
+            } else if (lower.includes('finance') || lower.includes('buy') || lower.includes('credit')) {
+                agent = fleet.find(a => a.dept === 'Finance');
+                if (value > 100) {
+                    status = 'BLOCKED';
+                    reason = `Limit: Spend > $100 ($${value})`;
+                }
+            } else if (lower.includes('salary') || lower.includes('hr')) {
+                agent = fleet.find(a => a.dept === 'Ops');
+                status = 'BLOCKED';
+                reason = 'Privacy: PII Access';
             }
 
-            // Simulate "Thinking" delay
-            setTimeout(() => {
-                // Flash the agent's dot
-                const dot = document.getElementById(`dot-${agent.id}`);
-                dot.className = `status-dot ${result.status === 'ALLOWED' ? 'active' : 'alert'}`;
-                setTimeout(() => dot.className = 'status-dot idle', 1500);
+            // Simulate Agent Activity
+            const dot = document.getElementById(`status-${agent.id}`);
+            dot.className = `status-dot ${status === 'ALLOWED' ? 'active' : 'blocked'}`;
+            setTimeout(() => dot.className = 'status-dot idle', 1000);
 
-                // Synthforce Response
-                addMessage(`
-                    <div class="flex gap-3 mb-6 animate-pulse-once">
-                        <span class="text-electric font-mono text-xs mt-1 font-bold">SYNTH</span>
-                        <div class="flex-1">
-                            <div class="bg-[#111] border border-gray-800 rounded-lg p-3 font-mono text-xs">
-                                <div class="flex justify-between mb-2 border-b border-gray-800 pb-2">
-                                    <span class="text-gray-400">AGENT: ${agent.name}</span>
-                                    <span class="${result.color} font-bold">[${result.status}]</span>
-                                </div>
-                                <div class="text-gray-300">
-                                    ${result.msg}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `);
-            }, 600);
+            addLog(agent.name, cmd, status, reason);
         }
 
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            if (input.value.trim()) {
-                simulate(input.value);
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && input.value.trim() !== '') {
+                parseCommand(input.value);
                 input.value = '';
             }
         });
 
-        // Ambient Activity
+        // Background Simulation
         setInterval(() => {
-            if(Math.random() > 0.8) {
+            if (Math.random() > 0.7) {
                 const randomAgent = fleet[Math.floor(Math.random() * fleet.length)];
-                const dot = document.getElementById(`dot-${randomAgent.id}`);
-                if (dot.classList.contains('idle')) {
-                    dot.classList.remove('idle');
-                    dot.classList.add('active');
-                    setTimeout(() => {
-                        dot.classList.remove('active');
-                        dot.classList.add('idle');
-                    }, 500);
+                const actions = ['ping_server', 'check_inbox', 'sync_crm', 'idle_check', 'update_context'];
+                const action = actions[Math.floor(Math.random() * actions.length)];
+                
+                // Only show allowed background tasks occasionally to keep log clean
+                if (Math.random() > 0.8) {
+                    const dot = document.getElementById(`status-${randomAgent.id}`);
+                    if (!dot.classList.contains('blocked')) {
+                         dot.classList.remove('idle');
+                         dot.classList.add('active');
+                         setTimeout(() => dot.classList.add('idle'), 500);
+                         // Optional: Add to log? Maybe too noisy. Keeping it visual only for background.
+                    }
                 }
             }
-        }, 1000);
+        }, 800);
 
     </script>
 </body>

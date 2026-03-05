@@ -1,7 +1,6 @@
 # Manifesto: The Governance Layer
 
-**We are not building HR for robots.**
-We are building the **Control Plane** for the autonomous economy.
+**We are building the Control Plane for the autonomous economy.**
 
 ## The Problem: The Black Box
 Companies are deploying AI agents like they deploy software, but managing them like they manage humans. This is a category error.
@@ -11,6 +10,13 @@ Companies are deploying AI agents like they deploy software, but managing them l
 
 You cannot manage an LLM with a regex. You cannot manage an agent with a weekly 1:1.
 When you give an agent a wallet, an API key, and a goal, you are creating **Infinite Liability**.
+
+### Why Datadog Fails
+Tools like Datadog and New Relic are built for **infrastructure**. They monitor CPU, RAM, and Latency.
+*   **Datadog sees:** "200 OK Response, 150ms Latency." (Healthy).
+*   **Synthforce sees:** "Agent promised a $5,000 refund without authorization." (Critical Risk).
+
+**Datadog monitors uptime. Synthforce monitors intent.**
 
 ## The Solution: Synthforce
 **Synthforce is the Governance Layer.**
