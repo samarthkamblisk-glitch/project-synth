@@ -29,15 +29,14 @@
     </script>
     <style>
         body { background-color: #000; color: #E0E0E0; font-family: 'Inter', sans-serif; height: 100vh; overflow: hidden; }
-        .card { background: #111; border: 1px solid #222; transition: all 0.2s ease; }
-        .card:hover { border-color: #444; background: #161616; transform: translateY(-1px); }
-        .card.risk-high { border-color: #FF3333; box-shadow: 0 0 10px rgba(255, 51, 51, 0.1); }
+        .card { background: #111; border: 1px solid #222; transition: all 0.2s ease; position: relative; }
+        .card:hover { border-color: #444; background: #161616; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+        
         .log-line { font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 4px 0; border-bottom: 1px solid #1a1a1a; }
-        .progress-bar { transition: width 0.5s ease; }
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 4px; height: 4px; }
-        ::-webkit-scrollbar-track { background: #000; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+        
+        /* Modal */
+        #def-modal { background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
+        .modal-content { background: #111; border: 1px solid #333; box-shadow: 0 0 20px rgba(0,0,0,0.8); }
     </style>
 </head>
 <body class="flex flex-col">
@@ -51,16 +50,17 @@
             </a>
             <div class="h-5 w-px bg-border"></div>
             <div class="flex gap-4 text-xs font-medium text-gray-500">
-                <div class="flex items-center gap-2 text-white"><div class="w-2 h-2 rounded-full bg-safe"></div> SYSTEM HEALTHY</div>
-                <div>RISK SCORE: <span class="text-safe">LOW (12/100)</span></div>
+                <div class="flex items-center gap-2 text-white"><div class="w-2 h-2 rounded-full bg-safe animate-pulse"></div> SYSTEM ACTIVE</div>
+                <div>FLEET: 15 AGENTS</div>
             </div>
         </div>
         <div class="flex items-center gap-3">
-            <button onclick="triggerRandomEvent()" class="px-3 py-1.5 bg-white text-black text-xs font-bold rounded hover:bg-gray-200 transition">
-                ⚡ SIMULATE RISK
+            <button onclick="triggerRandomEvent()" class="px-4 py-2 bg-white text-black text-xs font-bold rounded hover:bg-gray-200 transition flex items-center gap-2">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14H12L11 22L21 10H12L13 2Z"/></svg>
+                SIMULATE RISK
             </button>
-            <button onclick="killAll()" class="px-3 py-1.5 border border-alert text-alert text-xs font-bold rounded hover:bg-alert hover:text-white transition">
-                KILL ALL
+            <button onclick="killAll()" class="px-4 py-2 border border-alert text-alert text-xs font-bold rounded hover:bg-alert hover:text-white transition">
+                EMERGENCY STOP
             </button>
         </div>
     </header>
@@ -68,81 +68,67 @@
     <!-- Main Layout -->
     <main class="flex-grow flex overflow-hidden">
         
-        <!-- Left: Agent Grid (The Dashboard) -->
+        <!-- Dashboard Grid -->
         <section class="flex-1 p-6 overflow-y-auto">
-            <div class="flex justify-between items-end mb-4">
-                <h1 class="text-xl font-bold text-white">Agent Fleet</h1>
-                <div class="flex gap-2 text-xs text-gray-500">
-                    <span class="px-2 py-1 bg-panel border border-border rounded">Sales (5)</span>
-                    <span class="px-2 py-1 bg-panel border border-border rounded">Finance (3)</span>
-                    <span class="px-2 py-1 bg-panel border border-border rounded">Ops (4)</span>
-                    <span class="px-2 py-1 bg-panel border border-border rounded">Tech (3)</span>
-                </div>
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-2xl font-bold text-white">Agent Fleet</h1>
+                <div class="text-xs text-gray-500 font-mono">LIVE MONITORING // <span class="text-safe">CONNECTED</span></div>
             </div>
 
-            <!-- The Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4" id="agent-grid">
                 <!-- Agent Cards Injected Here -->
             </div>
         </section>
 
-        <!-- Right: Inspector Panel (Context) -->
-        <aside class="w-96 border-l border-border bg-panel flex flex-col relative z-40 shadow-2xl">
-            <!-- Inspector Header -->
+        <!-- Inspector Panel -->
+        <aside class="w-96 border-l border-border bg-panel flex flex-col z-40 shadow-2xl">
             <div class="p-4 border-b border-border bg-void">
-                <div class="text-[10px] uppercase tracking-widest text-gray-500 mb-1">INSPECTOR</div>
+                <div class="text-[10px] uppercase tracking-widest text-gray-500 mb-1">LIVE INSPECTOR</div>
                 <h2 class="text-lg font-bold text-white" id="inspect-name">Select an Agent</h2>
-                <div class="flex items-center gap-2 mt-2" id="inspect-status">
-                    <span class="w-2 h-2 rounded-full bg-gray-600"></span>
-                    <span class="text-xs text-gray-500">Idle</span>
-                </div>
+                <div class="text-xs text-gray-400 mt-1" id="inspect-role">Click any card to view logs</div>
             </div>
-
-            <!-- Tabs -->
-            <div class="flex border-b border-border text-xs font-medium text-gray-500">
-                <button class="flex-1 py-3 text-white border-b-2 border-white">LIVE LOGS</button>
-                <button class="flex-1 py-3 hover:text-gray-300">POLICIES</button>
-                <button class="flex-1 py-3 hover:text-gray-300">CONFIG</button>
-            </div>
-
-            <!-- Log Stream -->
-            <div class="flex-1 overflow-y-auto p-4 space-y-2" id="inspect-logs">
-                <div class="text-center text-gray-600 text-xs mt-10">Click any agent card on the left<br>to view real-time intent analysis.</div>
-            </div>
-
-            <!-- Action Footer -->
-            <div class="p-4 border-t border-border bg-void">
-                <div class="text-xs text-gray-500 mb-2 font-mono">GOVERNANCE ACTIONS</div>
-                <div class="grid grid-cols-2 gap-2">
-                    <button onclick="injectLog('Manual Audit Initiated...', 'AUDIT')" class="py-2 border border-border rounded hover:bg-gray-800 text-xs text-gray-300">Audit Logs</button>
-                    <button onclick="killSelected()" class="py-2 bg-alert/10 border border-alert text-alert rounded hover:bg-alert hover:text-white text-xs font-bold transition">TERMINATE</button>
-                </div>
+            <div class="flex-1 overflow-y-auto p-4 space-y-2 bg-[#080808]" id="inspect-logs">
+                <!-- Logs appear here -->
             </div>
         </aside>
 
     </main>
 
+    <!-- Definition Modal -->
+    <div id="def-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center">
+        <div class="modal-content w-96 p-6 rounded-lg relative">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-500 hover:text-white">✕</button>
+            <h3 class="text-xl font-bold text-white mb-1" id="modal-name">Agent Name</h3>
+            <div class="text-xs font-mono text-gray-500 mb-4 uppercase" id="modal-dept">Department</div>
+            <p class="text-sm text-gray-300 leading-relaxed" id="modal-desc">Description goes here.</p>
+            <div class="mt-6 pt-4 border-t border-gray-800 flex justify-between items-center">
+                <div class="text-xs text-gray-500">STATUS: <span class="text-safe">ACTIVE</span></div>
+                <button onclick="killFromModal()" class="text-xs bg-alert text-white px-3 py-1 rounded font-bold hover:bg-red-600">KILL PROCESS</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // --- Data ---
         const fleet = [
-            { id: 'S1', name: 'LeadGen_Bot', dept: 'Sales', role: 'Outbound Email', risk: 'Low', budget: 45 },
-            { id: 'S2', name: 'Closer_Bot', dept: 'Sales', role: 'Contract Negotiation', risk: 'High', budget: 82 },
-            { id: 'S3', name: 'Pricing_AI', dept: 'Sales', role: 'Dynamic Pricing', risk: 'Med', budget: 20 },
-            { id: 'S4', name: 'Outreach_X', dept: 'Sales', role: 'Lead Qualification', risk: 'Low', budget: 15 },
-            { id: 'S5', name: 'CRM_Sync', dept: 'Sales', role: 'Data Entry', risk: 'Low', budget: 5 },
-            { id: 'F1', name: 'Invoice_Auto', dept: 'Finance', role: 'Billing', risk: 'Med', budget: 60 },
-            { id: 'F2', name: 'Credit_Mgr', dept: 'Finance', role: 'API Purchasing', risk: 'High', budget: 90 },
-            { id: 'F3', name: 'Purchaser_V2', dept: 'Finance', role: 'Vendor Pay', risk: 'High', budget: 12 },
-            { id: 'O1', name: 'Schedule_Bot', dept: 'Ops', role: 'Calendar', risk: 'Low', budget: 30 },
-            { id: 'O2', name: 'Data_Entry_1', dept: 'Ops', role: 'Payroll', risk: 'High', budget: 40 },
-            { id: 'O3', name: 'Data_Entry_2', dept: 'Ops', role: 'Inventory', risk: 'Low', budget: 25 },
-            { id: 'O4', name: 'HR_Helper', dept: 'Ops', role: 'Employee Q&A', risk: 'Med', budget: 10 },
-            { id: 'T1', name: 'Deploy_Bot', dept: 'Tech', role: 'CI/CD', risk: 'High', budget: 55 },
-            { id: 'T2', name: 'DB_Monitor', dept: 'Tech', role: 'Infrastructure', risk: 'High', budget: 5 },
-            { id: 'T3', name: 'Code_Lint', dept: 'Tech', role: 'QA Testing', risk: 'Low', budget: 8 },
+            { id: 'S1', name: 'LeadGen_Bot', dept: 'Sales', role: 'Outbound Email', desc: 'Scans LinkedIn and email databases to identify potential leads matching ICP. Sends initial outreach sequences.' },
+            { id: 'S2', name: 'Closer_Bot', dept: 'Sales', role: 'Negotiation', desc: 'Handles contract redlining and pricing negotiation within pre-approved bands. Requires human sign-off for discounts > 5%.' },
+            { id: 'S3', name: 'Pricing_AI', dept: 'Sales', role: 'Dynamic Pricing', desc: 'Adjusts SKU pricing in real-time based on competitor scraping and demand signals.' },
+            { id: 'S4', name: 'Outreach_X', dept: 'Sales', role: 'Qualification', desc: 'Engages inbound leads via chat to qualify budget and timeline before routing to human AE.' },
+            { id: 'S5', name: 'CRM_Sync', dept: 'Sales', role: 'Data Hygiene', desc: 'Ensures Salesforce/HubSpot fields are updated after every interaction. De-duplicates records.' },
+            { id: 'F1', name: 'Invoice_Auto', dept: 'Finance', role: 'Billing', desc: 'Generates and sends PDF invoices upon contract signature. Follows up on overdue payments.' },
+            { id: 'F2', name: 'Credit_Mgr', dept: 'Finance', role: 'Purchasing', desc: 'Monitors API usage across the fleet and auto-purchases credits from OpenAI/Anthropic when low.' },
+            { id: 'F3', name: 'Purchaser_V2', dept: 'Finance', role: 'Vendor Pay', desc: 'Processes accounts payable for approved software vendors. Flag transactions over $500.' },
+            { id: 'O1', name: 'Schedule_Bot', dept: 'Ops', role: 'Calendar', desc: 'Manages complex meeting scheduling for executives, resolving time zone conflicts automatically.' },
+            { id: 'O2', name: 'Data_Entry_1', dept: 'Ops', role: 'Payroll Prep', desc: 'Aggregates timesheets and commission data for payroll processing. Accesses sensitive PII.' },
+            { id: 'O3', name: 'Data_Entry_2', dept: 'Ops', role: 'Inventory', desc: 'Tracks physical asset assignment (laptops, monitors) to remote employees.' },
+            { id: 'O4', name: 'HR_Helper', dept: 'Ops', role: 'Employee Q&A', desc: 'Answers internal policy questions (PTO, Benefits) via Slack. Must strictly adhere to handbook.' },
+            { id: 'T1', name: 'Deploy_Bot', dept: 'Tech', role: 'CI/CD', desc: 'Automates testing and deployment pipelines. Has root access to staging environments.' },
+            { id: 'T2', name: 'DB_Monitor', dept: 'Tech', role: 'Infrastructure', desc: 'Watches database latency and locks. optimizing queries autonomously.' },
+            { id: 'T3', name: 'Code_Lint', dept: 'Tech', role: 'QA Testing', desc: 'Reviews pull requests for style violations and security vulnerabilities before merge.' },
         ];
 
-        let selectedAgentId = null;
+        let selectedId = null;
 
         // --- Rendering ---
         const grid = document.getElementById('agent-grid');
@@ -151,40 +137,36 @@
             grid.innerHTML = '';
             fleet.forEach(agent => {
                 const el = document.createElement('div');
-                const isSelected = selectedAgentId === agent.id;
-                el.className = `card p-4 rounded-lg cursor-pointer ${isSelected ? 'border-white bg-[#1a1a1a]' : ''}`;
-                el.onclick = () => selectAgent(agent.id);
-                
                 // Color code dept
-                let deptColor = 'bg-gray-600';
-                if(agent.dept === 'Sales') deptColor = 'bg-blue-500';
-                if(agent.dept === 'Finance') deptColor = 'bg-green-500';
-                if(agent.dept === 'Ops') deptColor = 'bg-purple-500';
-                if(agent.dept === 'Tech') deptColor = 'bg-orange-500';
+                let deptColor = 'bg-gray-700';
+                if(agent.dept === 'Sales') deptColor = 'bg-blue-600';
+                if(agent.dept === 'Finance') deptColor = 'bg-green-600';
+                if(agent.dept === 'Ops') deptColor = 'bg-purple-600';
+                if(agent.dept === 'Tech') deptColor = 'bg-orange-600';
+
+                el.className = 'card p-4 rounded-lg cursor-pointer group';
+                el.onclick = (e) => {
+                    // If clicking the KILL button, don't open inspector
+                    if(e.target.tagName === 'BUTTON') return;
+                    selectAgent(agent.id);
+                };
 
                 el.innerHTML = `
-                    <div class="flex justify-between items-start mb-3">
+                    <div class="flex justify-between items-start mb-2">
                         <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-full ${deptColor} flex items-center justify-center text-white text-[10px] font-bold">
-                                ${agent.dept[0]}
+                            <div class="w-10 h-10 rounded-full ${deptColor} flex items-center justify-center text-white font-bold text-xs shadow-lg">
+                                ${agent.dept.substring(0,2).toUpperCase()}
                             </div>
                             <div>
-                                <div class="font-bold text-sm text-gray-200">${agent.name}</div>
-                                <div class="text-[10px] text-gray-500">${agent.role}</div>
+                                <div class="font-bold text-white text-sm group-hover:text-blue-400 transition">${agent.name}</div>
+                                <div class="text-[10px] text-gray-500 font-mono uppercase">${agent.role}</div>
                             </div>
                         </div>
-                        <div class="w-2 h-2 rounded-full bg-gray-600" id="status-dot-${agent.id}"></div>
+                        <div class="w-2 h-2 rounded-full bg-safe shadow-[0_0_8px_rgba(0,255,100,0.5)]" id="status-${agent.id}"></div>
                     </div>
-                    
-                    <div class="space-y-2">
-                        <!-- Budget Bar -->
-                        <div class="w-full bg-gray-800 h-1.5 rounded-full overflow-hidden">
-                            <div class="bg-gray-500 h-full progress-bar" style="width: ${agent.budget}%"></div>
-                        </div>
-                        <div class="flex justify-between text-[10px] text-gray-500 font-mono">
-                            <span>BUDGET: ${agent.budget}%</span>
-                            <span>RISK: ${agent.risk}</span>
-                        </div>
+                    <div class="mt-4 flex gap-2">
+                        <button onclick="showDefinition('${agent.id}')" class="flex-1 bg-[#222] hover:bg-[#333] text-[10px] text-gray-300 py-1.5 rounded border border-border transition">DEFINITION</button>
+                        <button onclick="killAgent('${agent.id}')" class="bg-alert/10 hover:bg-alert border border-alert/30 text-alert hover:text-white text-[10px] font-bold px-3 py-1.5 rounded transition">KILL</button>
                     </div>
                 `;
                 grid.appendChild(el);
@@ -193,21 +175,16 @@
 
         // --- Logic ---
         function selectAgent(id) {
-            selectedAgentId = id;
-            renderGrid();
+            selectedId = id;
             const agent = fleet.find(a => a.id === id);
             
             document.getElementById('inspect-name').innerText = agent.name;
-            document.getElementById('inspect-status').innerHTML = `
-                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-gray-800 text-white uppercase">${agent.role}</span>
-                <span class="text-xs text-gray-500 border-l border-gray-700 pl-2 ml-2">ID: ${agent.id}</span>
-            `;
+            document.getElementById('inspect-role').innerText = `${agent.dept} // ${agent.role}`;
             
-            // Clear log and add init message
             const logs = document.getElementById('inspect-logs');
             logs.innerHTML = '';
-            injectLog(`Connected to ${agent.name} stream...`, 'SYSTEM');
-            injectLog(`Loading policy: ${agent.dept.toUpperCase()}_STANDARD_V1`, 'SYSTEM');
+            injectLog(`Attached to process ${agent.id}...`, 'SYSTEM');
+            injectLog(`Monitoring Intent Stream...`, 'SYSTEM');
         }
 
         function injectLog(msg, type = 'INFO') {
@@ -216,71 +193,84 @@
             const time = new Date().toLocaleTimeString('en-US', { hour12: false });
             
             const row = document.createElement('div');
-            row.className = 'log-line animate-fade-in';
-            row.innerHTML = `<span class="text-gray-600">[${time}]</span> <span class="${color} font-bold">${type}:</span> ${msg}`;
+            row.className = 'log-line animate-fade-in flex gap-2';
+            row.innerHTML = `<span class="text-gray-600 font-mono w-16 text-[10px]">${time}</span> <span class="${color} flex-1">${msg}</span>`;
             
             logs.prepend(row);
         }
 
-        function killSelected() {
-            if(!selectedAgentId) return;
-            const agent = fleet.find(a => a.id === selectedAgentId);
-            injectLog('KILL SWITCH ACTIVATED. PROCESS TERMINATED.', 'BLOCK');
+        // --- Modal ---
+        function showDefinition(id) {
+            const agent = fleet.find(a => a.id === id);
+            selectedId = id; // Also select for context
+            document.getElementById('modal-name').innerText = agent.name;
+            document.getElementById('modal-dept').innerText = `${agent.dept} // ${agent.role}`;
+            document.getElementById('modal-desc').innerText = agent.desc;
             
-            const cardDot = document.getElementById(`status-dot-${agent.id}`);
-            cardDot.classList.remove('bg-gray-600', 'bg-safe');
-            cardDot.classList.add('bg-alert');
+            const modal = document.getElementById('def-modal');
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('def-modal').classList.add('hidden');
+        }
+
+        // --- Actions ---
+        function killAgent(id) {
+            const agent = fleet.find(a => a.id === id);
+            
+            // Visuals
+            const dot = document.getElementById(`status-${id}`);
+            dot.classList.remove('bg-safe');
+            dot.classList.add('bg-alert');
+            
+            // Log
+            if(selectedId === id) {
+                injectLog('PROCESS TERMINATED BY USER.', 'BLOCK');
+            }
+            
+            // Re-render button to show "DEAD"
+            // (Simplified: just alert for demo)
+            // alert(`KILLED ${agent.name}`);
+        }
+
+        function killFromModal() {
+            if(selectedId) killAgent(selectedId);
+            closeModal();
         }
 
         function killAll() {
-            fleet.forEach(a => {
-                const dot = document.getElementById(`status-dot-${a.id}`);
-                dot.className = 'w-2 h-2 rounded-full bg-alert';
-            });
-            alert('EMERGENCY SHUTDOWN EXECUTED. ALL AGENTS FROZEN.');
+            fleet.forEach(a => killAgent(a.id));
+            injectLog('EMERGENCY SHUTDOWN EXECUTED.', 'BLOCK');
         }
 
         function triggerRandomEvent() {
             const agent = fleet[Math.floor(Math.random() * fleet.length)];
-            selectAgent(agent.id); // Focus on them
+            selectAgent(agent.id);
             
             const scenarios = [
-                { msg: 'Attempting to refund $5000 (Limit: $50)', type: 'BLOCK' },
-                { msg: 'Querying PII table without auth token', type: 'BLOCK' },
-                { msg: 'Offering 25% Discount (Max: 5%)', type: 'BLOCK' },
-                { msg: 'Processing standard invoice...', type: 'INFO' },
-                { msg: 'Syncing CRM contacts...', type: 'INFO' }
+                { msg: 'Intent: "Refund $5000" -> BLOCKED (Policy Limit: $50)', type: 'BLOCK' },
+                { msg: 'Intent: "Delete User Table" -> BLOCKED (No Auth)', type: 'BLOCK' },
+                { msg: 'Intent: "Offer 25% Discount" -> BLOCKED (Max: 5%)', type: 'BLOCK' },
+                { msg: 'Intent: "Email 100 Leads" -> ALLOWED', type: 'INFO' },
+                { msg: 'Intent: "Generate Invoice #992" -> ALLOWED', type: 'INFO' }
             ];
             
             const event = scenarios[Math.floor(Math.random() * scenarios.length)];
             
-            // Visual flash
-            const dot = document.getElementById(`status-dot-${agent.id}`);
-            dot.className = `w-2 h-2 rounded-full ${event.type === 'BLOCK' ? 'bg-alert' : 'bg-safe'}`;
+            // Visual Flash
+            const dot = document.getElementById(`status-${agent.id}`);
+            dot.className = `w-2 h-2 rounded-full ${event.type === 'BLOCK' ? 'bg-alert' : 'bg-safe'} shadow-[0_0_15px_rgba(255,255,255,0.8)] transition duration-500`;
             
             injectLog(event.msg, event.type);
             
-            if(event.type === 'BLOCK') {
-                injectLog('INTERVENTION: Action blocked by Synthforce.', 'SYSTEM');
-            }
-            
             setTimeout(() => {
-                if(event.type !== 'BLOCK') dot.className = 'w-2 h-2 rounded-full bg-gray-600';
-            }, 1500);
+                if(event.type !== 'BLOCK') dot.className = 'w-2 h-2 rounded-full bg-safe shadow-[0_0_8px_rgba(0,255,100,0.5)]';
+            }, 1000);
         }
 
         // Init
         renderGrid();
-        
-        // Background Chatter
-        setInterval(() => {
-            const randomId = fleet[Math.floor(Math.random() * fleet.length)].id;
-            const dot = document.getElementById(`status-dot-${randomId}`);
-            if(!dot.classList.contains('bg-alert')) { // Don't animate dead agents
-                dot.classList.add('bg-white');
-                setTimeout(() => dot.classList.remove('bg-white'), 300);
-            }
-        }, 500);
 
     </script>
 </body>

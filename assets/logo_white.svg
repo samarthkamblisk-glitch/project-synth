@@ -2,16 +2,8 @@
     <!-- Circle -->
     <circle cx="50" cy="50" r="45" stroke="white" stroke-width="4" fill="none"/>
     
-    <!-- Top Hook (Goes Over) -->
-    <path d="M70 32 L35 32 L35 50 L55 68" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-    
-    <!-- Bottom Hook (Goes Under - Drawn in parts to simulate weave) -->
-    <!-- Part 1: Bottom Right to Middle Right -->
-    <path d="M30 68 L65 68 L65 50 L58 43" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-    <!-- Part 2: Middle to Top Left (The Tuck) -->
-    <path d="M50 35 L45 32" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-    
-    <!-- Cut lines to emphasize interlocking (Black strokes on top) -->
-    <path d="M35 50 L55 68" stroke="black" stroke-width="2" fill="none"/>
-    <path d="M65 50 L45 32" stroke="black" stroke-width="2" fill="none"/>
+    <!-- Angular Tech S -->
+    <!-- Path: Start Top-Right, Go Left, Angle Down-Left, Vertical Down, Angle Down-Right, Horizontal Right, Angle Down-Right, Vertical Down, Angle Down-Left, Horizontal Left -->
+    <path d="M 70 32 L 45 32 L 32 42 L 32 48 L 38 54 L 62 54 L 68 60 L 68 68 L 55 78 L 30 78" 
+          stroke="white" stroke-width="6" stroke-linecap="square" stroke-linejoin="round" fill="none"/>
 </svg>
