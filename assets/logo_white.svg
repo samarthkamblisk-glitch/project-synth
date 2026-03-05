@@ -2,12 +2,12 @@
     <!-- Transparent Background -->
     
     <!-- Circle -->
-    <circle cx="250" cy="250" r="180" stroke="white" stroke-width="12" fill="none" />
+    <circle cx="250" cy="250" r="180" stroke="white" stroke-width="14" fill="none" />
     
     <!-- S Shape Logic -->
-    <g stroke="white" stroke-width="12" fill="none" stroke-linecap="butt" stroke-linejoin="miter">
-        <path d="M 330 220 A 50 50 0 1 0 250 170 L 250 170 L 330 250" /> 
-        <line x1="210" y1="210" x2="290" y2="290" /> 
-        <path d="M 170 280 A 50 50 0 1 0 250 330 L 250 330 L 170 250" /> 
+    <g stroke="white" stroke-width="14" fill="none" stroke-linecap="square" stroke-linejoin="miter">
+        <path d="M 330 200 L 250 200 L 170 280 L 170 330" />
+        <path d="M 170 300 L 250 300 L 330 220 L 330 170" />
+        <line x1="210" y1="210" x2="290" y2="290" />
     </g>
 </svg>
