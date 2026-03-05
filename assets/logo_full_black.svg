@@ -1,12 +1,14 @@
-<svg width="400" height="100" viewBox="0 0 400 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <!-- Icon -->
-    <g transform="translate(10, 10) scale(0.8)">
-        <circle cx="50" cy="50" r="48" stroke="black" stroke-width="4"/>
-        <path d="M72 38 L45 38 C35 38 35 48 35 48 L35 52 L65 70" stroke="black" stroke-width="6" stroke-linecap="square" stroke-linejoin="round"/>
-        <path d="M28 62 L55 62 C65 62 65 52 65 52 L65 48 L35 30" stroke="black" stroke-width="6" stroke-linecap="square" stroke-linejoin="round"/>
-        <path d="M35 52 L65 70" stroke="white" stroke-width="2" fill="none"/>
-        <path d="M65 48 L35 30" stroke="white" stroke-width="2" fill="none"/>
+<svg width="1000" height="250" viewBox="0 0 1000 250" xmlns="http://www.w3.org/2000/svg">
+    <!-- Icon Container (Scaled) -->
+    <g transform="translate(20, 25) scale(0.4)">
+        <circle cx="250" cy="250" r="180" stroke="black" stroke-width="12" fill="none" />
+        <g stroke="black" stroke-width="12" fill="none" stroke-linecap="butt" stroke-linejoin="miter">
+            <path d="M 330 220 A 50 50 0 1 0 250 170 L 250 170 L 330 250" /> 
+            <line x1="210" y1="210" x2="290" y2="290" /> 
+            <path d="M 170 280 A 50 50 0 1 0 250 330 L 250 330 L 170 250" /> 
+        </g>
     </g>
+    
     <!-- Text -->
-    <text x="110" y="65" font-family="Arial, sans-serif" font-weight="bold" font-size="40" fill="black" letter-spacing="2">SYNTHFORCE AI</text>
+    <text x="250" y="160" font-family="Arial, sans-serif" font-weight="bold" font-size="100" fill="black" letter-spacing="5">SYNTHFORCE AI</text>
 </svg>

@@ -1,9 +1,13 @@
-<svg width="200" height="200" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <!-- Circle -->
-    <circle cx="50" cy="50" r="45" stroke="white" stroke-width="4" fill="none"/>
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+    <!-- Transparent Background -->
     
-    <!-- Angular Tech S -->
-    <!-- Path: Start Top-Right, Go Left, Angle Down-Left, Vertical Down, Angle Down-Right, Horizontal Right, Angle Down-Right, Vertical Down, Angle Down-Left, Horizontal Left -->
-    <path d="M 70 32 L 45 32 L 32 42 L 32 48 L 38 54 L 62 54 L 68 60 L 68 68 L 55 78 L 30 78" 
-          stroke="white" stroke-width="6" stroke-linecap="square" stroke-linejoin="round" fill="none"/>
+    <!-- Circle -->
+    <circle cx="250" cy="250" r="180" stroke="white" stroke-width="12" fill="none" />
+    
+    <!-- S Shape Logic -->
+    <g stroke="white" stroke-width="12" fill="none" stroke-linecap="butt" stroke-linejoin="miter">
+        <path d="M 330 220 A 50 50 0 1 0 250 170 L 250 170 L 330 250" /> 
+        <line x1="210" y1="210" x2="290" y2="290" /> 
+        <path d="M 170 280 A 50 50 0 1 0 250 330 L 250 330 L 170 250" /> 
+    </g>
 </svg>
