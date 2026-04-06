@@ -7,8 +7,8 @@
   ],
   "routes": [
     { "handle": "filesystem" },
-    { "src": "/demo", "status": 308, "headers": { "Location": "/demo/" } },
     { "src": "/(.*)", "dest": "/index.html" }
   ],
+  "cleanUrls": false,
   "trailingSlash": true
 }
