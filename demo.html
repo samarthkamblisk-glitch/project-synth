@@ -71,6 +71,34 @@
         // Initialize department selection
         document.addEventListener('DOMContentLoaded', function() {
             selectDept('Sales');
+        });
+        // View toggle
+        function setView(view) {
+            const tableView = document.getElementById('tableView');
+            const cardView = document.getElementById('cardView');
+            const tableBtn = document.getElementById('tableBtn');
+            const cardBtn = document.getElementById('cardBtn');
+            if (view === 'table') {
+                tableView.classList.remove('hidden');
+                cardView.classList.add('hidden');
+                tableBtn.classList.add('bg-accent', 'text-white');
+                tableBtn.classList.remove('bg-white', 'text-gray-700');
+                cardBtn.classList.remove('bg-accent', 'text-white');
+                cardBtn.classList.add('bg-white', 'text-gray-700');
+            } else {
+                tableView.classList.add('hidden');
+                cardView.classList.remove('hidden');
+                cardBtn.classList.add('bg-accent', 'text-white');
+                cardBtn.classList.remove('bg-white', 'text-gray-700');
+                tableBtn.classList.remove('bg-accent', 'text-white');
+                tableBtn.classList.add('bg-white', 'text-gray-700');
+            }
+        }
+        // Initialize view
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ensure card view is hidden initially
+            const cardView = document.getElementById('cardView');
+            if (cardView) cardView.classList.add('hidden');
         });</script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
@@ -233,7 +261,7 @@
                                 <button onclick="setView('card')" id="cardBtn" class="px-3 py-1 text-xs font-sans border border-subtle rounded-r-lg bg-white text-gray-700">Cards</button>
                             </div>
                         </div>
-                        <div class="overflow-x-auto">
+                        <div class="overflow-x-auto" id="tableView">
                             <table class="w-full">
                                 <thead>
                                     <tr class="border-b border-subtle text-left text-sm text-gray-600">
