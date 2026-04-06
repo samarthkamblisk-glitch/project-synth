@@ -6,6 +6,7 @@
     <title>SynthForce | About & Manifesto</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
@@ -18,7 +19,7 @@
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
-                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace']
+                        serif: ['Merriweather', 'serif']
                     }
                 }
             }
@@ -35,6 +36,8 @@
             background: transparent; color: #00B2FF;
         }
         .prose { max-width: 65ch; }
+        .sidebar a { border-left: 3px solid transparent; }
+        .sidebar a.active { border-left-color: #00B2FF; background: #f0f9ff; }
     </style>
 </head>
 <body class="min-h-screen bg-white">
@@ -57,97 +60,95 @@
     </nav>
 
     <main class="pt-12 pb-20 container mx-auto px-6">
-        <div class="max-w-4xl mx-auto">
-            <div class="text-center mb-16">
-                <h1 class="text-5xl md:text-6xl font-bold text-gray-900 mb-6">The Manifesto</h1>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Chapter 1: The Agent Workforce. Why we need HR for AI agents.
-                </p>
+        <div class="flex flex-col lg:flex-row gap-12">
+            <!-- Sidebar -->
+            <div class="lg:w-1/4">
+                <div class="sticky top-24 p-6 border border-subtle rounded-2xl bg-gray-50">
+                    <h3 class="font-sans font-bold text-gray-900 text-xl mb-4">Manifesto Chapters</h3>
+                    <div class="space-y-2 sidebar">
+                        <a href="#chapter1" class="block px-4 py-3 rounded-lg hover:bg-gray-100 active">
+                            <span class="font-sans font-medium text-gray-900">The Agent Workforce</span>
+                            <span class="text-xs text-gray-500 block">Why we need HR for AI agents</span>
+                        </a>
+                        <a href="#" class="block px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-500">
+                            <span class="font-sans font-medium">The HR Stack for Agents</span>
+                            <span class="text-xs text-gray-500 block">Coming soon</span>
+                        </a>
+                        <a href="#" class="block px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-500">
+                            <span class="font-sans font-medium">Implementing the Stack</span>
+                            <span class="text-xs text-gray-500 block">Coming soon</span>
+                        </a>
+                    </div>
+                    <div class="mt-8 pt-6 border-t border-subtle">
+                        <p class="text-sm text-gray-600">SynthForce is building the HR platform for AI agents. This manifesto outlines our vision.</p>
+                    </div>
+                </div>
             </div>
-            <div class="prose mx-auto">
-<h1 class="text-4xl font-bold text-gray-900 mt-12 mb-6">Chapter 1: The Agent Workforce</h1>
-<p class="mb-4"></p>
+
+            <!-- Main Content -->
+            <div class="lg:w-3/4">
+                <div class="max-w-3xl mx-auto">
+                    <div class="text-center mb-16">
+                        <h1 class="text-5xl md:text-6xl font-bold text-gray-900 mb-6">The Manifesto</h1>
+                        <p class="text-xl text-gray-600">A new approach to managing your synthetic workforce.</p>
+                    </div>
+                    <div class="prose mx-auto font-serif">
+<h1 class="text-4xl font-bold text-gray-900 mt-8 mb-6">The Agent Workforce</h1>
 <h2 class="text-3xl font-bold text-gray-800 mt-10 mb-4">The New Org Chart</h2>
-<p class="mb-4"></p>
-Your company is no longer just humans. It’s <strong>hybrid</strong>.
-<p class="mb-4"></p>
-You have a sales team, a support team, a dev team—and now you have a sales bot, a support bot, a coding bot. They are not tools. They are <strong>synthetic employees</strong>.
-<p class="mb-4"></p>
+<p class="mb-6 leading-relaxed text-gray-700">Your company is no longer just humans. It’s <strong>hybrid</strong>.</p>
+<p class="mb-6 leading-relaxed text-gray-700">You have a sales team, a support team, a dev team—and now you have a sales bot, a support bot, a coding bot. They are not tools. They are <strong>synthetic employees</strong>.</p>
 <h3 class="text-2xl font-bold text-gray-700 mt-8 mb-3">The Management Gap</h3>
-<p class="mb-4"></p>
-When you hire a human, you onboard them. You give them a job description, a manager, a performance review cycle, a salary, and a set of policies. When you deploy an agent, you give it an API key and a prompt. Then you hope.
-<p class="mb-4"></p>
-This is not a technical oversight. It’s a <strong>category error</strong>.
-<p class="mb-4"></p>
-Agents are probabilistic, autonomous, and capable of making decisions that impact your P&L. Treating them like infrastructure is like treating your new sales hire as a piece of furniture.
-<p class="mb-4"></p>
-<strong>Today, agents are managed by SWEs.</strong>  
-Engineers navigate the API calls, the prompt tweaks, the integration quirks. The “manager” of your sales bot is a software developer who speaks in tokens and embeddings, not in leads and conversions.
-<p class="mb-4"></p>
-This is wrong.  
+<p class="mb-6 leading-relaxed text-gray-700">When you hire a human, you onboard them. You give them a job description, a manager, a performance review cycle, a salary, and a set of policies. When you deploy an agent, you give it an API key and a prompt. Then you hope.</p>
+<p class="mb-6 leading-relaxed text-gray-700">This is not a technical oversight. It’s a <strong>category error</strong>.</p>
+<p class="mb-6 leading-relaxed text-gray-700">Agents are probabilistic, autonomous, and capable of making decisions that impact your P&L. Treating them like infrastructure is like treating your new sales hire as a piece of furniture.</p>
+<p class="mb-6 leading-relaxed text-gray-700"><strong>Today, agents are managed by SWEs.</strong>  
+Engineers navigate the API calls, the prompt tweaks, the integration quirks. The “manager” of your sales bot is a software developer who speaks in tokens and embeddings, not in leads and conversions.</p>
+<p class="mb-6 leading-relaxed text-gray-700">This is wrong.  
 A sales bot should be managed by the <strong>Sales Manager</strong>.  
 A support bot should be managed by the <strong>Support Lead</strong>.  
-A coding bot should be managed by the <strong>Dev Manager</strong>.
-<p class="mb-4"></p>
-Our job is to shift the narrative: if you can manage employees, you can manage agents.
-<p class="mb-4"></p>
+A coding bot should be managed by the <strong>Dev Manager</strong>.</p>
+<p class="mb-6 leading-relaxed text-gray-700">Our job is to shift the narrative: if you can manage employees, you can manage agents.</p>
 <h3 class="text-2xl font-bold text-gray-700 mt-8 mb-3">The Cost of Ignorance</h3>
-<p class="mb-4"></p>
-<ul class="list-disc pl-6 mb-4">
-<li class="mb-2"><strong>Financial bleed:</strong> An agent loops, burns $10k in API credits overnight. No one notices until the bill arrives.</li>
-<li class="mb-2"><strong>Silent liability:</strong> A support bot promises a refund it can’t deliver. The customer sues. The legal team is blindsided.</li>
-<li class="mb-2"><strong>Zombie agents:</strong> An agent gets stuck, does nothing, but keeps costing you money. No one retires it.</li>
+<p class="mb-6 leading-relaxed text-gray-700">*   <strong>Financial bleed:</strong> An agent loops, burns $10k in API credits overnight. No one notices until the bill arrives.
+<ul class="list-disc mb-6">
+<li class="ml-6 mb-2"><strong>Silent liability:</strong> A support bot promises a refund it can’t deliver. The customer sues. The legal team is blindsided.</li>
+<li class="ml-6 mb-2"><strong>Zombie agents:</strong> An agent gets stuck, does nothing, but keeps costing you money. No one retires it.</p></li>
 </ul>
-<p class="mb-4"></p>
-These are not bugs. They are <strong>management failures</strong>.
-<p class="mb-4"></p>
+<p class="mb-6 leading-relaxed text-gray-700">These are not bugs. They are <strong>management failures</strong>.</p>
 <h2 class="text-3xl font-bold text-gray-800 mt-10 mb-4">Enter Synthforce HR</h2>
-<p class="mb-4"></p>
-We are not building another monitoring dashboard. We are building the <strong>HR department for your synthetic workforce</strong>.
-<p class="mb-4"></p>
+<p class="mb-6 leading-relaxed text-gray-700">We are not building another monitoring dashboard. We are building the <strong>HR department for your synthetic workforce</strong>.</p>
 <h3 class="text-2xl font-bold text-gray-700 mt-8 mb-3">What HR Does for Humans</h3>
-<p class="mb-4"></p>
-1.  <strong>Recruitment & Hiring</strong> → Defines roles, selects candidates, negotiates terms.
+<p class="mb-6 leading-relaxed text-gray-700">1.  <strong>Recruitment & Hiring</strong> → Defines roles, selects candidates, negotiates terms.
 2.  <strong>Onboarding</strong> → Introduces the new hire to the team, sets expectations, provides tools.
 3.  <strong>Performance Management</strong> → Tracks output, provides feedback, conducts reviews.
 4.  <strong>Compensation & Benefits</strong> → Manages salary, bonuses, equity.
 5.  <strong>Policy & Compliance</strong> → Enforces company rules, ensures legal adherence.
-6.  <strong>Offboarding</strong> → Exits the employee, revokes access, archives records.
-<p class="mb-4"></p>
+6.  <strong>Offboarding</strong> → Exits the employee, revokes access, archives records.</p>
 <h3 class="text-2xl font-bold text-gray-700 mt-8 mb-3">What Synthforce HR Does for Agents</h3>
-<p class="mb-4"></p>
-1.  <strong>Agent Creation</strong> → Templates for roles (sales, support, coding), with predefined guardrails. No code required.
+<p class="mb-6 leading-relaxed text-gray-700">1.  <strong>Agent Creation</strong> → Templates for roles (sales, support, coding), with predefined guardrails. No code required.
 2.  <strong>Agent Onboarding</strong> → Assigns a <strong>business owner</strong> (Sales Manager, Support Lead, etc.), a cost center, and integration into your existing workflows. The owner doesn’t need to know what an API key is.
 3.  <strong>Agent Performance</strong> → Tracks business‑level metrics: tasks completed, cost per task, error rate, user satisfaction. Presented in the language of the business, not engineering.
 4.  <strong>Agent Compensation</strong> → Monitors API spend, calculates ROI, recommends optimizations. Shows the “payroll” for your synthetic team.
 5.  <strong>Agent Policy</strong> → Enforces guardrails (no unauthorized promises, no PII access) in real‑time. Policies are written in plain English, not code.
-6.  <strong>Agent Offboarding</strong> → Archives logs, revokes permissions, generates audit trails. Just like exiting a human employee.
-<p class="mb-4"></p>
+6.  <strong>Agent Offboarding</strong> → Archives logs, revokes permissions, generates audit trails. Just like exiting a human employee.</p>
 <h2 class="text-3xl font-bold text-gray-800 mt-10 mb-4">The Shift: From Infrastructure to Workforce</h2>
-<p class="mb-4"></p>
-Most tools today treat agents as <strong>infrastructure</strong>. They monitor uptime, latency, tokens. That’s like measuring a human employee by their heartbeat and calorie intake. It’s necessary, but not sufficient.
-<p class="mb-4"></p>
-Synthforce HR treats agents as <strong>employees</strong>. We measure their <strong>output</strong>, their <strong>value</strong>, their <strong>adherence to policy</strong>. We give you the language and the tools to manage them like you manage your human team.
-<p class="mb-4"></p>
+<p class="mb-6 leading-relaxed text-gray-700">Most tools today treat agents as <strong>infrastructure</strong>. They monitor uptime, latency, tokens. That’s like measuring a human employee by their heartbeat and calorie intake. It’s necessary, but not sufficient.</p>
+<p class="mb-6 leading-relaxed text-gray-700">Synthforce HR treats agents as <strong>employees</strong>. We measure their <strong>output</strong>, their <strong>value</strong>, their <strong>adherence to policy</strong>. We give you the language and the tools to manage them like you manage your human team.</p>
 <h3 class="text-2xl font-bold text-gray-700 mt-8 mb-3">Why This Matters Now</h3>
-<p class="mb-4"></p>
-In 2025, you had five agents. You could read their logs.
+<p class="mb-6 leading-relaxed text-gray-700">In 2025, you had five agents. You could read their logs.
 In 2026, you have fifty. You cannot.
-In 2027, you will have five hundred. You will not even know their names.
-<p class="mb-4"></p>
-The companies that survive the agent explosion will be the ones that <strong>manage their synthetic workforce with the same rigor as their human one</strong>.
-<p class="mb-4"></p>
-Synthforce HR is the platform that makes that possible.
-<p class="mb-4"></p>
----
-<p class="mb-4"></p>
-<strong>Next:</strong> *Chapter 2: The HR Stack for Agents*</p>
-            </div>
-            <div class="mt-16 pt-8 border-t border-subtle text-center">
-                <a href="demo.html" class="btn-primary px-8 py-4 font-sans font-semibold text-sm uppercase rounded-lg inline-block">
-                    Explore Demo
-                </a>
-                <p class="mt-4 text-sm text-gray-500">See how SynthForce works in practice.</p>
+In 2027, you will have five hundred. You will not even know their names.</p>
+<p class="mb-6 leading-relaxed text-gray-700">The companies that survive the agent explosion will be the ones that <strong>manage their synthetic workforce with the same rigor as their human one</strong>.</p>
+<p class="mb-6 leading-relaxed text-gray-700">Synthforce HR is the platform that makes that possible.</p>
+<p class="mb-6 leading-relaxed text-gray-700">---</p>
+                    </div>
+                    <div class="mt-16 pt-8 border-t border-subtle text-center">
+                        <a href="demo.html" class="btn-primary px-8 py-4 font-sans font-semibold text-sm uppercase rounded-lg inline-block">
+                            Explore Demo
+                        </a>
+                        <p class="mt-4 text-sm text-gray-500">See how SynthForce works in practice.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
