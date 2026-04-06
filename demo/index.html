@@ -435,11 +435,7 @@
                     <div class="lg:col-span-2 bg-white rounded-2xl border border-subtle p-6 shadow-sm">
                         <div class="flex justify-between items-center mb-6">
                             <h3 class="font-sans font-bold text-gray-900 text-xl">Agent Directory</h3>
-                            <div class="flex items-center gap-2">
-                                <span class="text-xs font-mono text-gray-600">View:</span>
-                                <button onclick="setView('table')" id="tableBtn" class="px-3 py-1 text-xs font-sans border border-subtle rounded-l-lg bg-accent text-white">Table</button>
-                                <button onclick="setView('card')" id="cardBtn" class="px-3 py-1 text-xs font-sans border border-subtle rounded-r-lg bg-white text-gray-700">Cards</button>
-                            </div>
+                            <span class="text-xs font-mono text-green-600">6 agents</span>
                         </div>
                         <div class="overflow-x-auto" id="tableView">
                             <table class="w-full">
@@ -529,23 +525,7 @@
                             </table>
                         </div>
                         
-                        </div>
-                        <!-- Card View (hidden) -->
-                        <div id="cardView" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                            <div class="bg-white border border-subtle rounded-xl p-6">
-                                <div class="flex items-center justify-between mb-4">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                                        <span class="font-sans font-bold text-gray-900">Sales Representative</span>
-                                    </div>
-                                    <span class="px-3 py-1 rounded-full text-xs font-mono bg-green-100 text-green-800">Active</span>
-                                </div>
-                                <div class="text-sm text-gray-600 mb-2">Role: Sales Manager</div>
-                                <div class="text-sm text-gray-600 mb-2">Department: Sales</div>
-                                <div class="text-sm font-mono text-gray-900">Cost per task: $0.18</div>
-                                <div class="mt-4 text-xs text-gray-500">Tasks completed: 4,320</div>
-                            </div>
-                            <div class="bg-white border border-subtle rounded-xl p-6">
+                        </div><div class="bg-white border border-subtle rounded-xl p-6">
                                 <div class="flex items-center justify-between mb-4">
                                     <div class="flex items-center gap-3">
                                         <div class="w-3 h-3 rounded-full bg-green-500"></div>
@@ -634,35 +614,10 @@
                                 <div>
                                     <div class="flex justify-between text-sm mb-1">
                                         <span class="text-gray-600">Cost Efficiency</span>
-                                        <span class="font-mono text-green-600">$<span id="costValue">0.18</span> / task</span>
+                                        <span class="font-mono text-green-600">$0.18 / task</span>
                                     </div>
                                     <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
-                                        <div class="h-full bg-blue-500" id="costBar" style="width: 78%"></div>
-                                    </div>
-                                    <div class="mt-4">
-                                        <label class="block text-xs text-gray-600 mb-1">Adjust target cost per task:</label>
-                                        <input type="range" min="0.05" max="0.50" step="0.01" value="0.18" class="w-full accent-accent" id="costSlider" oninput="updateCost()">
-                                        <div class="flex justify-between text-xs text-gray-500">
-                                            <span>$0.05</span>
-                                            <span>$0.25</span>
-                                            <span>$0.50</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="pt-4 border-t border-subtle">
-                                    <label class="block text-xs text-gray-600 mb-1">Monthly tasks per agent:</label>
-                                    <input type="range" min="100" max="10000" step="100" value="5000" class="w-full accent-accent" id="taskSlider" oninput="updateMonthlyCost()">
-                                    <div class="flex justify-between text-xs text-gray-500">
-                                        <span>100</span>
-                                        <span>5,000</span>
-                                        <span>10,000</span>
-                                    </div>
-                                    <div class="mt-4">
-                                        <div class="flex justify-between text-sm">
-                                            <span class="text-gray-600">Estimated monthly cost:</span>
-                                            <span class="font-mono text-gray-900" id="monthlyCost">$900</span>
-                                        </div>
-                                        <div class="text-xs text-gray-500 mt-1">Based on 6 agents × <span id="taskValue">5,000</span> tasks × $<span id="costValue2">0.18</span></div>
+                                        <div class="h-full bg-blue-500" style="width: 78%"></div>
                                     </div>
                                 </div>
                                 <div>
