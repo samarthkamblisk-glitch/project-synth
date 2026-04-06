@@ -6,222 +6,156 @@
     <title>SynthForce Demo | Agent Directory</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
+
 // Onboarding wizard
-        let currentStep = 1;
-        let selectedDept = 'Sales';
-        let selectedRole = 'Lead Qualifier';
-        let selectedBudget = '2000';
-        let selectedPolicy = 'No discounts >5%';
+let currentStep = 1;
+let selectedDept = 'Sales';
+let selectedRole = 'Lead Qualifier';
+let selectedBudget = '2000';
+let selectedPolicy = 'No discounts >5%';
 
-        function openOnboarding() {
-            document.getElementById('onboardingModal').classList.remove('hidden');
-            resetOnboarding();
+function openOnboarding() {
+    document.getElementById('onboardingModal').classList.remove('hidden');
+    resetOnboarding();
+}
+function closeOnboarding() {
+    document.getElementById('onboardingModal').classList.add('hidden');
+}
+function resetOnboarding() {
+    currentStep = 1;
+    updateStep();
+}
+function selectDept(dept) {
+    selectedDept = dept;
+    // Highlight selected button
+    document.querySelectorAll('.dept-btn').forEach(btn => btn.classList.remove('border-accent', 'bg-blue-50'));
+    event.target.classList.add('border-accent', 'bg-blue-50');
+}
+function nextStep() {
+    if (currentStep === 1) selectedDept = selectedDept || 'Sales';
+    if (currentStep === 2) selectedRole = document.getElementById('roleInput').value || 'Lead Qualifier';
+    if (currentStep === 3) {
+        selectedBudget = document.getElementById('budgetValue').textContent;
+        selectedPolicy = document.getElementById('policySelect').value;
+        // Update summary
+        document.getElementById('summaryDept').textContent = selectedDept;
+        document.getElementById('summaryRole').textContent = selectedRole;
+        document.getElementById('summaryBudget').textContent = selectedBudget;
+        document.getElementById('summaryPolicy').textContent = selectedPolicy;
+    }
+    if (currentStep === 4) {
+        // Deploy
+        alert(`New AI agent deployed! ${selectedDept} - ${selectedRole} is now active.`);
+        closeOnboarding();
+        return;
+    }
+    currentStep++;
+    updateStep();
+}
+function prevStep() {
+    currentStep--;
+    updateStep();
+}
+function updateStep() {
+    // Hide all steps
+    for (let i = 1; i <= 4; i++) {
+        document.getElementById('step' + i).classList.add('hidden');
+    }
+    // Show current step
+    document.getElementById('step' + currentStep).classList.remove('hidden');
+    document.getElementById('stepNum').textContent = currentStep;
+    document.getElementById('onboardingTitle').textContent = 
+        ['Select Department', 'Define Role', 'Set Budget & Guardrails', 'Deploy'][currentStep - 1];
+    // Update buttons
+    document.getElementById('prevBtn').classList.toggle('hidden', currentStep === 1);
+    document.getElementById('nextBtn').textContent = currentStep === 4 ? 'Deploy Agent' : 'Next';
+}
 
-        function closeOnboarding() {
-            document.getElementById('onboardingModal').classList.add('hidden');
+// Initialize department selection
+document.addEventListener('DOMContentLoaded', function() {
+    selectDept('Sales');
+});
 
-        function resetOnboarding() {
-            currentStep = 1;
-            updateStep();
+// Agent modal
+const rows = document.querySelectorAll('tbody tr');
+rows.forEach(row => {
+    row.addEventListener('click', () => {
+        const cells = row.querySelectorAll('td');
+        const name = cells[0]?.querySelector('span')?.textContent || 'Unknown';
+        const role = cells[1]?.textContent || '-';
+        const dept = cells[2]?.textContent || '-';
+        const status = cells[3]?.innerHTML || '-';
+        const cost = cells[4]?.textContent || '-';
+        document.getElementById('agentName').textContent = name;
+        document.getElementById('agentRole').textContent = role;
+        document.getElementById('agentDept').textContent = dept;
+        document.getElementById('agentStatus').innerHTML = status;
+        document.getElementById('agentCost').textContent = cost;
+        document.getElementById('agentTasks').textContent = Math.floor(Math.random() * 5000) + 1000;
+        document.getElementById('agentModal').classList.remove('hidden');
+    });
+});
+function closeAgentModal() {
+    document.getElementById('agentModal').classList.add('hidden');
+}
 
-        function selectDept(dept) {
-            selectedDept = dept;
-            // Highlight selected button
-            document.querySelectorAll('.dept-btn').forEach(btn => btn.classList.remove('border-accent', 'bg-blue-50'));
-            event.target.classList.add('border-accent', 'bg-blue-50');
+// Policy builder
+function addPolicy() {
+    const agent = document.getElementById('policyAgent').value;
+    const action = document.getElementById('policyAction').value;
+    const value = document.getElementById('policyValue').value;
+    if (!agent || !action || !value) return alert('Fill all fields');
+    alert(`Policy added: ${agent} - ${action} ${value}`);
+    // Clear inputs
+    document.getElementById('policyAgent').selectedIndex = 0;
+    document.getElementById('policyAction').selectedIndex = 0;
+    document.getElementById('policyValue').value = '';
+}
+function simulateViolation() {
+    const agents = ['Sales Representative', 'Lead Qualifier', 'Support Agent', 'Escalation Specialist', 'Invoice Processor', 'Expense Auditor'];
+    const actions = ['attempted to refund $', 'promised discount >', 'accessed restricted DB', 'exceeded hourly API limit'];
+    const agent = agents[Math.floor(Math.random() * agents.length)];
+    const action = actions[Math.floor(Math.random() * actions.length)];
+    const value = Math.floor(Math.random() * 9000) + 1000;
+    const alertList = document.getElementById('alertList');
+    const newAlert = document.createElement('div');
+    newAlert.className = 'flex items-start gap-3 p-3 border border-subtle rounded-lg';
+    newAlert.innerHTML = `
+        <div class="w-2 h-2 mt-2 rounded-full bg-red-500"></div>
+        <div>
+            <div class="font-sans text-sm text-gray-900">${agent} ${action} ${value}</div>
+            <div class="text-xs text-gray-500 font-mono">Blocked • Just now</div>
+        </div>
+    `;
+    alertList.prepend(newAlert);
+}
 
-        function nextStep() {
-            if (currentStep === 1) selectedDept = selectedDept || 'Sales';
-            if (currentStep === 2) selectedRole = document.getElementById('roleInput').value || 'Lead Qualifier';
-            if (currentStep === 3) {
-                selectedBudget = document.getElementById('budgetValue').textContent;
-                selectedPolicy = document.getElementById('policySelect').value;
-                // Update summary
-                document.getElementById('summaryDept').textContent = selectedDept;
-                document.getElementById('summaryRole').textContent = selectedRole;
-                document.getElementById('summaryBudget').textContent = selectedBudget;
-                document.getElementById('summaryPolicy').textContent = selectedPolicy;
+// Search and filter
+const searchInput = document.querySelector('input[placeholder="Search agents..."]');
+const deptFilter = document.querySelector('select:first-of-type');
+const statusFilter = document.querySelector('select:last-of-type');
 
-            if (currentStep === 4) {
-                // Deploy
-                alert(`New AI agent deployed! ${selectedDept} - ${selectedRole} is now active.`);
-                closeOnboarding();
-                return;
+if (searchInput) searchInput.addEventListener('input', filterTable);
+if (deptFilter) deptFilter.addEventListener('change', filterTable);
+if (statusFilter) statusFilter.addEventListener('change', filterTable);
 
-            currentStep++;
-            updateStep();
-
-        function prevStep() {
-            currentStep--;
-            updateStep();
-
-        function updateStep() {
-            // Hide all steps
-            for (let i = 1; i <= 4; i++) {
-                document.getElementById('step' + i).classList.add('hidden');
-
-            // Show current step
-            document.getElementById('step' + currentStep).classList.remove('hidden');
-            document.getElementById('stepNum').textContent = currentStep;
-            document.getElementById('onboardingTitle').textContent = 
-                ['Select Department', 'Define Role', 'Set Budget & Guardrails', 'Deploy'][currentStep - 1];
-            // Update buttons
-            document.getElementById('prevBtn').classList.toggle('hidden', currentStep === 1);
-            document.getElementById('nextBtn').textContent = currentStep === 4 ? 'Deploy Agent' : 'Next';
-
-        // Initialize department selection
-        document.addEventListener('DOMContentLoaded', function() {
-            selectDept('Sales');
-        });
-
-        // Onboarding wizard
-        let currentStep = 1;
-        let selectedDept = 'Sales';
-        let selectedRole = 'Lead Qualifier';
-        let selectedBudget = '2000';
-        let selectedPolicy = 'No discounts >5%';
-
-        function openOnboarding() {
-            document.getElementById('onboardingModal').classList.remove('hidden');
-            resetOnboarding();
-
-        function closeOnboarding() {
-            document.getElementById('onboardingModal').classList.add('hidden');
-
-        function resetOnboarding() {
-            currentStep = 1;
-            updateStep();
-
-        function selectDept(dept) {
-            selectedDept = dept;
-            // Highlight selected button
-            document.querySelectorAll('.dept-btn').forEach(btn => btn.classList.remove('border-accent', 'bg-blue-50'));
-            event.target.classList.add('border-accent', 'bg-blue-50');
-
-        function nextStep() {
-            if (currentStep === 1) selectedDept = selectedDept || 'Sales';
-            if (currentStep === 2) selectedRole = document.getElementById('roleInput').value || 'Lead Qualifier';
-            if (currentStep === 3) {
-                selectedBudget = document.getElementById('budgetValue').textContent;
-                selectedPolicy = document.getElementById('policySelect').value;
-                // Update summary
-                document.getElementById('summaryDept').textContent = selectedDept;
-                document.getElementById('summaryRole').textContent = selectedRole;
-                document.getElementById('summaryBudget').textContent = selectedBudget;
-                document.getElementById('summaryPolicy').textContent = selectedPolicy;
-
-            if (currentStep === 4) {
-                // Deploy
-                alert(`New AI agent deployed! ${selectedDept} - ${selectedRole} is now active.`);
-                closeOnboarding();
-                return;
-
-            currentStep++;
-            updateStep();
-
-        function prevStep() {
-            currentStep--;
-            updateStep();
-
-        function updateStep() {
-            // Hide all steps
-            for (let i = 1; i <= 4; i++) {
-                document.getElementById('step' + i).classList.add('hidden');
-
-            // Show current step
-            document.getElementById('step' + currentStep).classList.remove('hidden');
-            document.getElementById('stepNum').textContent = currentStep;
-            document.getElementById('onboardingTitle').textContent = 
-                ['Select Department', 'Define Role', 'Set Budget & Guardrails', 'Deploy'][currentStep - 1];
-            // Update buttons
-            document.getElementById('prevBtn').classList.toggle('hidden', currentStep === 1);
-            document.getElementById('nextBtn').textContent = currentStep === 4 ? 'Deploy Agent' : 'Next';
-
-        // Initialize department selection
-        document.addEventListener('DOMContentLoaded', function() {
-            // Simulate click on Sales department
-            const salesBtn = document.querySelector('.dept-btn');
-            if (salesBtn) salesBtn.click();
-        });
-        // Agent modal
-        const rows = document.querySelectorAll('tbody tr');
-        rows.forEach(row => {
-            row.addEventListener('click', () => {
-                const cells = row.querySelectorAll('td');
-                const name = cells[0]?.querySelector('span')?.textContent || 'Unknown';
-                const role = cells[1]?.textContent || '-';
-                const dept = cells[2]?.textContent || '-';
-                const status = cells[3]?.innerHTML || '-';
-                const cost = cells[4]?.textContent || '-';
-                document.getElementById('agentName').textContent = name;
-                document.getElementById('agentRole').textContent = role;
-                document.getElementById('agentDept').textContent = dept;
-                document.getElementById('agentStatus').innerHTML = status;
-                document.getElementById('agentCost').textContent = cost;
-                document.getElementById('agentTasks').textContent = Math.floor(Math.random() * 5000) + 1000;
-                document.getElementById('agentModal').classList.remove('hidden');
-            });
-        });
-        function closeAgentModal() {
-            document.getElementById('agentModal').classList.add('hidden');
-
-        // Policy builder
-        function addPolicy() {
-            const agent = document.getElementById('policyAgent').value;
-            const action = document.getElementById('policyAction').value;
-            const value = document.getElementById('policyValue').value;
-            if (!agent || !action || !value) return alert('Fill all fields');
-            alert(`Policy added: ${agent} - ${action} ${value}`);
-            // Clear inputs
-            document.getElementById('policyAgent').selectedIndex = 0;
-            document.getElementById('policyAction').selectedIndex = 0;
-            document.getElementById('policyValue').value = '';
-
-        function simulateViolation() {
-            const agents = ['Sales Representative', 'Lead Qualifier', 'Support Agent', 'Escalation Specialist', 'Invoice Processor', 'Expense Auditor'];
-            const actions = ['attempted to refund $', 'promised discount >', 'accessed restricted DB', 'exceeded hourly API limit'];
-            const agent = agents[Math.floor(Math.random() * agents.length)];
-            const action = actions[Math.floor(Math.random() * actions.length)];
-            const value = Math.floor(Math.random() * 9000) + 1000;
-            const alertList = document.getElementById('alertList');
-            const newAlert = document.createElement('div');
-            newAlert.className = 'flex items-start gap-3 p-3 border border-subtle rounded-lg';
-            newAlert.innerHTML = `
-                <div class="w-2 h-2 mt-2 rounded-full bg-red-500"></div>
-                <div>
-                    <div class="font-sans text-sm text-gray-900">${agent} ${action} ${value}</div>
-                    <div class="text-xs text-gray-500 font-mono">Blocked • Just now</div>
-                </div>
-            `;
-            alertList.prepend(newAlert);
-
-        // Search and filter (simple)
-        const searchInput = document.querySelector('input[placeholder="Search agents..."]');
-        const deptFilter = document.querySelector('select:first-of-type');
-        const statusFilter = document.querySelector('select:last-of-type');
-        
-        if (searchInput) {
-            searchInput.addEventListener('input', filterTable);
-
-        if (deptFilter) deptFilter.addEventListener('change', filterTable);
-        if (statusFilter) statusFilter.addEventListener('change', filterTable);
-
-        function filterTable() {
-            const rows = document.querySelectorAll('tbody tr');
-            const searchTerm = searchInput.value.toLowerCase();
-            const dept = deptFilter.value;
-            const status = statusFilter.value;
-            rows.forEach(row => {
-                const cells = row.querySelectorAll('td');
-                const name = cells[0]?.textContent.toLowerCase() || '';
-                const role = cells[1]?.textContent.toLowerCase() || '';
-                const rowDept = cells[2]?.textContent || '';
-                const rowStatus = cells[3]?.textContent || '';
-                const matchesSearch = name.includes(searchTerm) || role.includes(searchTerm);
-                const matchesDept = dept === 'All Departments' || rowDept === dept;
-                const matchesStatus = status === 'All Status' || rowStatus.includes(status);
-                row.style.display = (matchesSearch && matchesDept && matchesStatus) ? '' : 'none';
-            });
+function filterTable() {
+    const rows = document.querySelectorAll('tbody tr');
+    const searchTerm = searchInput.value.toLowerCase();
+    const dept = deptFilter.value;
+    const status = statusFilter.value;
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        const name = cells[0]?.textContent.toLowerCase() || '';
+        const role = cells[1]?.textContent.toLowerCase() || '';
+        const rowDept = cells[2]?.textContent || '';
+        const rowStatus = cells[3]?.textContent || '';
+        const matchesSearch = name.includes(searchTerm) || role.includes(searchTerm);
+        const matchesDept = dept === 'All Departments' || rowDept === dept;
+        const matchesStatus = status === 'All Status' || rowStatus.includes(status);
+        row.style.display = (matchesSearch && matchesDept && matchesStatus) ? '' : 'none';
+    });
+}
 
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
