@@ -197,10 +197,19 @@
                                 <div>
                                     <div class="flex justify-between text-sm mb-1">
                                         <span class="text-gray-600">Cost Efficiency</span>
-                                        <span class="font-mono text-green-600">$0.18 / task</span>
+                                        <span class="font-mono text-green-600">$<span id="costValue">0.18</span> / task</span>
                                     </div>
                                     <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
-                                        <div class="h-full bg-blue-500" style="width: 78%"></div>
+                                        <div class="h-full bg-blue-500" id="costBar" style="width: 78%"></div>
+                                    </div>
+                                    <div class="mt-4">
+                                        <label class="block text-xs text-gray-600 mb-1">Adjust target cost per task:</label>
+                                        <input type="range" min="0.05" max="0.50" step="0.01" value="0.18" class="w-full accent-accent" id="costSlider" oninput="updateCost()">
+                                        <div class="flex justify-between text-xs text-gray-500">
+                                            <span>$0.05</span>
+                                            <span>$0.25</span>
+                                            <span>$0.50</span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div>
@@ -221,7 +230,7 @@
                         <!-- Policy Alerts -->
                         <div class="bg-white rounded-2xl border border-subtle p-6 shadow-sm">
                             <h3 class="font-sans font-bold text-gray-900 text-xl mb-4">Recent Policy Alerts</h3>
-                            <div class="space-y-4">
+                            <div class="space-y-4" id="alertList">
                                 <div class="flex items-start gap-3 p-3 border border-subtle rounded-lg">
                                     <div class="w-2 h-2 mt-2 rounded-full bg-red-500"></div>
                                     <div>
@@ -244,6 +253,35 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="mt-8 p-4 border border-subtle rounded-lg bg-gray-50">
+                                <h4 class="font-sans font-bold text-gray-900 mb-3">Create a Policy Rule</h4>
+                                <div class="space-y-3">
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <select class="px-3 py-2 border border-subtle rounded-lg bg-white text-sm" id="policyAgent">
+                                            <option>Select agent</option>
+                                            <option>sales_bot_01</option>
+                                            <option>support_bot_alpha</option>
+                                            <option>invoice_automator</option>
+                                            <option>lead_gen_02</option>
+                                            <option>data_analyst_beta</option>
+                                        </select>
+                                        <select class="px-3 py-2 border border-subtle rounded-lg bg-white text-sm" id="policyAction">
+                                            <option>Action</option>
+                                            <option>Block refunds > $</option>
+                                            <option>Flag discounts > %</option>
+                                            <option>Limit API calls per hour</option>
+                                            <option>Prevent PII access</option>
+                                        </select>
+                                    </div>
+                                    <div class="flex gap-3">
+                                        <input type="text" class="flex-1 px-3 py-2 border border-subtle rounded-lg bg-white text-sm" id="policyValue" placeholder="Value (e.g., 1000)">
+                                        <button onclick="addPolicy()" class="px-4 py-2 bg-accent text-white text-sm font-sans rounded-lg hover:bg-blue-600">Add Policy</button>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <button onclick="simulateViolation()" class="w-full px-4 py-2 border border-subtle text-sm font-sans rounded-lg hover:bg-gray-100">Simulate Policy Violation</button>
+                                </div>
+                            </div>
                             <div class="mt-6 text-xs text-gray-500 font-mono">
                                 <a href="#" class="text-accent hover:underline">View all alerts</a>
                             </div>
@@ -260,6 +298,149 @@
             <p>© 2026 SynthForce AI. All rights reserved. | <a href="/" class="text-accent hover:underline">Home</a> | <a href="#" class="text-accent hover:underline">Privacy</a> | <a href="#" class="text-accent hover:underline">Terms</a></p>
             <p class="mt-2 text-xs text-gray-500">This is a simulated demo. Data is not real.</p>
         </div>
-    </footer>
+    
+    <!-- Agent Details Modal -->
+    <div id="agentModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:p-0">
+            <div class="fixed inset-0 bg-black/50 transition-opacity" aria-hidden="true"></div>
+            <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-6 pt-6 pb-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900" id="agentName">Agent Details</h3>
+                        <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Role</label>
+                            <p class="mt-1 text-gray-900 font-sans" id="agentRole">-</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Department</label>
+                            <p class="mt-1 text-gray-900 font-sans" id="agentDept">-</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Status</label>
+                            <p class="mt-1"><span id="agentStatus" class="px-3 py-1 rounded-full text-xs font-mono">-</span></p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Cost per task</label>
+                            <p class="mt-1 font-mono text-gray-900" id="agentCost">-</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Tasks completed (30d)</label>
+                            <p class="mt-1 text-gray-900 font-sans" id="agentTasks">-</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-6 py-4 border-t border-subtle">
+                    <button onclick="closeModal()" class="w-full btn-primary px-4 py-2 text-sm font-sans uppercase rounded-lg">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script>
+        // Agent Directory row clicks
+        const rows = document.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            row.addEventListener('click', () => {
+                const cells = row.querySelectorAll('td');
+                const name = cells[0]?.querySelector('span')?.textContent || 'Unknown';
+                const role = cells[1]?.textContent || '-';
+                const dept = cells[2]?.textContent || '-';
+                const status = cells[3]?.innerHTML || '-';
+                const cost = cells[4]?.textContent || '-';
+                document.getElementById('agentName').textContent = name;
+                document.getElementById('agentRole').textContent = role;
+                document.getElementById('agentDept').textContent = dept;
+                document.getElementById('agentStatus').innerHTML = status;
+                document.getElementById('agentCost').textContent = cost;
+                document.getElementById('agentTasks').textContent = Math.floor(Math.random() * 5000) + 1000;
+                document.getElementById('agentModal').classList.remove('hidden');
+            });
+        });
+
+        function closeModal() {
+            document.getElementById('agentModal').classList.add('hidden');
+        }
+
+        // Update cost slider
+        function updateCost() {
+            const slider = document.getElementById('costSlider');
+            const value = parseFloat(slider.value).toFixed(2);
+            document.getElementById('costValue').textContent = value;
+            // Adjust bar width (inverse: lower cost = higher efficiency)
+            const width = Math.max(10, 100 - (value * 200)) + '%';
+            document.getElementById('costBar').style.width = width;
+        }
+
+        // Policy builder
+        function addPolicy() {
+            const agent = document.getElementById('policyAgent').value;
+            const action = document.getElementById('policyAction').value;
+            const value = document.getElementById('policyValue').value;
+            if (!agent || !action || !value) return alert('Fill all fields');
+            alert(`Policy added: ${agent} - ${action} ${value}`);
+            // Clear inputs
+            document.getElementById('policyAgent').selectedIndex = 0;
+            document.getElementById('policyAction').selectedIndex = 0;
+            document.getElementById('policyValue').value = '';
+        }
+
+        function simulateViolation() {
+            const agents = ['sales_bot_01', 'support_bot_alpha', 'invoice_automator', 'lead_gen_02', 'data_analyst_beta'];
+            const actions = ['attempted to refund $', 'promised discount >', 'accessed restricted DB', 'exceeded hourly API limit'];
+            const agent = agents[Math.floor(Math.random() * agents.length)];
+            const action = actions[Math.floor(Math.random() * actions.length)];
+            const value = Math.floor(Math.random() * 9000) + 1000;
+            const alertList = document.getElementById('alertList');
+            const newAlert = document.createElement('div');
+            newAlert.className = 'flex items-start gap-3 p-3 border border-subtle rounded-lg';
+            newAlert.innerHTML = `
+                <div class="w-2 h-2 mt-2 rounded-full bg-red-500"></div>
+                <div>
+                    <div class="font-sans text-sm text-gray-900">${agent} ${action} ${value}</div>
+                    <div class="text-xs text-gray-500 font-mono">Blocked • Just now</div>
+                </div>
+            `;
+            alertList.prepend(newAlert);
+        }
+
+        // Search and filter (simple)
+        const searchInput = document.querySelector('input[placeholder="Search agents..."]');
+        const deptFilter = document.querySelector('select:first-of-type');
+        const statusFilter = document.querySelector('select:last-of-type');
+        
+        if (searchInput) {
+            searchInput.addEventListener('input', filterTable);
+        }
+        if (deptFilter) deptFilter.addEventListener('change', filterTable);
+        if (statusFilter) statusFilter.addEventListener('change', filterTable);
+
+        function filterTable() {
+            const rows = document.querySelectorAll('tbody tr');
+            const searchTerm = searchInput.value.toLowerCase();
+            const dept = deptFilter.value;
+            const status = statusFilter.value;
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const name = cells[0]?.textContent.toLowerCase() || '';
+                const role = cells[1]?.textContent.toLowerCase() || '';
+                const rowDept = cells[2]?.textContent || '';
+                const rowStatus = cells[3]?.textContent || '';
+                const matchesSearch = name.includes(searchTerm) || role.includes(searchTerm);
+                const matchesDept = dept === 'All Departments' || rowDept === dept;
+                const matchesStatus = status === 'All Status' || rowStatus.includes(status);
+                row.style.display = (matchesSearch && matchesDept && matchesStatus) ? '' : 'none';
+            });
+        }
+    </script>
 </body>
 </html>
