@@ -209,70 +209,22 @@
     </main>
 
     
-        <!-- ROI Calculator -->
-        <section class="py-20 bg-gradient-to-r from-accent/10 to-white">
+        <!-- Waitlist -->
+        <section class="py-20 bg-white">
             <div class="container mx-auto px-6">
-                <div class="max-w-4xl mx-auto text-center mb-12">
-                    <h2 class="text-4xl font-bold text-gray-900 mb-4">Calculate Your Savings</h2>
-                    <p class="text-xl text-gray-600">See how much you can save by managing your AI agents with SynthForce.</p>
-                </div>
-                <div class="max-w-3xl mx-auto bg-white rounded-3xl border border-subtle p-8 md:p-12 shadow-lg">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div class="space-y-8">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-900 mb-2">Number of AI agents</label>
-                                <input type="range" min="1" max="100" value="10" class="w-full accent-accent" id="agentSlider" oninput="updateROI()">
-                                <div class="flex justify-between text-xs text-gray-500 mt-1">
-                                    <span>1</span>
-                                    <span>50</span>
-                                    <span>100</span>
-                                </div>
-                                <div class="mt-2 text-lg font-mono text-gray-900"><span id="agentValue">10</span> agents</div>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-900 mb-2">Tasks per agent per month</label>
-                                <input type="range" min="100" max="50000" step="100" value="5000" class="w-full accent-accent" id="taskSliderROI" oninput="updateROI()">
-                                <div class="flex justify-between text-xs text-gray-500 mt-1">
-                                    <span>100</span>
-                                    <span>25k</span>
-                                    <span>50k</span>
-                                </div>
-                                <div class="mt-2 text-lg font-mono text-gray-900"><span id="taskValueROI">5,000</span> tasks</div>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-900 mb-2">Average cost per task without SynthForce</label>
-                                <input type="range" min="0.10" max="1.00" step="0.01" value="0.35" class="w-full accent-accent" id="costSliderROI" oninput="updateROI()">
-                                <div class="flex justify-between text-xs text-gray-500 mt-1">
-                                    <span>$0.10</span>
-                                    <span>$0.55</span>
-                                    <span>$1.00</span>
-                                </div>
-                                <div class="mt-2 text-lg font-mono text-gray-900">$<span id="costValueROI">0.35</span> / task</div>
-                            </div>
-                        </div>
-                        <div class="flex flex-col justify-center">
-                            <div class="bg-gray-50 rounded-2xl p-8 text-center">
-                                <div class="text-5xl font-bold text-gray-900 mb-2">$<span id="savings">8,750</span></div>
-                                <div class="text-lg text-gray-600 mb-4">Estimated monthly savings</div>
-                                <div class="space-y-3 text-sm text-gray-700 text-left">
-                                    <div class="flex justify-between"><span>Current monthly cost</span> <span class="font-mono">$<span id="currentCost">17,500</span></span></div>
-                                    <div class="flex justify-between"><span>With SynthForce</span> <span class="font-mono">$<span id="synthCost">8,750</span></span></div>
-                                    <div class="pt-3 border-t border-subtle">
-                                        <div class="flex justify-between font-bold"><span>You save</span> <span class="font-mono text-green-600">50%</span></div>
-                                    </div>
-                                </div>
-                                <button onclick="alert('Connect with our team to get a personalized demo.')" class="mt-8 btn-primary px-8 py-4 font-sans font-semibold text-sm uppercase rounded-lg w-full">
-                                    Get a Custom Quote
-                                </button>
-                            </div>
-                        </div>
+                <div class="max-w-4xl mx-auto text-center">
+                    <h2 class="text-4xl font-bold text-gray-900 mb-4">Join the Waitlist</h2>
+                    <p class="text-xl text-gray-600 mb-10">Be the first to get early access, a free agent‑audit report, and manage your first 5 agents free for 6 months.</p>
+                    <!-- Tally embed will go here -->
+                    <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-2xl p-12 text-center">
+                        <p class="text-gray-500 mb-4">Tally form embed will appear here.</p>
+                        <p class="text-sm text-gray-400">Replace this div with your Tally embed code.</p>
                     </div>
-                    <div class="mt-12 text-center text-sm text-gray-500">
-                        Assumptions: SynthForce reduces cost per task by 50% and improves agent efficiency by 30%. <a href="#" class="text-accent hover:underline">See detailed assumptions</a>
-                    </div>
+                    <p class="mt-8 text-sm text-gray-500">No spam. Unsubscribe anytime.</p>
                 </div>
             </div>
         </section>
+
 <footer class="border-t border-subtle py-12 bg-gray-50">
         <div class="container mx-auto px-6">
             <div class="flex flex-col md:flex-row justify-between items-center">
@@ -293,28 +245,5 @@
     </footer>
 
 
-    <script>
-        function updateROI() {
-            const agents = parseInt(document.getElementById('agentSlider').value);
-            const tasks = parseInt(document.getElementById('taskSliderROI').value);
-            const costPerTask = parseFloat(document.getElementById('costSliderROI').value);
-            // Update display values
-            document.getElementById('agentValue').textContent = agents;
-            document.getElementById('taskValueROI').textContent = tasks.toLocaleString();
-            document.getElementById('costValueROI').textContent = costPerTask.toFixed(2);
-            // Calculations
-            const currentMonthly = agents * tasks * costPerTask;
-            const synthMonthly = currentMonthly * 0.5; // 50% savings
-            const savings = currentMonthly - synthMonthly;
-            const savingsPercent = ((savings / currentMonthly) * 100).toFixed(0);
-            document.getElementById('currentCost').textContent = currentMonthly.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0});
-            document.getElementById('synthCost').textContent = synthMonthly.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0});
-            document.getElementById('savings').textContent = savings.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0});
-            // Update percent
-            const percentEl = document.querySelector('.font-mono.text-green-600');
-            if (percentEl) percentEl.textContent = savingsPercent + '%';
-        }
-        // Initialize
-        document.addEventListener('DOMContentLoaded', updateROI);
-    </script></body>
+    </body>
 </html>
