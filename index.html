@@ -13,7 +13,7 @@
                     colors: {
                         void: '#000000',
                         paper: '#FFFFFF',
-                        subtle: '#444444',
+                        subtle: '#e5e5e5',
                         accent: '#00B2FF' 
                     },
                     fontFamily: {
@@ -21,54 +21,40 @@
                         mono: ['JetBrains Mono', 'monospace']
                     },
                     backgroundImage: {
-                        'grid': "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='%23333' stroke-opacity='0.2'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e\")",
+                        'grid': "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='%23e5e5e5' stroke-opacity='0.1'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e\")",
                     }
                 }
             }
         }
     </script>
     <style>
-        body { background-color: #000; color: #fff; font-family: 'Space Grotesk', sans-serif; overflow-x: hidden; }
-        .grid-bg { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='%23333' stroke-opacity='0.2'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e"); }
+        body { background-color: #ffffff; color: #333; font-family: 'Space Grotesk', sans-serif; overflow-x: hidden; }
+        .grid-bg { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='%23e5e5e5' stroke-opacity='0.1'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e"); }
         .hero-title { letter-spacing: -0.05em; line-height: 0.9; }
-        .scan-line {
-            width: 100%;
-            height: 100px;
-            z-index: 10;
-            background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(0,0,0,0) 100%);
-            opacity: 0.1;
-            position: absolute;
-            bottom: 100%;
-            animation: scanline 10s linear infinite;
-        }
-        @keyframes scanline {
-            0% { bottom: 100%; }
-            100% { bottom: -100%; }
-        }
         .btn-primary {
             background: #00B2FF; color: #000; border: 1px solid #00B2FF;
             transition: all 0.2s ease;
         }
         .btn-primary:hover {
-            background: #000; color: #00B2FF;
+            background: transparent; color: #00B2FF;
         }
     </style>
 </head>
 <body class="grid-bg min-h-screen flex flex-col relative">
 
-    <div class="scan-line pointer-events-none"></div>
+
 
     <!-- Nav -->
-    <nav class="fixed top-0 w-full z-50 border-b border-subtle bg-black/80 backdrop-blur-md">
+    <nav class="fixed top-0 w-full z-50 border-b border-subtle bg-white/80 backdrop-blur-md">
         <div class="container mx-auto px-6 h-16 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <img src="assets/logo_black_plain.png" class="w-8 h-8" alt="SynthForce Logo">
-                <span class="font-bold tracking-tighter text-lg">SYNTHFORCE</span>
+                <span class="font-bold tracking-tighter text-lg text-gray-900">SYNTHFORCE</span>
             </div>
-            <div class="hidden md:flex gap-8 text-sm font-mono text-gray-400">
-                <a href="#problem" class="hover:text-white transition">THE_RISK</a>
-                <a href="#gap" class="hover:text-white transition">VISIBILITY_GAP</a>
-                <a href="demo.html" class="text-white hover:underline decoration-1 underline-offset-4">LAUNCH_DEMO [->]</a>
+            <div class="hidden md:flex gap-8 text-sm font-mono text-gray-600">
+                <a href="#problem" class="hover:text-gray-900 transition">THE_RISK</a>
+                <a href="#gap" class="hover:text-gray-900 transition">VISIBILITY_GAP</a>
+                <a href="demo.html" class="text-gray-900 hover:underline decoration-1 underline-offset-4">LAUNCH_DEMO [->]</a>
             </div>
         </div>
     </nav>
@@ -77,37 +63,37 @@
     <main class="flex-grow pt-32 pb-20 container mx-auto px-6">
         <div class="max-w-4xl mx-auto text-center mb-24">
             <div class="inline-block border border-subtle rounded-full px-3 py-1 text-xs font-mono text-gray-500 mb-6">
-                SYSTEM STATUS: CRITICAL
+                HR FOR AI AGENTS
             </div>
             <div class="mb-8 flex justify-center">
                 <img src="assets/logo_black_with_name.png" class="h-24 md:h-32" alt="SynthForce">
             </div>
-            <h1 class="hero-title text-6xl md:text-8xl font-bold mb-8">
-                THE OPERATING SYSTEM <br/>
-                <span class="text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-600">FOR YOUR SYNTHETIC WORKFORCE.</span>
+            <h1 class="hero-title text-6xl md:text-8xl font-bold mb-8 text-gray-900">
+                HR FOR AI AGENTS. <br/>
+                <span class="text-transparent bg-clip-text bg-gradient-to-b from-gray-800 to-gray-600">SIMPLIFIED.</span>
             </h1>
-            <p class="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed mb-10">
-                The HR platform for AI agents.<br>
-                <span class="text-sm opacity-60">Onboard. Measure. Govern.</span>
+            <p class="text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto leading-relaxed mb-10">
+                The platform to onboard, measure, and govern your AI workforce.<br>
+                <span class="text-sm opacity-60">No code. No jargon. Just HR for AI.</span>
             </p>
             <div class="flex flex-col md:flex-row gap-4 justify-center items-center">
                 <a href="demo.html" class="btn-primary px-8 py-4 font-mono font-bold tracking-widest text-sm uppercase">
                     Request a demo
                 </a>
-                <a href="#manifesto" class="text-gray-500 hover:text-white font-mono text-xs underline underline-offset-4">
+                <a href="#manifesto" class="text-gray-500 hover:text-gray-900 font-mono text-xs underline underline-offset-4">
                     READ_MANIFESTO_V1.0
                 </a>
             </div>
 
             <!-- Trusted by -->
             <div class="mt-24">
-                <p class="text-gray-500 text-sm font-mono mb-6">TRUSTED BY FORWARD‑THINKING TEAMS</p>
-                <div class="flex flex-wrap justify-center items-center gap-8 md:gap-12 opacity-60">
-                    <div class="text-gray-400 font-bold text-xl">ACME</div>
-                    <div class="text-gray-400 font-bold text-xl">NOVA</div>
-                    <div class="text-gray-400 font-bold text-xl">TECHNOVA</div>
-                    <div class="text-gray-400 font-bold text-xl">SYNTHLABS</div>
-                    <div class="text-gray-400 font-bold text-xl">AI‑CORP</div>
+                <p class="text-gray-600 text-sm font-mono mb-6">TRUSTED BY FORWARD‑THINKING TEAMS</p>
+                <div class="flex flex-wrap justify-center items-center gap-8 md:gap-12 opacity-80">
+                    <div class="text-gray-600 font-bold text-xl">ACME</div>
+                    <div class="text-gray-600 font-bold text-xl">NOVA</div>
+                    <div class="text-gray-600 font-bold text-xl">TECHNOVA</div>
+                    <div class="text-gray-600 font-bold text-xl">SYNTHLABS</div>
+                    <div class="text-gray-600 font-bold text-xl">AI‑CORP</div>
                 </div>
             </div>
         </div>
@@ -117,45 +103,45 @@
             <h2 class="text-center text-4xl font-bold mb-12">The Management Gap</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                <!-- Datadog Card -->
-                <div class="bg-[#111] border border-gray-800 p-8 rounded-2xl opacity-50">
-                    <div class="text-xs font-mono text-gray-500 mb-2 uppercase">Infrastructure Monitoring (Datadog/NewRelic)</div>
-                    <div class="font-mono text-sm text-green-500 mb-4">> GET /v1/chat/completions 200 OK</div>
-                    <h3 class="text-xl font-bold mb-2">They see Infrastructure.</h3>
-                    <p class="text-gray-400 text-sm">Traditional tools monitor CPU, RAM, and Latency. They tell you the server is running perfectly while your agent burns $10,000 in a loop.</p>
+                <!-- Traditional Monitoring -->
+                <div class="bg-white border border-subtle p-8 rounded-2xl shadow-sm">
+                    <div class="text-xs font-mono text-gray-500 mb-2 uppercase">Infrastructure‑only tools</div>
+                    <div class="font-mono text-sm text-gray-700 mb-4">CPU: 5%, RAM: 2GB, Latency: 200ms</div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-900">They see servers, not agents.</h3>
+                    <p class="text-gray-600 text-sm">They track hardware metrics, not agent performance, cost, or business impact.</p>
                 </div>
 
-                <!-- Synthforce Card -->
-                <div class="bg-[#111] border border-gray-700 p-8 rounded-2xl relative overflow-hidden">
-                    <div class="absolute top-0 right-0 bg-white text-black text-xs font-bold px-2 py-1">SYNTHFORCE</div>
-                    <div class="text-xs font-mono text-gray-500 mb-2 uppercase">Agent Workforce Management</div>
-                    <div class="font-mono text-sm text-red-500 mb-4">> BLOCKED: "I promise a full refund of $5,000"</div>
-                    <h3 class="text-xl font-bold mb-2">We see a Workforce.</h3>
-                    <p class="text-gray-400 text-sm">We treat agents as employees. We track performance, assign owners, enforce policies, and terminate when needed.</p>
+                <!-- Synthforce HR -->
+                <div class="bg-white border border-subtle p-8 rounded-2xl shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-accent text-white text-xs font-bold px-2 py-1">SYNTHFORCE</div>
+                    <div class="text-xs font-mono text-gray-500 mb-2 uppercase">HR for AI Agents</div>
+                    <div class="font-mono text-sm text-gray-700 mb-4">Agent: sales_bot_01 | Status: Active | Cost: $0.18/task</div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-900">We see employees.</h3>
+                    <p class="text-gray-600 text-sm">We manage agents like employees: onboarding, performance reviews, policy enforcement, and offboarding.</p>
                 </div>
             </div>
         </section>
 
         <!-- The Risk Grid -->
         <section id="problem" class="grid grid-cols-1 md:grid-cols-3 gap-px bg-subtle border border-subtle mb-32">
-            <div class="bg-[#111] p-8 group hover:bg-white hover:text-black transition duration-300 rounded-2xl">
-                <div class="font-mono text-xs text-gray-500 group-hover:text-gray-400 mb-4">RISK_VECTOR_01</div>
+            <div class="bg-white p-8 group hover:bg-accent hover:text-white transition duration-300 rounded-2xl">
+                <div class="font-mono text-xs text-gray-500 group-hover:text-white mb-4">FINANCIAL RISK</div>
                 <h3 class="text-2xl font-bold mb-4">Budget Overspend.</h3>
-                <p class="text-sm leading-relaxed text-gray-400 group-hover:text-black">
+                <p class="text-sm leading-relaxed text-gray-600 group-hover:text-white">
                     Agents can burn API credits in loops. We track spending per agent, set budgets, and automatically pause overspending agents before they break the budget.
                 </p>
             </div>
-            <div class="bg-[#111] p-8 group hover:bg-white hover:text-black transition duration-300 rounded-2xl">
-                <div class="font-mono text-xs text-gray-500 group-hover:text-gray-400 mb-4">RISK_VECTOR_02</div>
+            <div class="bg-white p-8 group hover:bg-accent hover:text-white transition duration-300 rounded-2xl">
+                <div class="font-mono text-xs text-gray-500 group-hover:text-white mb-4">LIABILITY RISK</div>
                 <h3 class="text-2xl font-bold mb-4">Unauthorized Promises.</h3>
-                <p class="text-sm leading-relaxed text-gray-400 group-hover:text-black">
+                <p class="text-sm leading-relaxed text-gray-600 group-hover:text-white">
                     Agents can make promises they shouldn't. We enforce policies (e.g., "no discounts >5%") and block unauthorized commitments before they become liabilities.
                 </p>
             </div>
-            <div class="bg-[#111] p-8 group hover:bg-white hover:text-black transition duration-300 rounded-2xl">
-                <div class="font-mono text-xs text-gray-500 group-hover:text-gray-400 mb-4">RISK_VECTOR_03</div>
+            <div class="bg-white p-8 group hover:bg-accent hover:text-white transition duration-300 rounded-2xl">
+                <div class="font-mono text-xs text-gray-500 group-hover:text-white mb-4">COMPLIANCE RISK</div>
                 <h3 class="text-2xl font-bold mb-4">Role Violation.</h3>
-                <p class="text-sm leading-relaxed text-gray-400 group-hover:text-black">
+                <p class="text-sm leading-relaxed text-gray-600 group-hover:text-white">
                     Agents can overstep their roles. We define role‑based boundaries (e.g., "support bot cannot access production DB") and enforce them automatically.
                 </p>
             </div>
@@ -164,12 +150,12 @@
         <!-- Product Showcase -->
         <section class="mb-32">
             <h2 class="text-center text-4xl font-bold mb-12">The Dashboard</h2>
-            <div class="max-w-6xl mx-auto bg-[#111] border border-gray-800 rounded-3xl p-8 md:p-12">
+            <div class="max-w-6xl mx-auto bg-white border border-subtle rounded-3xl p-8 md:p-12">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div class="space-y-4">
                         <div class="text-accent font-mono text-sm uppercase">Agent Directory</div>
-                        <p class="text-gray-400 text-sm">See all your agents in one place. Assign owners, track status, and manage roles.</p>
-                        <div class="font-mono text-xs text-gray-500 border border-gray-800 rounded-lg p-4">
+                        <p class="text-gray-600 text-sm">See all your agents in one place. Assign owners, track status, and manage roles.</p>
+                        <div class="font-mono text-xs text-gray-500 border border-subtle rounded-lg p-4">
                             <div class="flex justify-between"><span>lead_gen_01</span><span class="text-green-500">Active</span></div>
                             <div class="flex justify-between"><span>support_bot</span><span class="text-yellow-500">Paused</span></div>
                             <div class="flex justify-between"><span>invoice_automator</span><span class="text-red-500">Over budget</span></div>
@@ -177,8 +163,8 @@
                     </div>
                     <div class="space-y-4">
                         <div class="text-accent font-mono text-sm uppercase">Performance Reviews</div>
-                        <p class="text-gray-400 text-sm">Monthly performance reports with cost‑per‑task, error rate, and satisfaction scores.</p>
-                        <div class="font-mono text-xs text-gray-500 border border-gray-800 rounded-lg p-4">
+                        <p class="text-gray-600 text-sm">Monthly performance reports with cost‑per‑task, error rate, and satisfaction scores.</p>
+                        <div class="font-mono text-xs text-gray-500 border border-subtle rounded-lg p-4">
                             <div class="flex justify-between"><span>Tasks completed</span><span>1,240</span></div>
                             <div class="flex justify-between"><span>Cost per task</span><span>$0.18</span></div>
                             <div class="flex justify-between"><span>Satisfaction</span><span>94% 👍</span></div>
@@ -186,8 +172,8 @@
                     </div>
                     <div class="space-y-4">
                         <div class="text-accent font-mono text-sm uppercase">Policy Manager</div>
-                        <p class="text-gray-400 text-sm">Define guardrails in plain English. Enforce them automatically across all agents.</p>
-                        <div class="font-mono text-xs text-gray-500 border border-gray-800 rounded-lg p-4">
+                        <p class="text-gray-600 text-sm">Define guardrails in plain English. Enforce them automatically across all agents.</p>
+                        <div class="font-mono text-xs text-gray-500 border border-subtle rounded-lg p-4">
                             <div class="text-green-500">✓ No discounts >5%</div>
                             <div class="text-green-500">✓ No PII access</div>
                             <div class="text-red-500">✗ Blocked: "I promise a refund"</div>
