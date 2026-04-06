@@ -194,7 +194,87 @@
             // Simulate click on Sales department
             const salesBtn = document.querySelector('.dept-btn');
             if (salesBtn) salesBtn.click();
-        });</script>
+        });
+        // Agent modal
+        const rows = document.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            row.addEventListener('click', () => {
+                const cells = row.querySelectorAll('td');
+                const name = cells[0]?.querySelector('span')?.textContent || 'Unknown';
+                const role = cells[1]?.textContent || '-';
+                const dept = cells[2]?.textContent || '-';
+                const status = cells[3]?.innerHTML || '-';
+                const cost = cells[4]?.textContent || '-';
+                document.getElementById('agentName').textContent = name;
+                document.getElementById('agentRole').textContent = role;
+                document.getElementById('agentDept').textContent = dept;
+                document.getElementById('agentStatus').innerHTML = status;
+                document.getElementById('agentCost').textContent = cost;
+                document.getElementById('agentTasks').textContent = Math.floor(Math.random() * 5000) + 1000;
+                document.getElementById('agentModal').classList.remove('hidden');
+            });
+        });
+        function closeAgentModal() {
+            document.getElementById('agentModal').classList.add('hidden');
+        }
+        // Policy builder
+        function addPolicy() {
+            const agent = document.getElementById('policyAgent').value;
+            const action = document.getElementById('policyAction').value;
+            const value = document.getElementById('policyValue').value;
+            if (!agent || !action || !value) return alert('Fill all fields');
+            alert(`Policy added: ${agent} - ${action} ${value}`);
+            // Clear inputs
+            document.getElementById('policyAgent').selectedIndex = 0;
+            document.getElementById('policyAction').selectedIndex = 0;
+            document.getElementById('policyValue').value = '';
+        }
+        function simulateViolation() {
+            const agents = ['Sales Representative', 'Lead Qualifier', 'Support Agent', 'Escalation Specialist', 'Invoice Processor', 'Expense Auditor'];
+            const actions = ['attempted to refund $', 'promised discount >', 'accessed restricted DB', 'exceeded hourly API limit'];
+            const agent = agents[Math.floor(Math.random() * agents.length)];
+            const action = actions[Math.floor(Math.random() * actions.length)];
+            const value = Math.floor(Math.random() * 9000) + 1000;
+            const alertList = document.getElementById('alertList');
+            const newAlert = document.createElement('div');
+            newAlert.className = 'flex items-start gap-3 p-3 border border-subtle rounded-lg';
+            newAlert.innerHTML = `
+                <div class="w-2 h-2 mt-2 rounded-full bg-red-500"></div>
+                <div>
+                    <div class="font-sans text-sm text-gray-900">${agent} ${action} ${value}</div>
+                    <div class="text-xs text-gray-500 font-mono">Blocked • Just now</div>
+                </div>
+            `;
+            alertList.prepend(newAlert);
+        }
+        // Search and filter (simple)
+        const searchInput = document.querySelector('input[placeholder="Search agents..."]');
+        const deptFilter = document.querySelector('select:first-of-type');
+        const statusFilter = document.querySelector('select:last-of-type');
+        
+        if (searchInput) {
+            searchInput.addEventListener('input', filterTable);
+        }
+        if (deptFilter) deptFilter.addEventListener('change', filterTable);
+        if (statusFilter) statusFilter.addEventListener('change', filterTable);
+
+        function filterTable() {
+            const rows = document.querySelectorAll('tbody tr');
+            const searchTerm = searchInput.value.toLowerCase();
+            const dept = deptFilter.value;
+            const status = statusFilter.value;
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const name = cells[0]?.textContent.toLowerCase() || '';
+                const role = cells[1]?.textContent.toLowerCase() || '';
+                const rowDept = cells[2]?.textContent || '';
+                const rowStatus = cells[3]?.textContent || '';
+                const matchesSearch = name.includes(searchTerm) || role.includes(searchTerm);
+                const matchesDept = dept === 'All Departments' || rowDept === dept;
+                const matchesStatus = status === 'All Status' || rowStatus.includes(status);
+                row.style.display = (matchesSearch && matchesDept && matchesStatus) ? '' : 'none';
+            });
+        }</script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
         // View toggle
@@ -607,14 +687,14 @@
                                 <div class="flex items-start gap-3 p-3 border border-subtle rounded-lg">
                                     <div class="w-2 h-2 mt-2 rounded-full bg-red-500"></div>
                                     <div>
-                                        <div class="font-sans text-sm text-gray-900">invoice_automator attempted to refund $10k</div>
+                                        <div class="font-sans text-sm text-gray-900">Invoice Processor attempted to refund $10k</div>
                                         <div class="text-xs text-gray-500 font-mono">Blocked • 2 hours ago</div>
                                     </div>
                                 </div>
                                 <div class="flex items-start gap-3 p-3 border border-subtle rounded-lg">
                                     <div class="w-2 h-2 mt-2 rounded-full bg-yellow-500"></div>
                                     <div>
-                                        <div class="font-sans text-sm text-gray-900">sales_bot_01 promised discount >5%</div>
+                                        <div class="font-sans text-sm text-gray-900">Sales Representative promised discount >5%</div>
                                         <div class="text-xs text-gray-500 font-mono">Flagged • 5 hours ago</div>
                                     </div>
                                 </div>
@@ -769,6 +849,51 @@
                         <button onclick="prevStep()" id="prevBtn" class="px-6 py-3 text-sm font-sans border border-subtle rounded-lg hover:border-gray-900 hidden">Back</button>
                         <button onclick="nextStep()" id="nextBtn" class="px-6 py-3 text-sm font-sans bg-accent text-white rounded-lg hover:bg-blue-600 ml-auto">Next</button>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Agent Details Modal -->
+    <div id="agentModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:p-0">
+            <div class="fixed inset-0 bg-black/50 transition-opacity" aria-hidden="true"></div>
+            <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-6 pt-6 pb-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900" id="agentName">Agent Details</h3>
+                        <button onclick="closeAgentModal()" class="text-gray-500 hover:text-gray-700">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Role</label>
+                            <p class="mt-1 text-gray-900 font-sans" id="agentRole">-</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Department</label>
+                            <p class="mt-1 text-gray-900 font-sans" id="agentDept">-</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Status</label>
+                            <p class="mt-1"><span id="agentStatus" class="px-3 py-1 rounded-full text-xs font-mono">-</span></p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Cost per task</label>
+                            <p class="mt-1 font-mono text-gray-900" id="agentCost">-</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Tasks completed (30d)</label>
+                            <p class="mt-1 text-gray-900 font-sans" id="agentTasks">-</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-6 py-4 border-t border-subtle">
+                    <button onclick="closeAgentModal()" class="w-full btn-primary px-4 py-2 text-sm font-sans uppercase rounded-lg">
+                        Close
+                    </button>
                 </div>
             </div>
         </div>
