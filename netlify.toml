@@ -1,7 +1,0 @@
-[build]
-  # Use root as base
-  base = ""
-  # No build command needed for static HTML
-  command = ""
-  # Publish the root directory
-  publish = "."
