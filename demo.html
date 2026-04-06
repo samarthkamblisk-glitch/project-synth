@@ -4,7 +4,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SynthForce Demo | Agent Directory</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com">
+        // Onboarding wizard
+        let currentStep = 1;
+        let selectedDept = 'Sales';
+        let selectedRole = 'Lead Qualifier';
+        let selectedBudget = '2000';
+        let selectedPolicy = 'No discounts >5%';
+
+        function openOnboarding() {
+            document.getElementById('onboardingModal').classList.remove('hidden');
+            resetOnboarding();
+        }
+        function closeOnboarding() {
+            document.getElementById('onboardingModal').classList.add('hidden');
+        }
+        function resetOnboarding() {
+            currentStep = 1;
+            updateStep();
+        }
+        function selectDept(dept) {
+            selectedDept = dept;
+            // Highlight selected button
+            document.querySelectorAll('.dept-btn').forEach(btn => btn.classList.remove('border-accent', 'bg-blue-50'));
+            event.target.classList.add('border-accent', 'bg-blue-50');
+        }
+        function nextStep() {
+            if (currentStep === 1) selectedDept = selectedDept || 'Sales';
+            if (currentStep === 2) selectedRole = document.getElementById('roleInput').value || 'Lead Qualifier';
+            if (currentStep === 3) {
+                selectedBudget = document.getElementById('budgetValue').textContent;
+                selectedPolicy = document.getElementById('policySelect').value;
+                // Update summary
+                document.getElementById('summaryDept').textContent = selectedDept;
+                document.getElementById('summaryRole').textContent = selectedRole;
+                document.getElementById('summaryBudget').textContent = selectedBudget;
+                document.getElementById('summaryPolicy').textContent = selectedPolicy;
+            }
+            if (currentStep === 4) {
+                // Deploy
+                alert(`New AI agent deployed! ${selectedDept} - ${selectedRole} is now active.`);
+                closeOnboarding();
+                return;
+            }
+            currentStep++;
+            updateStep();
+        }
+        function prevStep() {
+            currentStep--;
+            updateStep();
+        }
+        function updateStep() {
+            // Hide all steps
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById('step' + i).classList.add('hidden');
+            }
+            // Show current step
+            document.getElementById('step' + currentStep).classList.remove('hidden');
+            document.getElementById('stepNum').textContent = currentStep;
+            document.getElementById('onboardingTitle').textContent = 
+                ['Select Department', 'Define Role', 'Set Budget & Guardrails', 'Deploy'][currentStep - 1];
+            // Update buttons
+            document.getElementById('prevBtn').classList.toggle('hidden', currentStep === 1);
+            document.getElementById('nextBtn').textContent = currentStep === 4 ? 'Deploy Agent' : 'Next';
+        }
+        // Initialize department selection
+        document.addEventListener('DOMContentLoaded', function() {
+            selectDept('Sales');
+        });</script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
         // View toggle
@@ -113,6 +180,14 @@
             <p class="text-xl text-gray-600 max-w-3xl mx-auto">
                 Experience how SynthForce manages AI agents like employees. This interactive demo shows real‑time agent status, performance metrics, and policy enforcement.
             </p>
+            <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#demo" class="btn-primary px-8 py-4 font-sans font-semibold text-sm uppercase rounded-lg inline-block">
+                    Jump to Demo
+                </a>
+                <button onclick="openOnboarding()" class="px-8 py-4 font-sans font-semibold text-sm uppercase border border-subtle rounded-lg hover:border-gray-900 transition">
+                    Simulate Onboarding
+                </button>
+            </div>
         </div>
     </main>
 
@@ -515,7 +590,112 @@
             </div>
         </div>
     </div>
-</footer>
+
+    <!-- Onboarding Wizard Modal -->
+    <div id="onboardingModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:p-0">
+            <div class="fixed inset-0 bg-black/50 transition-opacity" aria-hidden="true"></div>
+            <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
+                <div class="bg-white px-8 pt-8 pb-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900" id="onboardingTitle">Onboard a New AI Agent</h3>
+                            <p class="text-sm text-gray-600 mt-1">Step <span id="stepNum">1</span> of 4</p>
+                        </div>
+                        <button onclick="closeOnboarding()" class="text-gray-500 hover:text-gray-700">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="space-y-6" id="onboardingSteps">
+                        <!-- Step 1 -->
+                        <div id="step1">
+                            <label class="block text-sm font-medium text-gray-900 mb-4">Select Department</label>
+                            <div class="grid grid-cols-2 gap-4">
+                                <button onclick="selectDept('Sales')" class="p-4 border border-subtle rounded-xl text-left hover:border-accent hover:bg-blue-50 dept-btn">
+                                    <div class="font-sans font-bold text-gray-900">Sales</div>
+                                    <div class="text-xs text-gray-600 mt-1">Lead generation, qualification, outreach</div>
+                                </button>
+                                <button onclick="selectDept('Support')" class="p-4 border border-subtle rounded-xl text-left hover:border-accent hover:bg-blue-50 dept-btn">
+                                    <div class="font-sans font-bold text-gray-900">Support</div>
+                                    <div class="text-xs text-gray-600 mt-1">Customer service, ticket resolution</div>
+                                </button>
+                                <button onclick="selectDept('Finance')" class="p-4 border border-subtle rounded-xl text-left hover:border-accent hover:bg-blue-50 dept-btn">
+                                    <div class="font-sans font-bold text-gray-900">Finance</div>
+                                    <div class="text-xs text-gray-600 mt-1">Invoice processing, expense auditing</div>
+                                </button>
+                                <button onclick="selectDept('Marketing')" class="p-4 border border-subtle rounded-xl text-left hover:border-accent hover:bg-blue-50 dept-btn">
+                                    <div class="font-sans font-bold text-gray-900">Marketing</div>
+                                    <div class="text-xs text-gray-600 mt-1">Content creation, campaign management</div>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Step 2 -->
+                        <div id="step2" class="hidden">
+                            <label class="block text-sm font-medium text-gray-900 mb-4">Define Role</label>
+                            <input type="text" id="roleInput" class="w-full px-4 py-3 border border-subtle rounded-lg focus:outline-none focus:ring-2 focus:ring-accent" placeholder="e.g., Lead Qualifier, Content Writer">
+                            <div class="mt-4">
+                                <label class="block text-sm font-medium text-gray-900 mb-2">Primary Tasks</label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center"><input type="checkbox" class="mr-3" checked> Respond to customer inquiries</label>
+                                    <label class="flex items-center"><input type="checkbox" class="mr-3"> Generate reports</label>
+                                    <label class="flex items-center"><input type="checkbox" class="mr-3"> Process transactions</label>
+                                    <label class="flex items-center"><input type="checkbox" class="mr-3"> Monitor compliance</label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Step 3 -->
+                        <div id="step3" class="hidden">
+                            <label class="block text-sm font-medium text-gray-900 mb-4">Set Budget & Guardrails</label>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm text-gray-600 mb-1">Monthly budget ($)</label>
+                                    <input type="range" min="100" max="10000" step="100" value="2000" class="w-full accent-accent" id="budgetSlider" oninput="document.getElementById('budgetValue').textContent = this.value">
+                                    <div class="flex justify-between text-xs text-gray-500">
+                                        <span>$100</span>
+                                        <span>$5,000</span>
+                                        <span>$10,000</span>
+                                    </div>
+                                    <div class="mt-2 text-sm font-mono text-gray-900">$<span id="budgetValue">2000</span> / month</div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-600 mb-1">Policy Rules</label>
+                                    <select class="w-full px-4 py-2 border border-subtle rounded-lg" id="policySelect">
+                                        <option>No discounts >5%</option>
+                                        <option>No refunds over $1,000</option>
+                                        <option>No PII access</option>
+                                        <option>Daily API call limit: 10,000</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Step 4 -->
+                        <div id="step4" class="hidden">
+                            <div class="text-center py-8">
+                                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </div>
+                                <h4 class="text-xl font-bold text-gray-900 mb-2">Agent Ready to Deploy</h4>
+                                <p class="text-gray-600 mb-6">Your AI agent has been configured and is ready to join your workforce.</p>
+                                <div class="bg-gray-50 p-4 rounded-lg text-left">
+                                    <div class="font-sans font-bold text-gray-900" id="summaryDept">Sales</div>
+                                    <div class="text-sm text-gray-600" id="summaryRole">Lead Qualifier</div>
+                                    <div class="text-xs text-gray-500 mt-2">Budget: $<span id="summaryBudget">2000</span>/month • Policy: <span id="summaryPolicy">No discounts >5%</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8 flex justify-between">
+                        <button onclick="prevStep()" id="prevBtn" class="px-6 py-3 text-sm font-sans border border-subtle rounded-lg hover:border-gray-900 hidden">Back</button>
+                        <button onclick="nextStep()" id="nextBtn" class="px-6 py-3 text-sm font-sans bg-accent text-white rounded-lg hover:bg-blue-600 ml-auto">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div></footer>
 
     <script>
         // Agent Directory row clicks
