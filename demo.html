@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SynthForce Demo | Agent Directory</title>
-    <script src="https://cdn.tailwindcss.com">
-        // Onboarding wizard
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+// Onboarding wizard
         let currentStep = 1;
         let selectedDept = 'Sales';
         let selectedRole = 'Lead Qualifier';
@@ -15,20 +16,20 @@
         function openOnboarding() {
             document.getElementById('onboardingModal').classList.remove('hidden');
             resetOnboarding();
-        }
+
         function closeOnboarding() {
             document.getElementById('onboardingModal').classList.add('hidden');
-        }
+
         function resetOnboarding() {
             currentStep = 1;
             updateStep();
-        }
+
         function selectDept(dept) {
             selectedDept = dept;
             // Highlight selected button
             document.querySelectorAll('.dept-btn').forEach(btn => btn.classList.remove('border-accent', 'bg-blue-50'));
             event.target.classList.add('border-accent', 'bg-blue-50');
-        }
+
         function nextStep() {
             if (currentStep === 1) selectedDept = selectedDept || 'Sales';
             if (currentStep === 2) selectedRole = document.getElementById('roleInput').value || 'Lead Qualifier';
@@ -40,25 +41,25 @@
                 document.getElementById('summaryRole').textContent = selectedRole;
                 document.getElementById('summaryBudget').textContent = selectedBudget;
                 document.getElementById('summaryPolicy').textContent = selectedPolicy;
-            }
+
             if (currentStep === 4) {
                 // Deploy
                 alert(`New AI agent deployed! ${selectedDept} - ${selectedRole} is now active.`);
                 closeOnboarding();
                 return;
-            }
+
             currentStep++;
             updateStep();
-        }
+
         function prevStep() {
             currentStep--;
             updateStep();
-        }
+
         function updateStep() {
             // Hide all steps
             for (let i = 1; i <= 4; i++) {
                 document.getElementById('step' + i).classList.add('hidden');
-            }
+
             // Show current step
             document.getElementById('step' + currentStep).classList.remove('hidden');
             document.getElementById('stepNum').textContent = currentStep;
@@ -67,65 +68,12 @@
             // Update buttons
             document.getElementById('prevBtn').classList.toggle('hidden', currentStep === 1);
             document.getElementById('nextBtn').textContent = currentStep === 4 ? 'Deploy Agent' : 'Next';
-        }
+
         // Initialize department selection
         document.addEventListener('DOMContentLoaded', function() {
             selectDept('Sales');
         });
-        // View toggle
-        function setView(view) {
-            const tableView = document.getElementById('tableView');
-            const cardView = document.getElementById('cardView');
-            const tableBtn = document.getElementById('tableBtn');
-            const cardBtn = document.getElementById('cardBtn');
-            if (view === 'table') {
-                tableView.classList.remove('hidden');
-                cardView.classList.add('hidden');
-                tableBtn.classList.add('bg-accent', 'text-white');
-                tableBtn.classList.remove('bg-white', 'text-gray-700');
-                cardBtn.classList.remove('bg-accent', 'text-white');
-                cardBtn.classList.add('bg-white', 'text-gray-700');
-            } else {
-                tableView.classList.add('hidden');
-                cardView.classList.remove('hidden');
-                cardBtn.classList.add('bg-accent', 'text-white');
-                cardBtn.classList.remove('bg-white', 'text-gray-700');
-                tableBtn.classList.remove('bg-accent', 'text-white');
-                tableBtn.classList.add('bg-white', 'text-gray-700');
-            }
-        }
-        // Initialize view
-        document.addEventListener('DOMContentLoaded', function() {
-            // Ensure card view is hidden initially
-            const cardView = document.getElementById('cardView');
-            if (cardView) cardView.classList.add('hidden');
-        });
-        // Monthly cost calculator
-        function updateMonthlyCost() {
-            const taskSlider = document.getElementById('taskSlider');
-            const taskValue = parseInt(taskSlider.value).toLocaleString();
-            const costPerTask = parseFloat(document.getElementById('costSlider').value);
-            const agents = 6;
-            const monthlyCost = agents * parseInt(taskSlider.value) * costPerTask;
-            document.getElementById('taskValue').textContent = taskValue;
-            document.getElementById('costValue2').textContent = costPerTask.toFixed(2);
-            document.getElementById('monthlyCost').textContent = '$' + monthlyCost.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0});
-        }
-        // Update both cost and monthly cost when cost slider changes
-        function updateCost() {
-            const slider = document.getElementById('costSlider');
-            const value = parseFloat(slider.value).toFixed(2);
-            document.getElementById('costValue').textContent = value;
-            document.getElementById('costValue2').textContent = value;
-            // Adjust bar width (inverse: lower cost = higher efficiency)
-            const width = Math.max(10, 100 - (value * 200)) + '%';
-            document.getElementById('costBar').style.width = width;
-            updateMonthlyCost();
-        }
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            updateMonthlyCost();
-        });
+
         // Onboarding wizard
         let currentStep = 1;
         let selectedDept = 'Sales';
@@ -136,20 +84,20 @@
         function openOnboarding() {
             document.getElementById('onboardingModal').classList.remove('hidden');
             resetOnboarding();
-        }
+
         function closeOnboarding() {
             document.getElementById('onboardingModal').classList.add('hidden');
-        }
+
         function resetOnboarding() {
             currentStep = 1;
             updateStep();
-        }
+
         function selectDept(dept) {
             selectedDept = dept;
             // Highlight selected button
             document.querySelectorAll('.dept-btn').forEach(btn => btn.classList.remove('border-accent', 'bg-blue-50'));
             event.target.classList.add('border-accent', 'bg-blue-50');
-        }
+
         function nextStep() {
             if (currentStep === 1) selectedDept = selectedDept || 'Sales';
             if (currentStep === 2) selectedRole = document.getElementById('roleInput').value || 'Lead Qualifier';
@@ -161,25 +109,25 @@
                 document.getElementById('summaryRole').textContent = selectedRole;
                 document.getElementById('summaryBudget').textContent = selectedBudget;
                 document.getElementById('summaryPolicy').textContent = selectedPolicy;
-            }
+
             if (currentStep === 4) {
                 // Deploy
                 alert(`New AI agent deployed! ${selectedDept} - ${selectedRole} is now active.`);
                 closeOnboarding();
                 return;
-            }
+
             currentStep++;
             updateStep();
-        }
+
         function prevStep() {
             currentStep--;
             updateStep();
-        }
+
         function updateStep() {
             // Hide all steps
             for (let i = 1; i <= 4; i++) {
                 document.getElementById('step' + i).classList.add('hidden');
-            }
+
             // Show current step
             document.getElementById('step' + currentStep).classList.remove('hidden');
             document.getElementById('stepNum').textContent = currentStep;
@@ -188,7 +136,7 @@
             // Update buttons
             document.getElementById('prevBtn').classList.toggle('hidden', currentStep === 1);
             document.getElementById('nextBtn').textContent = currentStep === 4 ? 'Deploy Agent' : 'Next';
-        }
+
         // Initialize department selection
         document.addEventListener('DOMContentLoaded', function() {
             // Simulate click on Sales department
@@ -216,7 +164,7 @@
         });
         function closeAgentModal() {
             document.getElementById('agentModal').classList.add('hidden');
-        }
+
         // Policy builder
         function addPolicy() {
             const agent = document.getElementById('policyAgent').value;
@@ -228,7 +176,7 @@
             document.getElementById('policyAgent').selectedIndex = 0;
             document.getElementById('policyAction').selectedIndex = 0;
             document.getElementById('policyValue').value = '';
-        }
+
         function simulateViolation() {
             const agents = ['Sales Representative', 'Lead Qualifier', 'Support Agent', 'Escalation Specialist', 'Invoice Processor', 'Expense Auditor'];
             const actions = ['attempted to refund $', 'promised discount >', 'accessed restricted DB', 'exceeded hourly API limit'];
@@ -246,7 +194,7 @@
                 </div>
             `;
             alertList.prepend(newAlert);
-        }
+
         // Search and filter (simple)
         const searchInput = document.querySelector('input[placeholder="Search agents..."]');
         const deptFilter = document.querySelector('select:first-of-type');
@@ -254,7 +202,7 @@
         
         if (searchInput) {
             searchInput.addEventListener('input', filterTable);
-        }
+
         if (deptFilter) deptFilter.addEventListener('change', filterTable);
         if (statusFilter) statusFilter.addEventListener('change', filterTable);
 
@@ -274,62 +222,11 @@
                 const matchesStatus = status === 'All Status' || rowStatus.includes(status);
                 row.style.display = (matchesSearch && matchesDept && matchesStatus) ? '' : 'none';
             });
-        }</script>
+
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-        // View toggle
-        function setView(view) {
-            const tableView = document.getElementById('tableView');
-            const cardView = document.getElementById('cardView');
-            const tableBtn = document.getElementById('tableBtn');
-            const cardBtn = document.getElementById('cardBtn');
-            if (view === 'table') {
-                tableView.classList.remove('hidden');
-                cardView.classList.add('hidden');
-                tableBtn.classList.add('bg-accent', 'text-white');
-                tableBtn.classList.remove('bg-white', 'text-gray-700');
-                cardBtn.classList.remove('bg-accent', 'text-white');
-                cardBtn.classList.add('bg-white', 'text-gray-700');
-            } else {
-                tableView.classList.add('hidden');
-                cardView.classList.remove('hidden');
-                cardBtn.classList.add('bg-accent', 'text-white');
-                cardBtn.classList.remove('bg-white', 'text-gray-700');
-                tableBtn.classList.remove('bg-accent', 'text-white');
-                tableBtn.classList.add('bg-white', 'text-gray-700');
-            }
-        }
-        // Monthly cost calculator
-        function updateMonthlyCost() {
-            const taskSlider = document.getElementById('taskSlider');
-            const taskValue = parseInt(taskSlider.value).toLocaleString();
-            const costPerTask = parseFloat(document.getElementById('costSlider').value);
-            const agents = 6;
-            const monthlyCost = agents * parseInt(taskSlider.value) * costPerTask;
-            document.getElementById('taskValue').textContent = taskValue;
-            document.getElementById('costValue2').textContent = costPerTask.toFixed(2);
-            document.getElementById('monthlyCost').textContent = '$' + monthlyCost.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0});
-        }
-        // Update both cost and monthly cost when cost slider changes
-        function updateCost() {
-            const slider = document.getElementById('costSlider');
-            const value = parseFloat(slider.value).toFixed(2);
-            document.getElementById('costValue').textContent = value;
-            document.getElementById('costValue2').textContent = value;
-            // Adjust bar width (inverse: lower cost = higher efficiency)
-            const width = Math.max(10, 100 - (value * 200)) + '%';
-            document.getElementById('costBar').style.width = width;
-            updateMonthlyCost();
-        }
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            updateMonthlyCost();
-            // Add ID to table container
-            const tableContainer = document.querySelector('.overflow-x-auto');
-            if (tableContainer) {
-                tableContainer.id = 'tableView';
-            }
-        });<script>
+        <script>
         tailwind.config = {
             theme: {
                 extend: {
@@ -342,10 +239,6 @@
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                         mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace']
-                    }
-                }
-            }
-        }
     </script>
     <style>
         body { background-color: #ffffff; color: #1a1a1a; font-family: 'Inter', sans-serif; overflow-x: hidden; }
@@ -353,10 +246,8 @@
             background: #00B2FF; color: #fff; border: 1px solid #00B2FF;
             transition: all 0.2s ease;
             border-radius: 8px;
-        }
         .btn-primary:hover {
             background: transparent; color: #00B2FF;
-        }
     </style>
 </head>
 <body class="min-h-screen bg-white">
@@ -384,14 +275,9 @@
                 Experience how SynthForce manages AI agents like employees. This interactive demo shows real‑time agent status, performance metrics, and policy enforcement.
             </p>
             <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="#demo" class="btn-primary px-8 py-4 font-sans font-semibold text-sm uppercase rounded-lg inline-block">
                     Jump to Demo
                 </a>
-                <button onclick="openOnboarding()" class="px-8 py-4 font-sans font-semibold text-sm uppercase border border-subtle rounded-lg hover:border-gray-900 transition">
-                    Simulate Onboarding
-                </button>
-            </div>
                 <button onclick="openOnboarding()" class="px-8 py-4 font-sans font-semibold text-sm uppercase border border-subtle rounded-lg hover:border-gray-900 transition">
                     Simulate Onboarding
                 </button>
@@ -701,8 +587,6 @@
         </div>
     </section>
 
-        
-    
     <!-- Onboarding Wizard Modal -->
     <div id="onboardingModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
         <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:p-0">
@@ -1032,31 +916,11 @@
         });
 
         function closeModal() {
-            document.getElementById('agentModal').classList.add('hidden');
-        }
-
-        // Update cost slider
-        function updateCost() {
-            const slider = document.getElementById('costSlider');
-            const value = parseFloat(slider.value).toFixed(2);
-            document.getElementById('costValue').textContent = value;
-            // Adjust bar width (inverse: lower cost = higher efficiency)
-            const width = Math.max(10, 100 - (value * 200)) + '%';
-            document.getElementById('costBar').style.width = width;
-        }
-
-        // Policy builder
-        function addPolicy() {
-            const agent = document.getElementById('policyAgent').value;
-            const action = document.getElementById('policyAction').value;
-            const value = document.getElementById('policyValue').value;
-            if (!agent || !action || !value) return alert('Fill all fields');
-            alert(`Policy added: ${agent} - ${action} ${value}`);
+            document.getElementById('agentModal').classList.add('hidden'); - ${action} ${value}`);
             // Clear inputs
             document.getElementById('policyAgent').selectedIndex = 0;
             document.getElementById('policyAction').selectedIndex = 0;
             document.getElementById('policyValue').value = '';
-        }
 
         function simulateViolation() {
             const agents = ['Sales Representative', 'Lead Qualifier', 'Support Agent', 'Escalation Specialist', 'Invoice Processor', 'Expense Auditor'];;
@@ -1075,7 +939,6 @@
                 </div>
             `;
             alertList.prepend(newAlert);
-        }
 
         // Search and filter (simple)
         const searchInput = document.querySelector('input[placeholder="Search agents..."]');
@@ -1084,7 +947,6 @@
         
         if (searchInput) {
             searchInput.addEventListener('input', filterTable);
-        }
         if (deptFilter) deptFilter.addEventListener('change', filterTable);
         if (statusFilter) statusFilter.addEventListener('change', filterTable);
 
@@ -1104,7 +966,6 @@
                 const matchesStatus = status === 'All Status' || rowStatus.includes(status);
                 row.style.display = (matchesSearch && matchesDept && matchesStatus) ? '' : 'none';
             });
-        }
     </script>
 </body>
 </html>
