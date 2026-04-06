@@ -99,6 +99,32 @@
             // Ensure card view is hidden initially
             const cardView = document.getElementById('cardView');
             if (cardView) cardView.classList.add('hidden');
+        });
+        // Monthly cost calculator
+        function updateMonthlyCost() {
+            const taskSlider = document.getElementById('taskSlider');
+            const taskValue = parseInt(taskSlider.value).toLocaleString();
+            const costPerTask = parseFloat(document.getElementById('costSlider').value);
+            const agents = 6;
+            const monthlyCost = agents * parseInt(taskSlider.value) * costPerTask;
+            document.getElementById('taskValue').textContent = taskValue;
+            document.getElementById('costValue2').textContent = costPerTask.toFixed(2);
+            document.getElementById('monthlyCost').textContent = '$' + monthlyCost.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0});
+        }
+        // Update both cost and monthly cost when cost slider changes
+        function updateCost() {
+            const slider = document.getElementById('costSlider');
+            const value = parseFloat(slider.value).toFixed(2);
+            document.getElementById('costValue').textContent = value;
+            document.getElementById('costValue2').textContent = value;
+            // Adjust bar width (inverse: lower cost = higher efficiency)
+            const width = Math.max(10, 100 - (value * 200)) + '%';
+            document.getElementById('costBar').style.width = width;
+            updateMonthlyCost();
+        }
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateMonthlyCost();
         });</script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
