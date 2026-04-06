@@ -7,6 +7,8 @@
   ],
   "routes": [
     { "handle": "filesystem" },
+    { "src": "/demo", "dest": "/demo/index.html" },
+    { "src": "/demo/", "dest": "/demo/index.html" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
