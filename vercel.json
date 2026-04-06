@@ -9,6 +9,7 @@
     { "handle": "filesystem" },
     { "src": "/demo/?", "dest": "/demo.html" },
     { "src": "/about/?", "dest": "/about.html" },
+    { "src": "/waitlistsignup/?", "dest": "/waitlistsignup.html" },
     { "src": "/(.*)", "dest": "/index.html" }
   ],
   "cleanUrls": false,
