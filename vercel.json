@@ -27,6 +27,7 @@
   ],
   "routes": [
     { "handle": "filesystem" },
+    { "src": "/sitemap\\.xml", "dest": "/api/sitemap.js" },
     { "src": "/demo/?", "dest": "/demo.html" },
     { "src": "/about/?", "dest": "/about.html" },
     { "src": "/waitlistsignup/?", "dest": "/waitlistsignup.html" },
