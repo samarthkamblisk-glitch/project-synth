@@ -3,39 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="SynthForce Demo: HR SaaS for AI Agents. Manage onboarding, performance, compensation, policy, and offboarding of your synthetic workforce.">
-    <title>SynthForce Demo | HR Dashboard for AI Agents</title>
+    <meta name="description" content="Try the SynthForce demo: manage your AI agents like employees. Onboard new agents, set policies, view performance, and simulate HR workflows for your synthetic workforce.">
+    <title>SynthForce Demo | Agent Directory - HR for AI Agents</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+
+// Onboarding wizard
+let currentStep = 1;
+let selectedDept = 'Sales';
+let selectedRole = 'Lead Qualifier';
+let selectedBudget = '2000';
+let selectedPolicy = 'No discounts >5%';
+
+function openOnboarding() {
+    document.getElementById('onboardingModal').classList.remove('hidden');
+    resetOnboarding();
+}
+function closeOnboarding() {
+    document.getElementById('onboardingModal').classList.add('hidden');
+}
+function resetOnboarding() {
+    currentStep = 1;
+    updateStep();
+}
+function selectDept(dept) {
+    selectedDept = dept;
+    // Highlight selected button
+    document.querySelectorAll('.dept-btn').forEach(btn => btn.classList.remove('border-accent', 'bg-blue-50'));
+    event.target.classList.add('border-accent', 'bg-blue-50');
+}
+function nextStep() {
+    if (currentStep === 1) selectedDept = selectedDept || 'Sales';
+    if (currentStep === 2) selectedRole = document.getElementById('roleInput').value || 'Lead Qualifier';
+    if (currentStep === 3) {
+        selectedBudget = document.getElementById('budgetValue').textContent;
+        selectedPolicy = document.getElementById('policySelect').value;
+        // Update summary
+        document.getElementById('summaryDept').textContent = selectedDept;
+        document.getElementById('summaryRole').textContent = selectedRole;
+        document.getElementById('summaryBudget').textContent = selectedBudget;
+        document.getElementById('summaryPolicy').textContent = selectedPolicy;
+    }
+    if (currentStep === 4) {
+        // Deploy
+        alert(`New AI agent deployed! ${selectedDept} - ${selectedRole} is now active.`);
+        closeOnboarding();
+        return;
+    }
+    currentStep++;
+    updateStep();
+}
+function prevStep() {
+    currentStep--;
+    updateStep();
+}
+function updateStep() {
+    // Hide all steps
+    for (let i = 1; i <= 4; i++) {
+        document.getElementById('step' + i).classList.add('hidden');
+    }
+    // Show current step
+    document.getElementById('step' + currentStep).classList.remove('hidden');
+    document.getElementById('stepNum').textContent = currentStep;
+    document.getElementById('onboardingTitle').textContent = 
+        ['Select Department', 'Define Role', 'Set Budget & Guardrails', 'Deploy'][currentStep - 1];
+    // Update buttons
+    document.getElementById('prevBtn').classList.toggle('hidden', currentStep === 1);
+    document.getElementById('nextBtn').textContent = currentStep === 4 ? 'Deploy Agent' : 'Next';
+}
+
+// Initialize department selection
+document.addEventListener('DOMContentLoaded', function() {
+    selectDept('Sales');
+});
+
+// Agent modal
+const rows = document.querySelectorAll('tbody tr');
+rows.forEach(row => {
+    row.addEventListener('click', () => {
+        const cells = row.querySelectorAll('td');
+        const name = cells[0]?.querySelector('span')?.textContent || 'Unknown';
+        const role = cells[1]?.textContent || '-';
+        const dept = cells[2]?.textContent || '-';
+        const status = cells[3]?.innerHTML || '-';
+        const cost = cells[4]?.textContent || '-';
+        document.getElementById('agentName').textContent = name;
+        document.getElementById('agentRole').textContent = role;
+        document.getElementById('agentDept').textContent = dept;
+        document.getElementById('agentStatus').innerHTML = status;
+        document.getElementById('agentCost').textContent = cost;
+        document.getElementById('agentTasks').textContent = Math.floor(Math.random() * 5000) + 1000;
+        document.getElementById('agentModal').classList.remove('hidden');
+    });
+});
+function closeAgentModal() {
+    document.getElementById('agentModal').classList.add('hidden');
+}
+
+// Policy builder
+function addPolicy() {
+    const agent = document.getElementById('policyAgent').value;
+    const action = document.getElementById('policyAction').value;
+    const value = document.getElementById('policyValue').value;
+    if (!agent || !action || !value) return alert('Fill all fields');
+    alert(`Policy added: ${agent} - ${action} ${value}`);
+    // Clear inputs
+    document.getElementById('policyAgent').selectedIndex = 0;
+    document.getElementById('policyAction').selectedIndex = 0;
+    document.getElementById('policyValue').value = '';
+}
+function simulateViolation() {
+    const agents = ['Sales Representative', 'Lead Qualifier', 'Support Agent', 'Escalation Specialist', 'Invoice Processor', 'Expense Auditor'];
+    const actions = ['attempted to refund $', 'promised discount >', 'accessed restricted DB', 'exceeded hourly API limit'];
+    const agent = agents[Math.floor(Math.random() * agents.length)];
+    const action = actions[Math.floor(Math.random() * actions.length)];
+    const value = Math.floor(Math.random() * 9000) + 1000;
+    const alertList = document.getElementById('alertList');
+    const newAlert = document.createElement('div');
+    newAlert.className = 'flex items-start gap-3 p-3 border border-subtle rounded-lg';
+    newAlert.innerHTML = `
+        <div class="w-2 h-2 mt-2 rounded-full bg-red-500"></div>
+        <div>
+            <div class="font-sans text-sm text-gray-900">${agent} ${action} ${value}</div>
+            <div class="text-xs text-gray-500 font-mono">Blocked • Just now</div>
+        </div>
+    `;
+    alertList.prepend(newAlert);
+}
+
+// Search and filter
+const searchInput = document.querySelector('input[placeholder="Search agents..."]');
+const deptFilter = document.querySelector('select:first-of-type');
+const statusFilter = document.querySelector('select:last-of-type');
+
+if (searchInput) searchInput.addEventListener('input', filterTable);
+if (deptFilter) deptFilter.addEventListener('change', filterTable);
+if (statusFilter) statusFilter.addEventListener('change', filterTable);
+
+function filterTable() {
+    const rows = document.querySelectorAll('tbody tr');
+    const searchTerm = searchInput.value.toLowerCase();
+    const dept = deptFilter.value;
+    const status = statusFilter.value;
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        const name = cells[0]?.textContent.toLowerCase() || '';
+        const role = cells[1]?.textContent.toLowerCase() || '';
+        const rowDept = cells[2]?.textContent || '';
+        const rowStatus = cells[3]?.textContent || '';
+        const matchesSearch = name.includes(searchTerm) || role.includes(searchTerm);
+        const matchesDept = dept === 'All Departments' || rowDept === dept;
+        const matchesStatus = status === 'All Status' || rowStatus.includes(status);
+        row.style.display = (matchesSearch && matchesDept && matchesStatus) ? '' : 'none';
+    });
+}
+
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+        <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        void: '#000000',
+                        paper: '#FFFFFF',
+                        subtle: '#e5e5e5',
+                        accent: '#00B2FF' 
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace']
+    </script>
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; }
-        .sidebar { min-height: calc(100vh - 4rem); }
-        .section { display: none; }
-        .section.active { display: block; }
-        .nav-item { transition: all 0.2s; }
-        .nav-item.active { background-color: #f0f9ff; border-left-color: #00B2FF; color: #00B2FF; }
-        .agent-card { transition: transform 0.2s; }
-        .agent-card:hover { transform: translateY(-2px); }
+        body { background-color: #ffffff; color: #1a1a1a; font-family: 'Inter', sans-serif; overflow-x: hidden; }
         .btn-primary {
             background: #00B2FF; color: #fff; border: 1px solid #00B2FF;
             transition: all 0.2s ease;
             border-radius: 8px;
-        }
         .btn-primary:hover {
             background: transparent; color: #00B2FF;
-        }
     </style>
 </head>
-<body class="min-h-screen bg-gray-50">
-    <!-- Top Nav -->
-    <nav class="sticky top-0 w-full z-50 border-b border-gray-200 bg-white/90 backdrop-blur-md">
+<body class="min-h-screen bg-white">
+
+    <!-- Nav -->
+    <nav class="sticky top-0 w-full z-50 border-b border-subtle bg-white/80 backdrop-blur-md">
         <div class="container mx-auto px-6 h-16 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <a href="/">
                     <img src="https://raw.githubusercontent.com/samarthkamblisk-glitch/project-synth/main/assets/logo_white_plain.png" class="w-8 h-8" alt="SynthForce Logo">
                 </a>
                 <span class="font-bold tracking-tighter text-lg text-gray-900">SynthForce Demo</span>
-                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">HR SaaS for AI Agents</span>
             </div>
             <div class="flex gap-4">
                 <a href="/" class="text-sm font-sans text-gray-600 hover:text-gray-900">Home</a>
@@ -47,192 +206,704 @@
         </div>
     </nav>
 
-    <div class="container mx-auto px-6 py-8 flex flex-col lg:flex-row gap-8">
-        <!-- Sidebar Menu -->
-        <div class="lg:w-64 flex-shrink-0">
-            <div class="sidebar bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-                <h2 class="font-bold text-gray-900 text-lg mb-6">HR Dashboard</h2>
-                <nav class="space-y-2">
-                    <a href="#" data-section="dashboard" class="nav-item block py-3 px-4 rounded-lg border-l-4 border-transparent text-gray-700 hover:bg-gray-50 hover:border-blue-300">
-                        <div class="font-medium">📊 Dashboard</div>
-                        <div class="text-sm text-gray-500">Active agents & overview</div>
-                    </a>
-                    <a href="#" data-section="onboard" class="nav-item block py-3 px-4 rounded-lg border-l-4 border-transparent text-gray-700 hover:bg-gray-50 hover:border-blue-300">
-                        <div class="font-medium">➕ Onboard</div>
-                        <div class="text-sm text-gray-500">Add a new AI agent</div>
-                    </a>
-                    <a href="#" data-section="performance" class="nav-item block py-3 px-4 rounded-lg border-l-4 border-transparent text-gray-700 hover:bg-gray-50 hover:border-blue-300">
-                        <div class="font-medium">📈 Agent Performance</div>
-                        <div class="text-sm text-gray-500">Tasks, errors, satisfaction</div>
-                    </a>
-                    <a href="#" data-section="compensation" class="nav-item block py-3 px-4 rounded-lg border-l-4 border-transparent text-gray-700 hover:bg-gray-50 hover:border-blue-300">
-                        <div class="font-medium">💰 Agent Compensation</div>
-                        <div class="text-sm text-gray-500">API spend, ROI, payroll</div>
-                    </a>
-                    <a href="#" data-section="policy" class="nav-item block py-3 px-4 rounded-lg border-l-4 border-transparent text-gray-700 hover:bg-gray-50 hover:border-blue-300">
-                        <div class="font-medium">🛡️ Agent Policy</div>
-                        <div class="text-sm text-gray-500">Guardrails & compliance</div>
-                    </a>
-                    <a href="#" data-section="offboarding" class="nav-item block py-3 px-4 rounded-lg border-l-4 border-transparent text-gray-700 hover:bg-gray-50 hover:border-blue-300">
-                        <div class="font-medium">🚪 Agent Offboarding</div>
-                        <div class="text-sm text-gray-500">Archive & revoke access</div>
-                    </a>
-                </nav>
-                <div class="mt-12 pt-8 border-t border-gray-200">
-                    <p class="text-sm text-gray-500">This is a simulated demo. Data is not real.</p>
+    <main class="pt-12 pb-8 container mx-auto px-6">
+        <div class="max-w-6xl mx-auto text-center mb-12">
+            <h1 class="text-5xl md:text-6xl font-bold text-gray-900 mb-4">Agent Directory Demo</h1>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                Experience how SynthForce manages AI agents like employees. This interactive demo shows real‑time agent status, performance metrics, and policy enforcement.
+            </p>
+            <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#demo" class="btn-primary px-8 py-4 font-sans font-semibold text-sm uppercase rounded-lg inline-block">
+                    Jump to Demo
+                </a>
+                <button onclick="openOnboarding()" class="px-8 py-4 font-sans font-semibold text-sm uppercase border border-subtle rounded-lg hover:border-gray-900 transition">
+                    Simulate Onboarding
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Agent Directory Preview -->
+    <section id="demo" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Agent Directory</h2>
+                <p class="text-xl text-gray-600">See all your AI agents in one place, just like an employee directory.</p>
+            </div>
+            <div class="max-w-6xl mx-auto">
+                <!-- Search and Filters -->
+                <div class="mb-8 flex flex-col md:flex-row gap-4 justify-between items-center">
+                    <div class="relative w-full md:w-auto">
+                        <input type="text" placeholder="Search agents..." class="w-full md:w-64 px-4 py-2 border border-subtle rounded-lg focus:outline-none focus:ring-2 focus:ring-accent">
+                    </div>
+                    <div class="flex gap-4">
+                        <select class="px-4 py-2 border border-subtle rounded-lg bg-white text-sm">
+                            <option>All Departments</option>
+                            <option>Sales</option>
+                            <option>Support</option>
+                            <option>Finance</option>
+                            <option>Marketing</option>
+                            <option>Analytics</option>
+                        </select>
+                        <select class="px-4 py-2 border border-subtle rounded-lg bg-white text-sm">
+                            <option>All Status</option>
+                            <option>Active</option>
+                            <option>Paused</option>
+                            <option>Over Budget</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Left Column: Agent Directory Table -->
+                    <div class="lg:col-span-2 bg-white rounded-2xl border border-subtle p-6 shadow-sm">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="font-sans font-bold text-gray-900 text-xl">Agent Directory</h3>
+                            <span class="text-xs font-mono text-green-600">6 agents</span>
+                        </div>
+                        <div class="overflow-x-auto" id="tableView">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="border-b border-subtle text-left text-sm text-gray-600">
+                                        <th class="pb-3 font-sans">Agent</th>
+                                        <th class="pb-3 font-sans">Role</th>
+                                        <th class="pb-3 font-sans">Department</th>
+                                        <th class="pb-3 font-sans">Status</th>
+                                        <th class="pb-3 font-sans">Cost / task</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b border-subtle hover:bg-gray-50">
+                                        <td class="py-4">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                                <span class="font-sans text-gray-900">Sales Representative</span>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 text-sm text-gray-600">Sales Manager</td>
+                                        <td class="py-4 text-sm text-gray-600">Sales</td>
+                                        <td class="py-4"><span class="px-3 py-1 rounded-full text-xs font-mono bg-green-100 text-green-800">Active</span></td>
+                                        <td class="py-4 text-sm font-mono text-gray-900">$0.18</td>
+                                    </tr>
+                                    <tr class="border-b border-subtle hover:bg-gray-50">
+                                        <td class="py-4">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                                <span class="font-sans text-gray-900">Lead Qualifier</span>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 text-sm text-gray-600">Lead Qualifier</td>
+                                        <td class="py-4 text-sm text-gray-600">Sales</td>
+                                        <td class="py-4"><span class="px-3 py-1 rounded-full text-xs font-mono bg-green-100 text-green-800">Active</span></td>
+                                        <td class="py-4 text-sm font-mono text-gray-900">$0.09</td>
+                                    </tr>
+                                    <tr class="border-b border-subtle hover:bg-gray-50">
+                                        <td class="py-4">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                                <span class="font-sans text-gray-900">Support Agent</span>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 text-sm text-gray-600">Support Lead</td>
+                                        <td class="py-4 text-sm text-gray-600">Support</td>
+                                        <td class="py-4"><span class="px-3 py-1 rounded-full text-xs font-mono bg-yellow-100 text-yellow-800">Paused</span></td>
+                                        <td class="py-4 text-sm font-mono text-gray-900">$0.12</td>
+                                    </tr>
+                                    <tr class="border-b border-subtle hover:bg-gray-50">
+                                        <td class="py-4">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                                <span class="font-sans text-gray-900">Escalation Specialist</span>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 text-sm text-gray-600">Escalation Specialist</td>
+                                        <td class="py-4 text-sm text-gray-600">Support</td>
+                                        <td class="py-4"><span class="px-3 py-1 rounded-full text-xs font-mono bg-green-100 text-green-800">Active</span></td>
+                                        <td class="py-4 text-sm font-mono text-gray-900">$0.15</td>
+                                    </tr>
+                                    <tr class="border-b border-subtle hover:bg-gray-50">
+                                        <td class="py-4">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                                <span class="font-sans text-gray-900">Invoice Processor</span>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 text-sm text-gray-600">Finance</td>
+                                        <td class="py-4 text-sm text-gray-600">Finance</td>
+                                        <td class="py-4"><span class="px-3 py-1 rounded-full text-xs font-mono bg-red-100 text-red-800">Over Budget</span></td>
+                                        <td class="py-4 text-sm font-mono text-gray-900">$0.45</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="py-4">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-3 h-3 rounded-full bg-blue-500"></div>
+                                                <span class="font-sans text-gray-900">Expense Auditor</span>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 text-sm text-gray-600">Finance</td>
+                                        <td class="py-4 text-sm text-gray-600">Finance</td>
+                                        <td class="py-4"><span class="px-3 py-1 rounded-full text-xs font-mono bg-blue-100 text-blue-800">Training</span></td>
+                                        <td class="py-4 text-sm font-mono text-gray-900">$0.22</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        </div><div class="bg-white border border-subtle rounded-xl p-6">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                        <span class="font-sans font-bold text-gray-900">Lead Qualifier</span>
+                                    </div>
+                                    <span class="px-3 py-1 rounded-full text-xs font-mono bg-green-100 text-green-800">Active</span>
+                                </div>
+                                <div class="text-sm text-gray-600 mb-2">Role: Lead Qualifier</div>
+                                <div class="text-sm text-gray-600 mb-2">Department: Sales</div>
+                                <div class="text-sm font-mono text-gray-900">Cost per task: $0.09</div>
+                                <div class="mt-4 text-xs text-gray-500">Tasks completed: 2,150</div>
+                            </div>
+                            <div class="bg-white border border-subtle rounded-xl p-6">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                        <span class="font-sans font-bold text-gray-900">Support Agent</span>
+                                    </div>
+                                    <span class="px-3 py-1 rounded-full text-xs font-mono bg-yellow-100 text-yellow-800">Paused</span>
+                                </div>
+                                <div class="text-sm text-gray-600 mb-2">Role: Support Lead</div>
+                                <div class="text-sm text-gray-600 mb-2">Department: Support</div>
+                                <div class="text-sm font-mono text-gray-900">Cost per task: $0.12</div>
+                                <div class="mt-4 text-xs text-gray-500">Tasks completed: 8,540</div>
+                            </div>
+                            <div class="bg-white border border-subtle rounded-xl p-6">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                        <span class="font-sans font-bold text-gray-900">Escalation Specialist</span>
+                                    </div>
+                                    <span class="px-3 py-1 rounded-full text-xs font-mono bg-green-100 text-green-800">Active</span>
+                                </div>
+                                <div class="text-sm text-gray-600 mb-2">Role: Escalation Specialist</div>
+                                <div class="text-sm text-gray-600 mb-2">Department: Support</div>
+                                <div class="text-sm font-mono text-gray-900">Cost per task: $0.15</div>
+                                <div class="mt-4 text-xs text-gray-500">Tasks completed: 1,230</div>
+                            </div>
+                            <div class="bg-white border border-subtle rounded-xl p-6">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                        <span class="font-sans font-bold text-gray-900">Invoice Processor</span>
+                                    </div>
+                                    <span class="px-3 py-1 rounded-full text-xs font-mono bg-red-100 text-red-800">Over Budget</span>
+                                </div>
+                                <div class="text-sm text-gray-600 mb-2">Role: Finance</div>
+                                <div class="text-sm text-gray-600 mb-2">Department: Finance</div>
+                                <div class="text-sm font-mono text-gray-900">Cost per task: $0.45</div>
+                                <div class="mt-4 text-xs text-gray-500">Tasks completed: 3,210</div>
+                            </div>
+                            <div class="bg-white border border-subtle rounded-xl p-6">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-3 h-3 rounded-full bg-blue-500"></div>
+                                        <span class="font-sans font-bold text-gray-900">Expense Auditor</span>
+                                    </div>
+                                    <span class="px-3 py-1 rounded-full text-xs font-mono bg-blue-100 text-blue-800">Training</span>
+                                </div>
+                                <div class="text-sm text-gray-600 mb-2">Role: Finance</div>
+                                <div class="text-sm text-gray-600 mb-2">Department: Finance</div>
+                                <div class="text-sm font-mono text-gray-900">Cost per task: $0.22</div>
+                                <div class="mt-4 text-xs text-gray-500">Tasks completed: 890</div>
+                            </div>
+                        </div>
+                        <div class="mt-6 text-xs text-gray-500 font-mono border-t border-subtle pt-4">
+                            Last updated: Just now • <a href="#" class="text-accent hover:underline">View all agents</a>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Metrics & Alerts -->
+                    <div class="space-y-8">
+                        <!-- Performance Card -->
+                        <div class="bg-white rounded-2xl border border-subtle p-6 shadow-sm">
+                            <h3 class="font-sans font-bold text-gray-900 text-xl mb-4">Performance Overview</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-600">Task Completion Rate</span>
+                                        <span class="font-mono text-green-600">94%</span>
+                                    </div>
+                                    <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div class="h-full bg-green-500" style="width: 94%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-600">Cost Efficiency</span>
+                                        <span class="font-mono text-green-600">$0.18 / task</span>
+                                    </div>
+                                    <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div class="h-full bg-blue-500" style="width: 78%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-600">Policy Compliance</span>
+                                        <span class="font-mono text-green-600">99.8%</span>
+                                    </div>
+                                    <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div class="h-full bg-accent" style="width: 99%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-6 text-xs text-gray-500 font-mono">
+                                Based on last 30 days
+                            </div>
+                        </div>
+
+                        <!-- Policy Alerts -->
+                        <div class="bg-white rounded-2xl border border-subtle p-6 shadow-sm">
+                            <h3 class="font-sans font-bold text-gray-900 text-xl mb-4">Recent Policy Alerts</h3>
+                            <div class="space-y-4" id="alertList">
+                                <div class="flex items-start gap-3 p-3 border border-subtle rounded-lg">
+                                    <div class="w-2 h-2 mt-2 rounded-full bg-red-500"></div>
+                                    <div>
+                                        <div class="font-sans text-sm text-gray-900">Invoice Processor attempted to refund $10k</div>
+                                        <div class="text-xs text-gray-500 font-mono">Blocked • 2 hours ago</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-3 p-3 border border-subtle rounded-lg">
+                                    <div class="w-2 h-2 mt-2 rounded-full bg-yellow-500"></div>
+                                    <div>
+                                        <div class="font-sans text-sm text-gray-900">Sales Representative promised discount >5%</div>
+                                        <div class="text-xs text-gray-500 font-mono">Flagged • 5 hours ago</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-3 p-3 border border-subtle rounded-lg">
+                                    <div class="w-2 h-2 mt-2 rounded-full bg-green-500"></div>
+                                    <div>
+                                        <div class="font-sans text-sm text-gray-900">All agents within budget this month</div>
+                                        <div class="text-xs text-gray-500 font-mono">Good • 1 day ago</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-8 p-4 border border-subtle rounded-lg bg-gray-50">
+                                <h4 class="font-sans font-bold text-gray-900 mb-3">Create a Policy Rule</h4>
+                                <div class="space-y-3">
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <select class="px-3 py-2 border border-subtle rounded-lg bg-white text-sm" id="policyAgent">
+                                            <option>Select agent</option>
+                                            <option>Sales Representative</option>
+                                            <option>Lead Qualifier</option>
+                                            <option>Support Agent</option>
+                                            <option>Escalation Specialist</option>
+                                            <option>Invoice Processor</option>
+                                            <option>Expense Auditor</option>
+                                        </select>
+                                        <select class="px-3 py-2 border border-subtle rounded-lg bg-white text-sm" id="policyAction">
+                                            <option>Action</option>
+                                            <option>Block refunds > $</option>
+                                            <option>Flag discounts > %</option>
+                                            <option>Limit API calls per hour</option>
+                                            <option>Prevent PII access</option>
+                                        </select>
+                                    </div>
+                                    <div class="flex gap-3">
+                                        <input type="text" class="flex-1 px-3 py-2 border border-subtle rounded-lg bg-white text-sm" id="policyValue" placeholder="Value (e.g., 1000)">
+                                        <button onclick="addPolicy()" class="px-4 py-2 bg-accent text-white text-sm font-sans rounded-lg hover:bg-blue-600">Add Policy</button>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <button onclick="simulateViolation()" class="w-full px-4 py-2 border border-subtle text-sm font-sans rounded-lg hover:bg-gray-100">Simulate Policy Violation</button>
+                                </div>
+                            </div>
+                            <div class="mt-6 text-xs text-gray-500 font-mono">
+                                <a href="#" class="text-accent hover:underline">View all alerts</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- Main Content Area -->
-        <div class="flex-1">
-            <!-- Dashboard Section (default) -->
-            <section id="dashboard" class="section active">
-                <div class="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
-                    <div class="flex justify-between items-center mb-8">
+    <!-- Onboarding Wizard Modal -->
+    <div id="onboardingModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:p-0">
+            <div class="fixed inset-0 bg-black/50 transition-opacity" aria-hidden="true"></div>
+            <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
+                <div class="bg-white px-8 pt-8 pb-6">
+                    <div class="flex justify-between items-center mb-6">
                         <div>
-                            <h1 class="text-3xl font-bold text-gray-900">Agent Dashboard</h1>
-                            <p class="text-gray-600 mt-2">Manage your synthetic workforce like human employees.</p>
+                            <h3 class="text-2xl font-bold text-gray-900" id="onboardingTitle">Onboard a New AI Agent</h3>
+                            <p class="text-sm text-gray-600 mt-1">Step <span id="stepNum">1</span> of 4</p>
                         </div>
-                        <button onclick="openOnboarding()" class="btn-primary px-6 py-3 text-sm font-sans uppercase rounded-lg">
-                            ➕ Onboard New Agent
+                        <button onclick="closeOnboarding()" class="text-gray-500 hover:text-gray-700">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
                         </button>
                     </div>
-
-                    <!-- Stats Bar -->
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
-                        <div class="bg-blue-50 p-6 rounded-xl">
-                            <div class="text-3xl font-bold text-gray-900">6</div>
-                            <div class="text-sm text-gray-600">Active Agents</div>
+                    <div class="space-y-6" id="onboardingSteps">
+                        <!-- Step 1 -->
+                        <div id="step1">
+                            <label class="block text-sm font-medium text-gray-900 mb-4">Select Department</label>
+                            <div class="grid grid-cols-2 gap-4">
+                                <button onclick="selectDept('Sales')" class="p-4 border border-subtle rounded-xl text-left hover:border-accent hover:bg-blue-50 dept-btn">
+                                    <div class="font-sans font-bold text-gray-900">Sales</div>
+                                    <div class="text-xs text-gray-600 mt-1">Lead generation, qualification, outreach</div>
+                                </button>
+                                <button onclick="selectDept('Support')" class="p-4 border border-subtle rounded-xl text-left hover:border-accent hover:bg-blue-50 dept-btn">
+                                    <div class="font-sans font-bold text-gray-900">Support</div>
+                                    <div class="text-xs text-gray-600 mt-1">Customer service, ticket resolution</div>
+                                </button>
+                                <button onclick="selectDept('Finance')" class="p-4 border border-subtle rounded-xl text-left hover:border-accent hover:bg-blue-50 dept-btn">
+                                    <div class="font-sans font-bold text-gray-900">Finance</div>
+                                    <div class="text-xs text-gray-600 mt-1">Invoice processing, expense auditing</div>
+                                </button>
+                                <button onclick="selectDept('Marketing')" class="p-4 border border-subtle rounded-xl text-left hover:border-accent hover:bg-blue-50 dept-btn">
+                                    <div class="font-sans font-bold text-gray-900">Marketing</div>
+                                    <div class="text-xs text-gray-600 mt-1">Content creation, campaign management</div>
+                                </button>
+                            </div>
                         </div>
-                        <div class="bg-green-50 p-6 rounded-xl">
-                            <div class="text-3xl font-bold text-gray-900">1,248</div>
-                            <div class="text-sm text-gray-600">Tasks Completed (30d)</div>
+                        <!-- Step 2 -->
+                        <div id="step2" class="hidden">
+                            <label class="block text-sm font-medium text-gray-900 mb-4">Define Role</label>
+                            <input type="text" id="roleInput" class="w-full px-4 py-3 border border-subtle rounded-lg focus:outline-none focus:ring-2 focus:ring-accent" placeholder="e.g., Lead Qualifier, Content Writer">
+                            <div class="mt-4">
+                                <label class="block text-sm font-medium text-gray-900 mb-2">Primary Tasks</label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center"><input type="checkbox" class="mr-3" checked> Respond to customer inquiries</label>
+                                    <label class="flex items-center"><input type="checkbox" class="mr-3"> Generate reports</label>
+                                    <label class="flex items-center"><input type="checkbox" class="mr-3"> Process transactions</label>
+                                    <label class="flex items-center"><input type="checkbox" class="mr-3"> Monitor compliance</label>
+                                </div>
+                            </div>
                         </div>
-                        <div class="bg-purple-50 p-6 rounded-xl">
-                            <div class="text-3xl font-bold text-gray-900">$2,840</div>
-                            <div class="text-sm text-gray-600">Monthly API Spend</div>
+                        <!-- Step 3 -->
+                        <div id="step3" class="hidden">
+                            <label class="block text-sm font-medium text-gray-900 mb-4">Set Budget & Guardrails</label>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm text-gray-600 mb-1">Monthly budget ($)</label>
+                                    <input type="range" min="100" max="10000" step="100" value="2000" class="w-full accent-accent" id="budgetSlider" oninput="document.getElementById('budgetValue').textContent = this.value">
+                                    <div class="flex justify-between text-xs text-gray-500">
+                                        <span>$100</span>
+                                        <span>$5,000</span>
+                                        <span>$10,000</span>
+                                    </div>
+                                    <div class="mt-2 text-sm font-mono text-gray-900">$<span id="budgetValue">2000</span> / month</div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-600 mb-1">Policy Rules</label>
+                                    <select class="w-full px-4 py-2 border border-subtle rounded-lg" id="policySelect">
+                                        <option>No discounts >5%</option>
+                                        <option>No refunds over $1,000</option>
+                                        <option>No PII access</option>
+                                        <option>Daily API call limit: 10,000</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                        <div class="bg-yellow-50 p-6 rounded-xl">
-                            <div class="text-3xl font-bold text-gray-900">98.2%</div>
-                            <div class="text-sm text-gray-600">Satisfaction Score</div>
+                        <!-- Step 4 -->
+                        <div id="step4" class="hidden">
+                            <div class="text-center py-8">
+                                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </div>
+                                <h4 class="text-xl font-bold text-gray-900 mb-2">Agent Ready to Deploy</h4>
+                                <p class="text-gray-600 mb-6">Your AI agent has been configured and is ready to join your workforce.</p>
+                                <div class="bg-gray-50 p-4 rounded-lg text-left">
+                                    <div class="font-sans font-bold text-gray-900" id="summaryDept">Sales</div>
+                                    <div class="text-sm text-gray-600" id="summaryRole">Lead Qualifier</div>
+                                    <div class="text-xs text-gray-500 mt-2">Budget: $<span id="summaryBudget">2000</span>/month • Policy: <span id="summaryPolicy">No discounts >5%</span></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <!-- Agent Directory -->
-                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Your Agent Directory</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="agentDirectory">
-                        <!-- Agent Card 1 -->
-                        <div class="agent-card bg-white border border-gray-200 rounded-xl p-6 cursor-pointer" onclick="openAgentModal('Lead Qualifier', 'Lead Qualifier', 'Sales', 'Active', '$0.09', '2,150')">
-                            <div class="flex items-center justify-between mb-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                                    <span class="font-sans font-bold text-gray-900">Lead Qualifier</span>
-                                </div>
-                                <span class="px-3 py-1 rounded-full text-xs font-mono bg-green-100 text-green-800">Active</span>
-                            </div>
-                            <div class="text-sm text-gray-600 mb-2">Role: Lead Qualifier</div>
-                            <div class="text-sm text-gray-600 mb-2">Department: Sales</div>
-                            <div class="text-sm font-mono text-gray-900">Cost per task: $0.09</div>
-                            <div class="mt-4 text-xs text-gray-500">Tasks completed: 2,150</div>
+                    <div class="mt-8 flex justify-between">
+                        <button onclick="prevStep()" id="prevBtn" class="px-6 py-3 text-sm font-sans border border-subtle rounded-lg hover:border-gray-900 hidden">Back</button>
+                        <button onclick="nextStep()" id="nextBtn" class="px-6 py-3 text-sm font-sans bg-accent text-white rounded-lg hover:bg-blue-600 ml-auto">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Agent Details Modal -->
+    <div id="agentModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:p-0">
+            <div class="fixed inset-0 bg-black/50 transition-opacity" aria-hidden="true"></div>
+            <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-6 pt-6 pb-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900" id="agentName">Agent Details</h3>
+                        <button onclick="closeAgentModal()" class="text-gray-500 hover:text-gray-700">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Role</label>
+                            <p class="mt-1 text-gray-900 font-sans" id="agentRole">-</p>
                         </div>
-                        <!-- Agent Card 2 -->
-                        <div class="agent-card bg-white border border-gray-200 rounded-xl p-6 cursor-pointer" onclick="openAgentModal('Support Agent', 'Support Lead', 'Support', 'Paused', '$0.12', '8,540')">
-                            <div class="flex items-center justify-between mb-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                                    <span class="font-sans font-bold text-gray-900">Support Agent</span>
-                                </div>
-                                <span class="px-3 py-1 rounded-full text-xs font-mono bg-yellow-100 text-yellow-800">Paused</span>
-                            </div>
-                            <div class="text-sm text-gray-600 mb-2">Role: Support Lead</div>
-                            <div class="text-sm text-gray-600 mb-2">Department: Support</div>
-                            <div class="text-sm font-mono text-gray-900">Cost per task: $0.12</div>
-                            <div class="mt-4 text-xs text-gray-500">Tasks completed: 8,540</div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Department</label>
+                            <p class="mt-1 text-gray-900 font-sans" id="agentDept">-</p>
                         </div>
-                        <!-- Agent Card 3 -->
-                        <div class="agent-card bg-white border border-gray-200 rounded-xl p-6 cursor-pointer" onclick="openAgentModal('Escalation Specialist', 'Escalation Specialist', 'Support', 'Active', '$0.15', '1,230')">
-                            <div class="flex items-center justify-between mb-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                                    <span class="font-sans font-bold text-gray-900">Escalation Specialist</span>
-                                </div>
-                                <span class="px-3 py-1 rounded-full text-xs font-mono bg-green-100 text-green-800">Active</span>
-                            </div>
-                            <div class="text-sm text-gray-600 mb-2">Role: Escalation Specialist</div>
-                            <div class="text-sm text-gray-600 mb-2">Department: Support</div>
-                            <div class="text-sm font-mono text-gray-900">Cost per task: $0.15</div>
-                            <div class="mt-4 text-xs text-gray-500">Tasks completed: 1,230</div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Status</label>
+                            <p class="mt-1"><span id="agentStatus" class="px-3 py-1 rounded-full text-xs font-mono">-</span></p>
                         </div>
-                        <!-- Agent Card 4 -->
-                        <div class="agent-card bg-white border border-gray-200 rounded-xl p-6 cursor-pointer" onclick="openAgentModal('Invoice Processor', 'Finance', 'Finance', 'Over Budget', '$0.45', '3,210')">
-                            <div class="flex items-center justify-between mb-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                                    <span class="font-sans font-bold text-gray-900">Invoice Processor</span>
-                                </div>
-                                <span class="px-3 py-1 rounded-full text-xs font-mono bg-red-100 text-red-800">Over Budget</span>
-                            </div>
-                            <div class="text-sm text-gray-600 mb-2">Role: Finance</div>
-                            <div class="text-sm text-gray-600 mb-2">Department: Finance</div>
-                            <div class="text-sm font-mono text-gray-900">Cost per task: $0.45</div>
-                            <div class="mt-4 text-xs text-gray-500">Tasks completed: 3,210</div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Cost per task</label>
+                            <p class="mt-1 font-mono text-gray-900" id="agentCost">-</p>
                         </div>
-                        <!-- Agent Card 5 -->
-                        <div class="agent-card bg-white border border-gray-200 rounded-xl p-6 cursor-pointer" onclick="openAgentModal('Expense Auditor', 'Finance', 'Finance', 'Training', '$0.22', '890')">
-                            <div class="flex items-center justify-between mb-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-3 h-3 rounded-full bg-blue-500"></div>
-                                    <span class="font-sans font-bold text-gray-900">Expense Auditor</span>
-                                </div>
-                                <span class="px-3 py-1 rounded-full text-xs font-mono bg-blue-100 text-blue-800">Training</span>
-                            </div>
-                            <div class="text-sm text-gray-600 mb-2">Role: Finance</div>
-                            <div class="text-sm text-gray-600 mb-2">Department: Finance</div>
-                            <div class="text-sm font-mono text-gray-900">Cost per task: $0.22</div>
-                            <div class="mt-4 text-xs text-gray-500">Tasks completed: 890</div>
-                        </div>
-                        <!-- Agent Card 6 -->
-                        <div class="agent-card bg-white border border-gray-200 rounded-xl p-6 cursor-pointer" onclick="openAgentModal('Sales Representative', 'Sales', 'Sales', 'Active', '$0.07', '4,560')">
-                            <div class="flex items-center justify-between mb-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                                    <span class="font-sans font-bold text-gray-900">Sales Representative</span>
-                                </div>
-                                <span class="px-3 py-1 rounded-full text-xs font-mono bg-green-100 text-green-800">Active</span>
-                            </div>
-                            <div class="text-sm text-gray-600 mb-2">Role: Sales</div>
-                            <div class="text-sm text-gray-600 mb-2">Department: Sales</div>
-                            <div class="text-sm font-mono text-gray-900">Cost per task: $0.07</div>
-                            <div class="mt-4 text-xs text-gray-500">Tasks completed: 4,560</div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Tasks completed (30d)</label>
+                            <p class="mt-1 text-gray-900 font-sans" id="agentTasks">-</p>
                         </div>
                     </div>
                 </div>
-            </section>
+                <div class="bg-gray-50 px-6 py-4 border-t border-subtle">
+                    <button onclick="closeAgentModal()" class="w-full btn-primary px-4 py-2 text-sm font-sans uppercase rounded-lg">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div><footer class="mt-20 py-8 border-t border-subtle bg-gray-50">
+        <div class="container mx-auto px-6 text-center text-gray-600 text-sm">
+            <p>© 2026 SynthForce AI. All rights reserved. | <a href="/" class="text-accent hover:underline">Home</a> | <a href="#" class="text-accent hover:underline">Privacy</a> | <a href="#" class="text-accent hover:underline">Terms</a></p>
+            <p class="mt-2 text-xs text-gray-500">This is a simulated demo. Data is not real.</p>
+        </div>
+    
+    <!-- Agent Details Modal -->
+    <div id="agentModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:p-0">
+            <div class="fixed inset-0 bg-black/50 transition-opacity" aria-hidden="true"></div>
+            <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-6 pt-6 pb-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900" id="agentName">Agent Details</h3>
+                        <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Role</label>
+                            <p class="mt-1 text-gray-900 font-sans" id="agentRole">-</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Department</label>
+                            <p class="mt-1 text-gray-900 font-sans" id="agentDept">-</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Status</label>
+                            <p class="mt-1"><span id="agentStatus" class="px-3 py-1 rounded-full text-xs font-mono">-</span></p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Cost per task</label>
+                            <p class="mt-1 font-mono text-gray-900" id="agentCost">-</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Tasks completed (30d)</label>
+                            <p class="mt-1 text-gray-900 font-sans" id="agentTasks">-</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-6 py-4 border-t border-subtle">
+                    <button onclick="closeModal()" class="w-full btn-primary px-4 py-2 text-sm font-sans uppercase rounded-lg">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            <!-- Onboard Section -->
-            <section id="onboard" class="section">
-                <div class="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
-                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Onboard a New AI Agent</h1>
-                    <p class="text-gray-600 mb-8">Fill out the form below to add a new synthetic employee to your workforce.</p>
-                    <div class="max-w-3xl">
-                        <!-- Onboarding wizard inline -->
-                        <div id="onboardingWizard">
-                            <div class="space-y-6">
-                                <!-- Step 1 -->
-                                <div id="onboardStep1">
-                                    <label class="block text-sm font-medium text-gray-900 mb-4">1. Select Department</label>
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <button onclick="selectDeptInline('Sales')" class="p-4 border border-gray-300 rounded-xl text-left hover:border-blue-500 hover:bg-blue-50 dept-btn-inline">
-                                            <div class="font-sans font-bold text-gray-900">Sales</div>
-                                            <div class="text-xs text-gray-600 mt-1">Lead generation, qualification, outreach</div>
-                                        </button>
-                                        <button onclick="selectDeptInline('Support')" class="p-4 border border-gray-300 rounded-xl text-left hover:border-blue-500 hover:bg-blue-50 dept-btn-inline">
-                                            <div class="font-sans font-bold text-gray-900">Support</div>
-                                            <div class="text-xs text-gray-600 mt-1">Customer service, ticket resolution</div>
-                                        </button>
-                                        <button onclick="selectDeptInline('Finance')" class="p-4 border border-gray-300 rounded-xl text-left hover:border-blue-500 hover:bg-blue-50 dept-btn-inline">
-                                            <div class="font-sans font-bold text-gray-900">Finance</div>
-                                            <div class="text-xs text-gray-600 mt-1">Invoice processing, expense auditing</div>
-                                        </button>
-                                        <button onclick="selectDeptInline('Marketing')" class="
+    <!-- Onboarding Wizard Modal -->
+    <div id="onboardingModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:p-0">
+            <div class="fixed inset-0 bg-black/50 transition-opacity" aria-hidden="true"></div>
+            <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
+                <div class="bg-white px-8 pt-8 pb-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900" id="onboardingTitle">Onboard a New AI Agent</h3>
+                            <p class="text-sm text-gray-600 mt-1">Step <span id="stepNum">1</span> of 4</p>
+                        </div>
+                        <button onclick="closeOnboarding()" class="text-gray-500 hover:text-gray-700">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="space-y-6" id="onboardingSteps">
+                        <!-- Step 1 -->
+                        <div id="step1">
+                            <label class="block text-sm font-medium text-gray-900 mb-4">Select Department</label>
+                            <div class="grid grid-cols-2 gap-4">
+                                <button onclick="selectDept('Sales')" class="p-4 border border-subtle rounded-xl text-left hover:border-accent hover:bg-blue-50 dept-btn">
+                                    <div class="font-sans font-bold text-gray-900">Sales</div>
+                                    <div class="text-xs text-gray-600 mt-1">Lead generation, qualification, outreach</div>
+                                </button>
+                                <button onclick="selectDept('Support')" class="p-4 border border-subtle rounded-xl text-left hover:border-accent hover:bg-blue-50 dept-btn">
+                                    <div class="font-sans font-bold text-gray-900">Support</div>
+                                    <div class="text-xs text-gray-600 mt-1">Customer service, ticket resolution</div>
+                                </button>
+                                <button onclick="selectDept('Finance')" class="p-4 border border-subtle rounded-xl text-left hover:border-accent hover:bg-blue-50 dept-btn">
+                                    <div class="font-sans font-bold text-gray-900">Finance</div>
+                                    <div class="text-xs text-gray-600 mt-1">Invoice processing, expense auditing</div>
+                                </button>
+                                <button onclick="selectDept('Marketing')" class="p-4 border border-subtle rounded-xl text-left hover:border-accent hover:bg-blue-50 dept-btn">
+                                    <div class="font-sans font-bold text-gray-900">Marketing</div>
+                                    <div class="text-xs text-gray-600 mt-1">Content creation, campaign management</div>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Step 2 -->
+                        <div id="step2" class="hidden">
+                            <label class="block text-sm font-medium text-gray-900 mb-4">Define Role</label>
+                            <input type="text" id="roleInput" class="w-full px-4 py-3 border border-subtle rounded-lg focus:outline-none focus:ring-2 focus:ring-accent" placeholder="e.g., Lead Qualifier, Content Writer">
+                            <div class="mt-4">
+                                <label class="block text-sm font-medium text-gray-900 mb-2">Primary Tasks</label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center"><input type="checkbox" class="mr-3" checked> Respond to customer inquiries</label>
+                                    <label class="flex items-center"><input type="checkbox" class="mr-3"> Generate reports</label>
+                                    <label class="flex items-center"><input type="checkbox" class="mr-3"> Process transactions</label>
+                                    <label class="flex items-center"><input type="checkbox" class="mr-3"> Monitor compliance</label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Step 3 -->
+                        <div id="step3" class="hidden">
+                            <label class="block text-sm font-medium text-gray-900 mb-4">Set Budget & Guardrails</label>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm text-gray-600 mb-1">Monthly budget ($)</label>
+                                    <input type="range" min="100" max="10000" step="100" value="2000" class="w-full accent-accent" id="budgetSlider" oninput="document.getElementById('budgetValue').textContent = this.value">
+                                    <div class="flex justify-between text-xs text-gray-500">
+                                        <span>$100</span>
+                                        <span>$5,000</span>
+                                        <span>$10,000</span>
+                                    </div>
+                                    <div class="mt-2 text-sm font-mono text-gray-900">$<span id="budgetValue">2000</span> / month</div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-600 mb-1">Policy Rules</label>
+                                    <select class="w-full px-4 py-2 border border-subtle rounded-lg" id="policySelect">
+                                        <option>No discounts >5%</option>
+                                        <option>No refunds over $1,000</option>
+                                        <option>No PII access</option>
+                                        <option>Daily API call limit: 10,000</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Step 4 -->
+                        <div id="step4" class="hidden">
+                            <div class="text-center py-8">
+                                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </div>
+                                <h4 class="text-xl font-bold text-gray-900 mb-2">Agent Ready to Deploy</h4>
+                                <p class="text-gray-600 mb-6">Your AI agent has been configured and is ready to join your workforce.</p>
+                                <div class="bg-gray-50 p-4 rounded-lg text-left">
+                                    <div class="font-sans font-bold text-gray-900" id="summaryDept">Sales</div>
+                                    <div class="text-sm text-gray-600" id="summaryRole">Lead Qualifier</div>
+                                    <div class="text-xs text-gray-500 mt-2">Budget: $<span id="summaryBudget">2000</span>/month • Policy: <span id="summaryPolicy">No discounts >5%</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8 flex justify-between">
+                        <button onclick="prevStep()" id="prevBtn" class="px-6 py-3 text-sm font-sans border border-subtle rounded-lg hover:border-gray-900 hidden">Back</button>
+                        <button onclick="nextStep()" id="nextBtn" class="px-6 py-3 text-sm font-sans bg-accent text-white rounded-lg hover:bg-blue-600 ml-auto">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div></footer>
+
+    <script>
+        // Agent Directory row clicks
+        const rows = document.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            row.addEventListener('click', () => {
+                const cells = row.querySelectorAll('td');
+                const name = cells[0]?.querySelector('span')?.textContent || 'Unknown';
+                const role = cells[1]?.textContent || '-';
+                const dept = cells[2]?.textContent || '-';
+                const status = cells[3]?.innerHTML || '-';
+                const cost = cells[4]?.textContent || '-';
+                document.getElementById('agentName').textContent = name;
+                document.getElementById('agentRole').textContent = role;
+                document.getElementById('agentDept').textContent = dept;
+                document.getElementById('agentStatus').innerHTML = status;
+                document.getElementById('agentCost').textContent = cost;
+                document.getElementById('agentTasks').textContent = Math.floor(Math.random() * 5000) + 1000;
+                document.getElementById('agentModal').classList.remove('hidden');
+            });
+        });
+
+        function closeModal() {
+            document.getElementById('agentModal').classList.add('hidden'); - ${action} ${value}`);
+            // Clear inputs
+            document.getElementById('policyAgent').selectedIndex = 0;
+            document.getElementById('policyAction').selectedIndex = 0;
+            document.getElementById('policyValue').value = '';
+
+        function simulateViolation() {
+            const agents = ['Sales Representative', 'Lead Qualifier', 'Support Agent', 'Escalation Specialist', 'Invoice Processor', 'Expense Auditor'];;
+            const actions = ['attempted to refund $', 'promised discount >', 'accessed restricted DB', 'exceeded hourly API limit'];
+            const agent = agents[Math.floor(Math.random() * agents.length)];
+            const action = actions[Math.floor(Math.random() * actions.length)];
+            const value = Math.floor(Math.random() * 9000) + 1000;
+            const alertList = document.getElementById('alertList');
+            const newAlert = document.createElement('div');
+            newAlert.className = 'flex items-start gap-3 p-3 border border-subtle rounded-lg';
+            newAlert.innerHTML = `
+                <div class="w-2 h-2 mt-2 rounded-full bg-red-500"></div>
+                <div>
+                    <div class="font-sans text-sm text-gray-900">${agent} ${action} ${value}</div>
+                    <div class="text-xs text-gray-500 font-mono">Blocked • Just now</div>
+                </div>
+            `;
+            alertList.prepend(newAlert);
+
+        // Search and filter (simple)
+        const searchInput = document.querySelector('input[placeholder="Search agents..."]');
+        const deptFilter = document.querySelector('select:first-of-type');
+        const statusFilter = document.querySelector('select:last-of-type');
+        
+        if (searchInput) {
+            searchInput.addEventListener('input', filterTable);
+        if (deptFilter) deptFilter.addEventListener('change', filterTable);
+        if (statusFilter) statusFilter.addEventListener('change', filterTable);
+
+        function filterTable() {
+            const rows = document.querySelectorAll('tbody tr');
+            const searchTerm = searchInput.value.toLowerCase();
+            const dept = deptFilter.value;
+            const status = statusFilter.value;
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const name = cells[0]?.textContent.toLowerCase() || '';
+                const role = cells[1]?.textContent.toLowerCase() || '';
+                const rowDept = cells[2]?.textContent || '';
+                const rowStatus = cells[3]?.textContent || '';
+                const matchesSearch = name.includes(searchTerm) || role.includes(searchTerm);
+                const matchesDept = dept === 'All Departments' || rowDept === dept;
+                const matchesStatus = status === 'All Status' || rowStatus.includes(status);
+                row.style.display = (matchesSearch && matchesDept && matchesStatus) ? '' : 'none';
+            });
+    </script>
+</body>
+</html>
