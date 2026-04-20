@@ -29,6 +29,7 @@
     { "src": "/sitemap\\.xml", "dest": "/api/sitemap.js" },
     { "handle": "filesystem" },
     { "src": "/demo/?", "dest": "/demo.html" },
+    { "src": "/product/?", "dest": "/product.html" },
     { "src": "/about/?", "dest": "/about.html" },
     { "src": "/waitlistsignup/?", "dest": "/waitlistsignup.html" },
     { "src": "/(.*)", "dest": "/index.html" }
