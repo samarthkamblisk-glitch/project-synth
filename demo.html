@@ -46,9 +46,12 @@
                 display: block;
             }
         }
-        /* Desktop: show all sections */
+        /* Desktop: sections controlled by .active class */
         @media (min-width: 1024px) {
             .mobile-section {
+                display: none;
+            }
+            .mobile-section.active {
                 display: block;
             }
         }
