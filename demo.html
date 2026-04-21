@@ -278,9 +278,60 @@
             <!-- Onboard Section -->
             <section id="onboard" class="section">
                 <div class="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
-                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Onboard a New AI Agent</h1>
-                    <p class="text-gray-600 mb-8">Fill out the form below to add a new synthetic employee to your workforce.</p>
-                    <div class="max-w-3xl">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Onboard AI Agents</h1>
+                    <p class="text-gray-600 mb-8">Choose how you'd like to add an agent to your SynthForce dashboard.</p>
+
+                    <!-- Choice Screen -->
+                    <div id="onboardChoice" class="max-w-3xl">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                            <!-- Deploy New Agent Card -->
+                            <div class="border border-gray-200 rounded-2xl p-8 hover:border-blue-300 hover:shadow-lg transition cursor-pointer" onclick="showOnboardForm('new')">
+                                <div class="text-blue-600 mb-4">
+                                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-900 mb-3">Deploy a New Agent</h3>
+                                <p class="text-gray-600 mb-6">Create a brand‑new AI agent from scratch. Choose department, budget, guardrails, and deploy in minutes.</p>
+                                <div class="text-sm text-gray-500">
+                                    <ul class="list-disc pl-5 space-y-1">
+                                        <li>Full control over role and permissions</li>
+                                        <li>Built‑in cost tracking from day one</li>
+                                        <li>Pre‑configured guardrails</li>
+                                    </ul>
+                                </div>
+                                <button class="mt-8 btn-primary px-6 py-3 w-full">Start Building</button>
+                            </div>
+                            <!-- Connect Existing Agent Card -->
+                            <div class="border border-gray-200 rounded-2xl p-8 hover:border-purple-300 hover:shadow-lg transition cursor-pointer" onclick="showOnboardForm('existing')">
+                                <div class="text-purple-600 mb-4">
+                                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-900 mb-3">Connect an Existing Agent</h3>
+                                <p class="text-gray-600 mb-6">Already have agents running on OpenAI, Anthropic, or other platforms? Wrap them with SynthForce governance in minutes.</p>
+                                <div class="text-sm text-gray-500">
+                                    <ul class="list-disc pl-5 space-y-1">
+                                        <li>Works with 10+ AI providers</li>
+                                        <li>No code changes required</li>
+                                        <li>Add governance without disrupting workflows</li>
+                                    </ul>
+                                </div>
+                                <button class="mt-8 btn-primary px-6 py-3 w-full">Connect Now</button>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-500 text-center">Both options include full monitoring, cost tracking, policy enforcement, and offboarding workflows.</p>
+                    </div>
+
+                    <!-- Deploy New Agent Form (hidden by default) -->
+                    <div id="newAgentForm" class="hidden max-w-3xl">
+                        <div class="flex items-center mb-8">
+                            <button class="text-gray-600 hover:text-gray-900 mr-4" onclick="showOnboardChoice()">
+                                ← Back
+                            </button>
+                            <h2 class="text-2xl font-bold text-gray-900">Deploy a New AI Agent</h2>
+                        </div>
                         <!-- Onboarding wizard inline -->
                         <div id="onboardingWizard">
                             <div class="space-y-6">
@@ -321,85 +372,94 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Connect Existing Agent -->
-                        <div class="mt-16 pt-12 border-t border-gray-200">
-                            <h2 class="text-2xl font-bold text-gray-900 mb-6">Connect an Existing Agent</h2>
-                            <p class="text-gray-600 mb-8">Already have agents running on OpenAI, Anthropic, or other platforms? Wrap them with SynthForce governance in minutes.</p>
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                                <!-- Connection Form -->
-                                <div class="bg-gray-50 p-6 rounded-xl">
-                                    <h3 class="text-lg font-bold text-gray-900 mb-4">API Integration</h3>
-                                    <div class="space-y-6">
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-900 mb-2">AI Provider</label>
-                                            <select class="w-full px-4 py-3 border border-gray-300 rounded-lg">
-                                                <option>OpenAI</option>
-                                                <option>Anthropic</option>
-                                                <option>Google Gemini</option>
-                                                <option>Azure AI</option>
-                                                <option>Cohere</option>
-                                                <option>Custom API</option>
-                                            </select>
+                    <!-- Connect Existing Agent Form (hidden by default) -->
+                    <div id="existingAgentForm" class="hidden max-w-3xl">
+                        <div class="flex items-center mb-8">
+                            <button class="text-gray-600 hover:text-gray-900 mr-4" onclick="showOnboardChoice()">
+                                ← Back
+                            </button>
+                            <h2 class="text-2xl font-bold text-gray-900">Connect an Existing Agent</h2>
+                        </div>
+                        <p class="text-gray-600 mb-8">Already have agents running on OpenAI, Anthropic, or other platforms? Wrap them with SynthForce governance in minutes.</p>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <!-- Connection Form -->
+                            <div class="bg-gray-50 p-6 rounded-xl">
+                                <h3 class="text-lg font-bold text-gray-900 mb-4">API Integration</h3>
+                                <div class="space-y-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-900 mb-2">AI Provider</label>
+                                        <select class="w-full px-4 py-3 border border-gray-300 rounded-lg">
+                                            <option>OpenAI</option>
+                                            <option>Anthropic</option>
+                                            <option>Google Gemini</option>
+                                            <option>Azure AI</option>
+                                            <option>Llama</option>
+                                            <option>Cohere</option>
+                                            <option>Hugging Face</option>
+                                            <option>DeepSeek</option>
+                                            <option>Groq</option>
+                                            <option>Custom API</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-900 mb-2">API Key (simulated)</label>
+                                        <input type="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg" placeholder="sk-...">
+                                        <p class="text-xs text-gray-500 mt-2">We never store your keys. They are used only for secure routing.</p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-900 mb-2">Agent Name (in your system)</label>
+                                        <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg" placeholder="e.g., sales-bot-01">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-900 mb-2">Assign Department</label>
+                                        <select class="w-full px-4 py-3 border border-gray-300 rounded-lg">
+                                            <option>Sales</option>
+                                            <option>Support</option>
+                                            <option>Finance</option>
+                                            <option>Marketing</option>
+                                        </select>
+                                    </div>
+                                    <button class="btn-primary px-6 py-3 w-full">Connect Agent</button>
+                                </div>
+                            </div>
+                            <!-- Connected Agents List -->
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-900 mb-4">Recently Connected</h3>
+                                <div class="space-y-4">
+                                    <div class="bg-white border border-gray-200 p-4 rounded-xl">
+                                        <div class="flex justify-between items-center">
+                                            <div>
+                                                <div class="font-medium text-gray-900">lead‑gen‑v2</div>
+                                                <div class="text-sm text-gray-600">OpenAI · Sales</div>
+                                            </div>
+                                            <span class="px-3 py-1 rounded-full text-xs bg-green-100 text-green-800">Active</span>
                                         </div>
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-900 mb-2">API Key (simulated)</label>
-                                            <input type="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg" placeholder="sk-...">
-                                            <p class="text-xs text-gray-500 mt-2">We never store your keys. They are used only for secure routing.</p>
+                                        <div class="mt-2 text-xs text-gray-500">Connected 2 days ago · 1,240 tasks monitored</div>
+                                    </div>
+                                    <div class="bg-white border border-gray-200 p-4 rounded-xl">
+                                        <div class="flex justify-between items-center">
+                                            <div>
+                                                <div class="font-medium text-gray-900">support‑claude</div>
+                                                <div class="text-sm text-gray-600">Anthropic · Support</div>
+                                            </div>
+                                            <span class="px-3 py-1 rounded-full text-xs bg-green-100 text-green-800">Active</span>
                                         </div>
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-900 mb-2">Agent Name (in your system)</label>
-                                            <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg" placeholder="e.g., sales-bot-01">
+                                        <div class="mt-2 text-xs text-gray-500">Connected 1 week ago · 5,832 tasks monitored</div>
+                                    </div>
+                                    <div class="bg-white border border-gray-200 p-4 rounded-xl">
+                                        <div class="flex justify-between items-center">
+                                            <div>
+                                                <div class="font-medium text-gray-900">invoice‑gemini</div>
+                                                <div class="text-sm text-gray-600">Gemini · Finance</div>
+                                            </div>
+                                            <span class="px-3 py-1 rounded-full text-xs bg-yellow-100 text-yellow-800">Pending</span>
                                         </div>
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-900 mb-2">Assign Department</label>
-                                            <select class="w-full px-4 py-3 border border-gray-300 rounded-lg">
-                                                <option>Sales</option>
-                                                <option>Support</option>
-                                                <option>Finance</option>
-                                                <option>Marketing</option>
-                                            </select>
-                                        </div>
-                                        <button class="btn-primary px-6 py-3 w-full">Connect Agent</button>
+                                        <div class="mt-2 text-xs text-gray-500">Connecting... · API key verified</div>
                                     </div>
                                 </div>
-                                <!-- Connected Agents List -->
-                                <div>
-                                    <h3 class="text-lg font-bold text-gray-900 mb-4">Recently Connected</h3>
-                                    <div class="space-y-4">
-                                        <div class="bg-white border border-gray-200 p-4 rounded-xl">
-                                            <div class="flex justify-between items-center">
-                                                <div>
-                                                    <div class="font-medium text-gray-900">lead‑gen‑v2</div>
-                                                    <div class="text-sm text-gray-600">OpenAI · Sales</div>
-                                                </div>
-                                                <span class="px-3 py-1 rounded-full text-xs bg-green-100 text-green-800">Active</span>
-                                            </div>
-                                            <div class="mt-2 text-xs text-gray-500">Connected 2 days ago · 1,240 tasks monitored</div>
-                                        </div>
-                                        <div class="bg-white border border-gray-200 p-4 rounded-xl">
-                                            <div class="flex justify-between items-center">
-                                                <div>
-                                                    <div class="font-medium text-gray-900">support‑claude</div>
-                                                    <div class="text-sm text-gray-600">Anthropic · Support</div>
-                                                </div>
-                                                <span class="px-3 py-1 rounded-full text-xs bg-green-100 text-green-800">Active</span>
-                                            </div>
-                                            <div class="mt-2 text-xs text-gray-500">Connected 1 week ago · 5,832 tasks monitored</div>
-                                        </div>
-                                        <div class="bg-white border border-gray-200 p-4 rounded-xl">
-                                            <div class="flex justify-between items-center">
-                                                <div>
-                                                    <div class="font-medium text-gray-900">invoice‑gemini</div>
-                                                    <div class="text-sm text-gray-600">Gemini · Finance</div>
-                                                </div>
-                                                <span class="px-3 py-1 rounded-full text-xs bg-yellow-100 text-yellow-800">Pending</span>
-                                            </div>
-                                            <div class="mt-2 text-xs text-gray-500">Connecting... · API key verified</div>
-                                        </div>
-                                    </div>
-                                    <p class="mt-6 text-sm text-gray-500">SynthForce wraps your existing agents with governance layers—cost tracking, policy enforcement, and performance monitoring—without disrupting your workflows.</p>
-                                </div>
+                                <p class="mt-6 text-sm text-gray-500">SynthForce wraps your existing agents with governance layers—cost tracking, policy enforcement, and performance monitoring—without disrupting your workflows.</p>
                             </div>
                         </div>
                     </div>
@@ -1100,6 +1160,21 @@
         // Optimize cost placeholder
         function openOptimizeModal(agentName) {
             alert(`Optimize costs for ${agentName}. This is a demo.`);
+        }
+
+        // Onboard choice toggle
+        function showOnboardForm(type) {
+            document.getElementById('onboardChoice').classList.add('hidden');
+            if (type === 'new') {
+                document.getElementById('newAgentForm').classList.remove('hidden');
+            } else {
+                document.getElementById('existingAgentForm').classList.remove('hidden');
+            }
+        }
+        function showOnboardChoice() {
+            document.getElementById('newAgentForm').classList.add('hidden');
+            document.getElementById('existingAgentForm').classList.add('hidden');
+            document.getElementById('onboardChoice').classList.remove('hidden');
         }
 
         // Mobile menu toggle
