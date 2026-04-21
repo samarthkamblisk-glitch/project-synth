@@ -45,6 +45,17 @@
             .mobile-section.active {
                 display: block;
             }
+            /* Center header title when last section (no next button) */
+            #mobileNavHeader.last-section > div {
+                justify-content: center;
+            }
+            #mobileNavHeader.last-section #mobileNavPrev {
+                position: absolute;
+                left: 1rem;
+            }
+            #mobileNavHeader.last-section #mobileNavNext {
+                display: none;
+            }
         }
         /* Desktop: sections controlled by .active class */
         @media (min-width: 1024px) {
@@ -133,7 +144,7 @@
 
         <!-- Mobile Section Navigation Header (hidden by default) -->
         <div id="mobileNavHeader" class="lg:hidden hidden mb-6">
-            <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm flex items-center justify-between">
+            <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm flex items-center justify-between relative">
                 <button id="mobileNavPrev" class="text-gray-700 hover:text-blue-600 p-2">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
@@ -1268,7 +1279,7 @@
             const prevBtn = document.getElementById('mobileNavPrev');
             const nextBtn = document.getElementById('mobileNavNext');
             if (currentSectionIndex === 0) {
-                prevBtn.innerHTML = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>`;
+                prevBtn.innerHTML = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>`;
                 prevBtn.onclick = () => showMobileMenu();
             } else {
                 prevBtn.innerHTML = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>`;
@@ -1276,10 +1287,14 @@
             }
             if (currentSectionIndex === sections.length - 1) {
                 nextBtn.classList.add('hidden');
+                document.getElementById('mobileNavHeader').classList.add('last-section');
             } else {
                 nextBtn.classList.remove('hidden');
+                document.getElementById('mobileNavHeader').classList.remove('last-section');
                 nextBtn.onclick = () => showMobileSection(sections[currentSectionIndex + 1]);
             }
+            // Ensure return button is present
+            injectReturnButtons();
         }
 
         function showMobileMenu() {
@@ -1312,6 +1327,27 @@
                 });
             });
         }
+
+        // Inject "Return to Menu" buttons into each mobile section
+        function injectReturnButtons() {
+            if (window.innerWidth >= 1024) return; // desktop skip
+            document.querySelectorAll('.mobile-section').forEach(section => {
+                const container = section.querySelector('.bg-white.rounded-2xl.border.border-gray-200.p-8.shadow-sm');
+                if (container && !container.querySelector('.mobile-return-button')) {
+                    const buttonDiv = document.createElement('div');
+                    buttonDiv.className = 'mt-12 pt-8 border-t border-gray-200 lg:hidden mobile-return-button';
+                    buttonDiv.innerHTML = `
+                        <button onclick="showMobileMenu()" class="w-full py-3 px-4 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 hover:border-blue-300 transition">
+                            ← Return to Menu
+                        </button>
+                    `;
+                    container.appendChild(buttonDiv);
+                }
+            });
+        }
+        // Run after DOM loaded and on resize
+        document.addEventListener('DOMContentLoaded', injectReturnButtons);
+        window.addEventListener('resize', injectReturnButtons);
     </script>
 </body>
 </html>
