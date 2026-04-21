@@ -65,6 +65,10 @@
             .mobile-section.active {
                 display: block;
             }
+            /* Prevent hash scroll from hiding top nav */
+            section {
+                scroll-margin-top: 5rem;
+            }
         }
     </style>
 </head>
@@ -1165,6 +1169,10 @@
             if (activeNav) activeNav.classList.add('active');
             // Update URL hash
             window.location.hash = sectionId;
+            // Scroll to top on desktop to ensure header visible
+            if (window.innerWidth >= 1024) {
+                window.scrollTo(0, 0);
+            }
         }
 
         // Listen to hash changes (desktop only)
@@ -1183,6 +1191,16 @@
                 showMobileMenu();
             } else {
                 showSection(hash);
+                // Prevent default hash scroll for sidebar nav items
+                document.querySelectorAll('.sidebar .nav-item').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        if (window.innerWidth >= 1024) {
+                            e.preventDefault();
+                            const sectionId = link.getAttribute('href').substring(1);
+                            showSection(sectionId);
+                        }
+                    });
+                });
             }
         });
 
