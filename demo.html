@@ -38,6 +38,19 @@
             .agent-card {
                 margin-bottom: 1rem;
             }
+            /* Hide all mobile sections by default, show only when active */
+            .mobile-section {
+                display: none;
+            }
+            .mobile-section.active {
+                display: block;
+            }
+        }
+        /* Desktop: show all sections */
+        @media (min-width: 1024px) {
+            .mobile-section {
+                display: block;
+            }
         }
     </style>
 </head>
@@ -80,20 +93,58 @@
     </nav>
 
     <div class="container mx-auto px-6 py-8 flex flex-col lg:flex-row gap-8">
-        <!-- Mobile‑Only Dropdown Menu -->
-        <div class="lg:hidden mb-8">
+        <!-- Mobile‑Only Menu (card list) -->
+        <div id="mobileMenu" class="lg:hidden mb-8">
             <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
                 <h2 class="font-bold text-gray-900 text-lg mb-4">Menu</h2>
-                <p class="text-gray-600 mb-6">Select a section to view.</p>
-                <select id="mobileSectionSelect" class="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 font-medium">
-                    <option value="#dashboard">Dashboard – Overview</option>
-                    <option value="#onboard">Onboard – Add new or connect existing agents</option>
-                    <option value="#performance">Manage Agents – Performance & transfers</option>
-                    <option value="#compensation">Agent Compensation – Cost & ROI</option>
-                    <option value="#policy">Agent Policy – Guardrails & compliance</option>
-                    <option value="#offboarding">Agent Offboarding – Archive & audit</option>
-                </select>
-                <p class="mt-4 text-xs text-gray-500">This is a simulated demo. Data is not real.</p>
+                <p class="text-gray-600 mb-6">Tap a section to view it.</p>
+                <div class="space-y-4">
+                    <div class="border border-gray-200 rounded-xl p-5 hover:border-blue-300 hover:shadow cursor-pointer" data-section="dashboard">
+                        <div class="font-bold text-gray-900 text-lg">Dashboard</div>
+                        <div class="text-sm text-gray-600">Active agents & overview</div>
+                    </div>
+                    <div class="border border-gray-200 rounded-xl p-5 hover:border-blue-300 hover:shadow cursor-pointer" data-section="onboard">
+                        <div class="font-bold text-gray-900 text-lg">Onboard</div>
+                        <div class="text-sm text-gray-600">Add a new AI agent</div>
+                    </div>
+                    <div class="border border-gray-200 rounded-xl p-5 hover:border-blue-300 hover:shadow cursor-pointer" data-section="performance">
+                        <div class="font-bold text-gray-900 text-lg">Agent Performance</div>
+                        <div class="text-sm text-gray-600">Tasks, errors, satisfaction</div>
+                    </div>
+                    <div class="border border-gray-200 rounded-xl p-5 hover:border-blue-300 hover:shadow cursor-pointer" data-section="compensation">
+                        <div class="font-bold text-gray-900 text-lg">Agent Compensation</div>
+                        <div class="text-sm text-gray-600">API spend, ROI, payroll</div>
+                    </div>
+                    <div class="border border-gray-200 rounded-xl p-5 hover:border-blue-300 hover:shadow cursor-pointer" data-section="policy">
+                        <div class="font-bold text-gray-900 text-lg">Agent Policy</div>
+                        <div class="text-sm text-gray-600">Guardrails & compliance</div>
+                    </div>
+                    <div class="border border-gray-200 rounded-xl p-5 hover:border-blue-300 hover:shadow cursor-pointer" data-section="offboarding">
+                        <div class="font-bold text-gray-900 text-lg">Agent Offboarding</div>
+                        <div class="text-sm text-gray-600">Archive & audit</div>
+                    </div>
+                </div>
+                <p class="mt-6 text-xs text-gray-500">This is a simulated demo. Data is not real.</p>
+            </div>
+        </div>
+
+        <!-- Mobile Section Navigation Header (hidden by default) -->
+        <div id="mobileNavHeader" class="lg:hidden hidden mb-6">
+            <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm flex items-center justify-between">
+                <button id="mobileNavPrev" class="text-gray-700 hover:text-blue-600 p-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <div class="text-center">
+                    <div id="mobileNavTitle" class="font-bold text-gray-900 text-lg">Dashboard</div>
+                    <div id="mobileNavSubtitle" class="text-sm text-gray-600">Active agents & overview</div>
+                </div>
+                <button id="mobileNavNext" class="text-gray-700 hover:text-blue-600 p-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </button>
             </div>
         </div>
 
@@ -136,7 +187,7 @@
         <!-- Main Content Area -->
         <div class="flex-1">
             <!-- Dashboard Section -->
-            <section id="dashboard" class="section active">
+            <section id="dashboard" class="section active mobile-section">
                 <div class="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
                         <div>
@@ -259,7 +310,7 @@
             </section>
 
             <!-- Onboard Section -->
-            <section id="onboard" class="section">
+            <section id="onboard" class="section mobile-section">
                 <div class="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
                     <h1 class="text-3xl font-bold text-gray-900 mb-2">Onboard AI Agents</h1>
                     <p class="text-gray-600 mb-8">Choose how you'd like to add an agent to your SynthForce dashboard.</p>
@@ -293,12 +344,12 @@
                                     </svg>
                                 </div>
                                 <h3 class="text-2xl font-bold text-gray-900 mb-3">Connect an Existing Agent</h3>
-                                <p class="text-gray-600 mb-6">Already have agents running on OpenAI, Anthropic, or other platforms? Wrap them with SynthForce's HR layer in minutes.</p>
+                                <p class="text-gray-600 mb-6">Already have agents running on OpenAI, Anthropic, or other platforms? Wrap them with SynthForce in minutes.</p>
                                 <div class="text-sm text-gray-500">
                                     <ul class="list-disc pl-5 space-y-1">
                                         <li>Works with 10+ AI providers</li>
                                         <li>No code changes required</li>
-                                        <li>Add HR oversight without disrupting workflows</li>
+                                        <li>Add oversight without disrupting workflows</li>
                                     </ul>
                                 </div>
                                 <button class="mt-auto btn-primary px-6 py-3 w-full">Connect Now</button>
@@ -309,12 +360,13 @@
 
                     <!-- Deploy New Agent Form (hidden by default) -->
                     <div id="newAgentForm" class="hidden max-w-3xl">
-                        <div class="flex items-center mb-8">
+                        <div class="flex items-center mb-4">
                             <button class="text-gray-600 hover:text-gray-900 mr-4" onclick="showOnboardChoice()">
                                 ← Back
                             </button>
                             <h2 class="text-2xl font-bold text-gray-900">Deploy a New AI Agent</h2>
                         </div>
+                        <p class="text-gray-600 mb-8">Create a brand‑new AI agent from scratch. Choose department, budget, guardrails, and deploy in minutes.</p>
                         <!-- Onboarding wizard inline -->
                         <div id="onboardingWizard">
                             <div class="space-y-6">
@@ -365,7 +417,7 @@
                             </button>
                             <h2 class="text-2xl font-bold text-gray-900">Connect an Existing Agent</h2>
                         </div>
-                        <p class="text-gray-600 mb-8">Already have agents running on OpenAI, Anthropic, or other platforms? Wrap them with SynthForce's HR layer in minutes.</p>
+                        <p class="text-gray-600 mb-8">Already have agents running on OpenAI, Anthropic, or other platforms? Wrap them with SynthForce in minutes.</p>
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                             <!-- Connection Form -->
                             <div class="bg-gray-50 p-6 rounded-xl">
@@ -442,7 +494,7 @@
                                         <div class="mt-2 text-xs text-gray-500">Connecting... · API key verified</div>
                                     </div>
                                 </div>
-                                <p class="mt-6 text-sm text-gray-500">SynthForce wraps your existing agents with HR oversight; cost tracking, policy enforcement, and performance monitoring, without disrupting your workflows.</p>
+                                <p class="mt-6 text-sm text-gray-500">SynthForce wraps your existing agents with oversight; cost tracking, policy enforcement, and performance monitoring, without disrupting your workflows.</p>
                             </div>
                         </div>
                     </div>
@@ -450,7 +502,7 @@
             </section>
 
             <!-- Performance Section -->
-            <section id="performance" class="section">
+            <section id="performance" class="section mobile-section">
                 <div class="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
                     <h1 class="text-3xl font-bold text-gray-900 mb-2">Manage Agents</h1>
                     <p class="text-gray-600 mb-8">Monitor performance, transfer agents across departments, and dive into errors.</p>
@@ -579,7 +631,7 @@
             </section>
 
             <!-- Compensation Section -->
-            <section id="compensation" class="section">
+            <section id="compensation" class="section mobile-section">
                 <div class="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
                     <h1 class="text-3xl font-bold text-gray-900 mb-2">Agent Compensation</h1>
                     <p class="text-gray-600 mb-8">Monitors API spend, calculates ROI, recommends optimizations. Shows the “payroll” for your synthetic team.</p>
@@ -691,7 +743,7 @@
             </section>
 
             <!-- Policy Section -->
-            <section id="policy" class="section">
+            <section id="policy" class="section mobile-section">
                 <div class="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
                     <h1 class="text-3xl font-bold text-gray-900 mb-2">Agent Policy</h1>
                     <p class="text-gray-600 mb-8">Enforces guardrails (no unauthorized promises, no PII access) in real‑time. Policies are written in plain English, not code.</p>
@@ -845,7 +897,7 @@
             </section>
 
             <!-- Offboarding Section -->
-            <section id="offboarding" class="section">
+            <section id="offboarding" class="section mobile-section">
                 <div class="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
                     <h1 class="text-3xl font-bold text-gray-900 mb-2">Agent Offboarding</h1>
                     <p class="text-gray-600 mb-8">Archives logs, revokes permissions, generates audit trails. Just like exiting a human employee.</p>
@@ -1101,16 +1153,23 @@
             window.location.hash = sectionId;
         }
 
-        // Listen to hash changes
+        // Listen to hash changes (desktop only)
         window.addEventListener('hashchange', () => {
-            const hash = window.location.hash.substring(1) || 'dashboard';
-            showSection(hash);
+            if (window.innerWidth >= 1024) {
+                const hash = window.location.hash.substring(1) || 'dashboard';
+                showSection(hash);
+            }
         });
 
         // Initial load
         document.addEventListener('DOMContentLoaded', () => {
             const hash = window.location.hash.substring(1) || 'dashboard';
-            showSection(hash);
+            // If on mobile, show menu (ignore hash for mobile)
+            if (window.innerWidth < 1024) {
+                showMobileMenu();
+            } else {
+                showSection(hash);
+            }
         });
 
         // Agent modal functions
@@ -1160,21 +1219,82 @@
             document.getElementById('onboardChoice').classList.remove('hidden');
         }
 
-        // Mobile section dropdown
-        const sectionSelect = document.getElementById('mobileSectionSelect');
-        if (sectionSelect) {
-            sectionSelect.addEventListener('change', function() {
-                const target = this.value;
-                if (target.startsWith('#')) {
-                    const section = document.querySelector(target);
-                    if (section) {
-                        section.scrollIntoView({ behavior: 'smooth' });
-                        // Reset dropdown to placeholder? optional
-                        // this.selectedIndex = 0;
-                    }
-                }
+        // Mobile menu navigation
+        const sections = ['dashboard', 'onboard', 'performance', 'compensation', 'policy', 'offboarding'];
+        const sectionTitles = {
+            dashboard: 'Dashboard',
+            onboard: 'Onboard',
+            performance: 'Agent Performance',
+            compensation: 'Agent Compensation',
+            policy: 'Agent Policy',
+            offboarding: 'Agent Offboarding'
+        };
+        const sectionSubtitles = {
+            dashboard: 'Active agents & overview',
+            onboard: 'Add a new AI agent',
+            performance: 'Tasks, errors, satisfaction',
+            compensation: 'API spend, ROI, payroll',
+            policy: 'Guardrails & compliance',
+            offboarding: 'Archive & audit'
+        };
+
+        let currentSectionIndex = 0;
+
+        function showMobileSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.mobile-section').forEach(el => {
+                el.classList.remove('active');
+            });
+            // Show selected section
+            const section = document.getElementById(sectionId);
+            if (section) section.classList.add('active');
+
+            // Update current index
+            currentSectionIndex = sections.indexOf(sectionId);
+            if (currentSectionIndex === -1) currentSectionIndex = 0;
+
+            // Update nav header
+            document.getElementById('mobileNavTitle').textContent = sectionTitles[sectionId];
+            document.getElementById('mobileNavSubtitle').textContent = sectionSubtitles[sectionId];
+
+            // Show nav header, hide menu
+            document.getElementById('mobileMenu').classList.add('hidden');
+            document.getElementById('mobileNavHeader').classList.remove('hidden');
+
+            // Update prev/next buttons
+            const prevBtn = document.getElementById('mobileNavPrev');
+            const nextBtn = document.getElementById('mobileNavNext');
+            if (currentSectionIndex === 0) {
+                prevBtn.innerHTML = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>`;
+                prevBtn.onclick = () => showMobileMenu();
+            } else {
+                prevBtn.innerHTML = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>`;
+                prevBtn.onclick = () => showMobileSection(sections[currentSectionIndex - 1]);
+            }
+            if (currentSectionIndex === sections.length - 1) {
+                nextBtn.classList.add('hidden');
+            } else {
+                nextBtn.classList.remove('hidden');
+                nextBtn.onclick = () => showMobileSection(sections[currentSectionIndex + 1]);
+            }
+        }
+
+        function showMobileMenu() {
+            document.getElementById('mobileMenu').classList.remove('hidden');
+            document.getElementById('mobileNavHeader').classList.add('hidden');
+            // Hide all sections
+            document.querySelectorAll('.mobile-section').forEach(el => {
+                el.classList.remove('active');
             });
         }
+
+        // Attach click events to menu cards
+        document.querySelectorAll('[data-section]').forEach(card => {
+            card.addEventListener('click', () => {
+                const sectionId = card.getAttribute('data-section');
+                showMobileSection(sectionId);
+            });
+        });
 
         // Mobile menu toggle
         const toggle = document.getElementById('mobile-menu-toggle');
