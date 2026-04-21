@@ -285,7 +285,7 @@
                     <div id="onboardChoice" class="max-w-3xl">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
                             <!-- Deploy New Agent Card -->
-                            <div class="border border-gray-200 rounded-2xl p-8 hover:border-blue-300 hover:shadow-lg transition cursor-pointer" onclick="showOnboardForm('new')">
+                            <div class="border border-gray-200 rounded-2xl p-8 hover:border-blue-300 hover:shadow-lg transition cursor-pointer flex flex-col h-full" onclick="showOnboardForm('new')">
                                 <div class="text-blue-600 mb-4">
                                     <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
@@ -300,10 +300,10 @@
                                         <li>Pre‑configured guardrails</li>
                                     </ul>
                                 </div>
-                                <button class="mt-8 btn-primary px-6 py-3 w-full">Start Building</button>
+                                <button class="mt-auto btn-primary px-6 py-3 w-full">Start Building</button>
                             </div>
                             <!-- Connect Existing Agent Card -->
-                            <div class="border border-gray-200 rounded-2xl p-8 hover:border-purple-300 hover:shadow-lg transition cursor-pointer" onclick="showOnboardForm('existing')">
+                            <div class="border border-gray-200 rounded-2xl p-8 hover:border-purple-300 hover:shadow-lg transition cursor-pointer flex flex-col h-full" onclick="showOnboardForm('existing')">
                                 <div class="text-purple-600 mb-4">
                                     <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
@@ -318,7 +318,7 @@
                                         <li>Add governance without disrupting workflows</li>
                                     </ul>
                                 </div>
-                                <button class="mt-8 btn-primary px-6 py-3 w-full">Connect Now</button>
+                                <button class="mt-auto btn-primary px-6 py-3 w-full">Connect Now</button>
                             </div>
                         </div>
                         <p class="text-sm text-gray-500 text-center">Both options include full monitoring, cost tracking, policy enforcement, and offboarding workflows.</p>
@@ -459,7 +459,7 @@
                                         <div class="mt-2 text-xs text-gray-500">Connecting... · API key verified</div>
                                     </div>
                                 </div>
-                                <p class="mt-6 text-sm text-gray-500">SynthForce wraps your existing agents with governance layers—cost tracking, policy enforcement, and performance monitoring—without disrupting your workflows.</p>
+                                <p class="mt-6 text-sm text-gray-500">SynthForce wraps your existing agents with governance layers; cost tracking, policy enforcement, and performance monitoring, without disrupting your workflows.</p>
                             </div>
                         </div>
                     </div>
