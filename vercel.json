@@ -33,6 +33,7 @@
     { "src": "/about/?", "dest": "/about.html" },
     { "src": "/waitlistsignup/?", "dest": "/waitlistsignup.html" },
     { "src": "/blog/?", "dest": "/blog.html" },
+    { "src": "/blog/posts/([^/]+)", "dest": "/blog/posts/$1.html" },
     { "src": "/(.*)", "dest": "/index.html" }
   ],
   "cleanUrls": false,
