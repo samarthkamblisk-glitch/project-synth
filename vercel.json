@@ -32,6 +32,7 @@
     { "src": "/product/?", "dest": "/product.html" },
     { "src": "/about/?", "dest": "/about.html" },
     { "src": "/waitlistsignup/?", "dest": "/waitlistsignup.html" },
+    { "src": "/blog/?", "dest": "/blog.html" },
     { "src": "/(.*)", "dest": "/index.html" }
   ],
   "cleanUrls": false,
