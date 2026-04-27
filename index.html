@@ -155,29 +155,29 @@
     </main>
 
     <!-- Story Demo: Interactive rescue story -->
-    <section class="py-8 md:py-12 border-b border-subtle">
+    <section class="py-0 border-b border-subtle">
         <div class="container mx-auto px-6">
-            <div class="max-w-4xl mx-auto">
+            <div class="max-w-5xl mx-auto">
 
                 <!-- Story Box -->
                 <div class="bg-white border border-gray-200 rounded-3xl shadow-lg relative">
-                    <div class="relative ">
+                    <div class="relative" style="min-height: 800px;">
 
                         <!-- Scene 1: Agent failing (visible by default) -->
-                        <div class="scene" style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1.5rem; min-height: 500px;">
+                        <div class="scene" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; opacity: 1; z-index: 10;">
                             <div class="w-full max-w-lg text-center">
-                                <div class="inline-flex items-center gap-2 bg-red-50 border border-red-200 rounded-full px-4 py-1.5 text-sm text-red-600 font-medium mb-4">
+                                <div class="inline-flex items-center gap-2 bg-red-50 border border-red-200 rounded-full px-5 py-2 text-base text-red-600 font-medium mb-5">
                                     <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
                                     Agent trouble detected
                                 </div>
-                                <h3 class="text-2xl md:text-3xl font-bold text-gray-900 mb-3">Your support agent is struggling</h3>
-                                <p class="text-base md:text-lg text-gray-600 mb-6 max-w-md mx-auto">
+                                <h3 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Your support agent is struggling</h3>
+                                <p class="text-lg md:text-xl text-gray-600 mb-6 max-w-md mx-auto">
                                     Customer satisfaction dropped 40% in one day. The agent is deflecting. Nobody knows why yet.
                                 </p>
-                                <div class="bg-gray-50 border border-gray-200 rounded-2xl p-5 text-left max-w-sm mx-auto mb-6">
-                                    <div class="font-mono text-xs text-gray-500 mb-2 uppercase tracking-wider">support_bot_v3 &middot; Status: Active</div>
+                                <div class="bg-gray-50 border border-gray-200 rounded-2xl p-8 text-left max-w-md mx-auto mb-6">
+                                    <div class="font-mono text-sm text-gray-500 mb-2 uppercase tracking-wider">support_bot_v3 &middot; Status: Active</div>
                                     <div class="space-y-2">
-                                        <div class="flex justify-between text-sm">
+                                        <div class="flex justify-between text-base">
                                             <span class="text-gray-600">Customer sat.</span>
                                             <span class="text-red-500 font-semibold">58% <span class="text-xs text-red-400">(down 40%)</span></span>
                                         </div>
@@ -194,7 +194,7 @@
                                         AI-powered anomaly detection flagged this agent automatically.
                                     </div>
                                 </div>
-                                <button onclick="showScene(1)" class="inline-flex items-center gap-2 bg-accent hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl shadow-sm transition">
+                                <button onclick="showScene(1)" class="inline-flex items-center gap-2 bg-accent hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-xl shadow-sm transition">
                                     View performance report
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                                 </button>
@@ -202,19 +202,19 @@
                         </div>
 
                         <!-- Scene 2: Open management view (hidden) -->
-                        <div class="scene" style="display: none; flex-direction: column; justify-content: center; align-items: center; padding: 1.5rem; min-height: 500px;">
+                        <div class="scene" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; opacity: 0; z-index: 1;">
                             <div class="w-full max-w-lg text-center">
-                                <div class="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-full px-4 py-1.5 text-sm text-blue-600 font-medium mb-4">
+                                <div class="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-full px-5 py-2 text-base text-blue-600 font-medium mb-5">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                     SynthForce insight
                                 </div>
-                                <h3 class="text-2xl md:text-3xl font-bold text-gray-900 mb-3">Open its HR record</h3>
-                                <p class="text-base md:text-lg text-gray-600 mb-6 max-w-md mx-auto">
+                                <h3 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Open its HR record</h3>
+                                <p class="text-lg md:text-xl text-gray-600 mb-6 max-w-md mx-auto">
                                     One click. No terminal. No engineer. The business manager opens the agent performance review like any employee record.
                                 </p>
-                                <div class="bg-gray-50 border border-gray-200 rounded-2xl p-5 text-left max-w-sm mx-auto mb-6">
-                                    <div class="font-mono text-xs text-gray-500 mb-2 uppercase tracking-wider">Agent: support_bot_v3</div>
-                                    <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
+                                <div class="bg-gray-50 border border-gray-200 rounded-2xl p-8 text-left max-w-md mx-auto mb-6">
+                                    <div class="font-mono text-sm text-gray-500 mb-2 uppercase tracking-wider">Agent: support_bot_v3</div>
+                                    <div class="w-full bg-gray-200 rounded-full h-3 mb-3">
                                         <div class="bg-yellow-400 h-2.5 rounded-full" style="width: 42%"></div>
                                     </div>
                                     <div class="text-sm text-gray-700 font-medium">Performance score: 42 / 100</div>
@@ -225,7 +225,7 @@
                                         <span class="bg-gray-100 text-gray-600 text-xs px-2.5 py-1 rounded-full">Set budget</span>
                                     </div>
                                 </div>
-                                <button onclick="showScene(2)" class="inline-flex items-center gap-2 bg-accent hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl shadow-sm transition">
+                                <button onclick="showScene(2)" class="inline-flex items-center gap-2 bg-accent hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-xl shadow-sm transition">
                                     Run auto-diagnosis
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                                 </button>
@@ -233,18 +233,18 @@
                         </div>
 
                         <!-- Scene 3: Optimization suggestion (hidden) -->
-                        <div class="scene" style="display: none; flex-direction: column; justify-content: center; align-items: center; padding: 1.5rem; min-height: 500px;">
+                        <div class="scene" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; opacity: 0; z-index: 1;">
                             <div class="w-full max-w-lg text-center">
-                                <div class="inline-flex items-center gap-2 bg-green-50 border border-green-200 rounded-full px-4 py-1.5 text-sm text-green-600 font-medium mb-4">
+                                <div class="inline-flex items-center gap-2 bg-green-50 border border-green-200 rounded-full px-5 py-2 text-base text-green-600 font-medium mb-5">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                     Optimized automatically
                                 </div>
-                                <h3 class="text-2xl md:text-3xl font-bold text-gray-900 mb-3">SynthForce suggests a fix</h3>
-                                <p class="text-base md:text-lg text-gray-600 mb-6 max-w-md mx-auto">
+                                <h3 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">SynthForce suggests a fix</h3>
+                                <p class="text-lg md:text-xl text-gray-600 mb-6 max-w-md mx-auto">
                                     No code changes. No ticket to engineering. The system proposes a configuration update based on the diagnosis.
                                 </p>
-                                <div class="bg-gray-50 border border-gray-200 rounded-2xl p-5 text-left max-w-sm mx-auto mb-6">
-                                    <div class="font-mono text-xs text-gray-500 mb-2 uppercase tracking-wider">Auto-diagnosis result</div>
+                                <div class="bg-gray-50 border border-gray-200 rounded-2xl p-8 text-left max-w-md mx-auto mb-6">
+                                    <div class="font-mono text-sm text-gray-500 mb-2 uppercase tracking-wider">Auto-diagnosis result</div>
                                     <div class="bg-green-100 text-green-800 text-sm font-medium rounded-lg p-3 mb-3 border border-green-200">
                                         <span class="font-bold">Root cause:</span> Agent response style does not match escalated inquiries. Escalation threshold too low.
                                     </div>
@@ -256,7 +256,7 @@
                                         <span class="bg-accent text-white text-sm font-semibold px-4 py-2 rounded-lg shadow-sm">Apply fix</span>
                                     </div>
                                 </div>
-                                <button onclick="showScene(3)" class="inline-flex items-center gap-2 bg-accent hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl shadow-sm transition">
+                                <button onclick="showScene(3)" class="inline-flex items-center gap-2 bg-accent hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-xl shadow-sm transition">
                                     Apply optimization
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                                 </button>
@@ -264,20 +264,20 @@
                         </div>
 
                         <!-- Scene 4: Fixed (hidden) -->
-                        <div class="scene" style="display: none; flex-direction: column; justify-content: center; align-items: center; padding: 1.5rem; min-height: 500px;">
+                        <div class="scene" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; opacity: 0; z-index: 1;">
                             <div class="w-full max-w-lg text-center">
-                                <div class="inline-flex items-center gap-2 bg-green-50 border border-green-300 rounded-full px-4 py-1.5 text-sm text-green-700 font-medium mb-4">
+                                <div class="inline-flex items-center gap-2 bg-green-50 border border-green-300 rounded-full px-5 py-2 text-base text-green-700 font-medium mb-5">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                                     Agent rescued
                                 </div>
-                                <h3 class="text-2xl md:text-3xl font-bold text-gray-900 mb-3">Agent is back on track</h3>
-                                <p class="text-base md:text-lg text-gray-600 mb-6 max-w-md mx-auto">
+                                <h3 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Agent is back on track</h3>
+                                <p class="text-lg md:text-xl text-gray-600 mb-6 max-w-md mx-auto">
                                     The business owner clicked one button. The fix was applied in seconds. No developer needed.
                                 </p>
-                                <div class="bg-gray-50 border border-gray-200 rounded-2xl p-5 text-left max-w-sm mx-auto mb-6">
-                                    <div class="font-mono text-xs text-gray-500 mb-2 uppercase tracking-wider">support_bot_v3 &middot; Status: Healthy</div>
+                                <div class="bg-gray-50 border border-gray-200 rounded-2xl p-8 text-left max-w-md mx-auto mb-6">
+                                    <div class="font-mono text-sm text-gray-500 mb-2 uppercase tracking-wider">support_bot_v3 &middot; Status: Healthy</div>
                                     <div class="space-y-2">
-                                        <div class="flex justify-between text-sm">
+                                        <div class="flex justify-between text-base">
                                             <span class="text-gray-600">Customer sat.</span>
                                             <span class="text-green-500 font-semibold">91% <span class="text-xs text-green-400">(up 33%)</span></span>
                                         </div>
@@ -294,7 +294,7 @@
                                         Fixed by: Automated optimization. Time: 2.4 seconds.
                                     </div>
                                 </div>
-                                <button onclick="showScene(0)" class="inline-flex items-center gap-2 bg-gray-700 hover:bg-gray-800 text-white font-semibold px-6 py-3 rounded-xl shadow-sm transition">
+                                <button onclick="showScene(0)" class="inline-flex items-center gap-2 bg-gray-700 hover:bg-gray-800 text-white font-semibold px-8 py-4 rounded-xl shadow-sm transition">
                                     Watch again
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                                 </button>
@@ -302,11 +302,11 @@
                         </div>
 
                         <!-- Dots -->
-                        <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-2 z-20">
-                            <span class="dot w-2.5 h-2.5 rounded-full bg-accent"></span>
-                            <span class="dot w-2.5 h-2.5 rounded-full bg-gray-300"></span>
-                            <span class="dot w-2.5 h-2.5 rounded-full bg-gray-300"></span>
-                            <span class="dot w-2.5 h-2.5 rounded-full bg-gray-300"></span>
+                        <div class="absolute bottom-6 left-0 right-0 flex justify-center gap-2 z-20">
+                            <span class="dot w-3 h-3 rounded-full bg-accent"></span>
+                            <span class="dot w-3 h-3 rounded-full bg-gray-300"></span>
+                            <span class="dot w-3 h-3 rounded-full bg-gray-300"></span>
+                            <span class="dot w-3 h-3 rounded-full bg-gray-300"></span>
                         </div>
 
                     </div>
@@ -576,7 +576,7 @@
                     scenes[i].style.display = (i === index) ? 'flex' : 'none';
                 }
                 for (var j = 0; j < dots.length; j++) {
-                    dots[j].className = 'dot w-2.5 h-2.5 rounded-full ' + (j === index ? 'bg-accent' : 'bg-gray-300');
+                    dots[j].className = 'dot w-3 h-3 rounded-full ' + (j === index ? 'bg-accent' : 'bg-gray-300');
                 }
             };
 
