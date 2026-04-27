@@ -186,8 +186,8 @@
                             <svg class="w-5 h-5 md:w-6 md:h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                         </button>
 
-                        <!-- Scene 1: Agent failing -->
-                        <div id="scene-1" class="scene absolute inset-0 p-10 md:p-14 flex flex-col justify-center transition-opacity duration-700 z-10">
+                        <!-- Scene 1: Agent failing (visible by default) -->
+                        <div class="scene absolute inset-0 p-10 md:p-14 flex flex-col justify-center transition-opacity duration-700 opacity-100 z-10">
                             <div class="max-w-lg mx-auto text-center">
                                 <div class="inline-flex items-center gap-2 bg-red-50 border border-red-200 rounded-full px-5 py-2 text-base text-red-600 font-medium mb-6">
                                     <span class="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse"></span>
@@ -220,8 +220,8 @@
                             </div>
                         </div>
 
-                        <!-- Scene 2: Open management view -->
-                        <div id="scene-2" class="scene absolute inset-0 p-10 md:p-14 flex flex-col justify-center transition-opacity duration-700">
+                        <!-- Scene 2: Open management view (hidden) -->
+                        <div class="scene absolute inset-0 p-10 md:p-14 flex flex-col justify-center transition-opacity duration-700 opacity-0">
                             <div class="max-w-lg mx-auto text-center">
                                 <div class="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-full px-5 py-2 text-base text-blue-600 font-medium mb-6">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
@@ -247,8 +247,8 @@
                             </div>
                         </div>
 
-                        <!-- Scene 3: Optimization suggestion -->
-                        <div id="scene-3" class="scene absolute inset-0 p-10 md:p-14 flex flex-col justify-center transition-opacity duration-700">
+                        <!-- Scene 3: Optimization suggestion (hidden) -->
+                        <div class="scene absolute inset-0 p-10 md:p-14 flex flex-col justify-center transition-opacity duration-700 opacity-0">
                             <div class="max-w-lg mx-auto text-center">
                                 <div class="inline-flex items-center gap-2 bg-green-50 border border-green-200 rounded-full px-5 py-2 text-base text-green-600 font-medium mb-6">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -274,8 +274,8 @@
                             </div>
                         </div>
 
-                        <!-- Scene 4: Fixed! -->
-                        <div id="scene-4" class="scene absolute inset-0 p-10 md:p-14 flex flex-col justify-center transition-opacity duration-700">
+                        <!-- Scene 4: Fixed (hidden) -->
+                        <div class="scene absolute inset-0 p-10 md:p-14 flex flex-col justify-center transition-opacity duration-700 opacity-0">
                             <div class="max-w-lg mx-auto text-center">
                                 <div class="inline-flex items-center gap-2 bg-green-50 border border-green-300 rounded-full px-5 py-2 text-base text-green-700 font-medium mb-6">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
