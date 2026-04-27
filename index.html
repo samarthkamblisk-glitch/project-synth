@@ -161,10 +161,10 @@
 
                 <!-- Story Box -->
                 <div class="bg-white border border-gray-200 rounded-3xl shadow-lg relative">
-                    <div class="relative min-h-[500px] md:min-h-[600px]">
+                    <div class="relative ">
 
                         <!-- Scene 1: Agent failing (visible by default) -->
-                        <div class="scene absolute inset-0 flex flex-col justify-center items-center p-6 md:p-10" style="opacity: 1; z-index: 10;">
+                        <div class="scene" style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1.5rem; min-height: 500px;">
                             <div class="w-full max-w-lg text-center">
                                 <div class="inline-flex items-center gap-2 bg-red-50 border border-red-200 rounded-full px-4 py-1.5 text-sm text-red-600 font-medium mb-4">
                                     <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
@@ -202,7 +202,7 @@
                         </div>
 
                         <!-- Scene 2: Open management view (hidden) -->
-                        <div class="scene absolute inset-0 flex flex-col justify-center items-center p-6 md:p-10" style="opacity: 0; z-index: 1;">
+                        <div class="scene" style="display: none; flex-direction: column; justify-content: center; align-items: center; padding: 1.5rem; min-height: 500px;">
                             <div class="w-full max-w-lg text-center">
                                 <div class="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-full px-4 py-1.5 text-sm text-blue-600 font-medium mb-4">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
@@ -233,7 +233,7 @@
                         </div>
 
                         <!-- Scene 3: Optimization suggestion (hidden) -->
-                        <div class="scene absolute inset-0 flex flex-col justify-center items-center p-6 md:p-10" style="opacity: 0; z-index: 1;">
+                        <div class="scene" style="display: none; flex-direction: column; justify-content: center; align-items: center; padding: 1.5rem; min-height: 500px;">
                             <div class="w-full max-w-lg text-center">
                                 <div class="inline-flex items-center gap-2 bg-green-50 border border-green-200 rounded-full px-4 py-1.5 text-sm text-green-600 font-medium mb-4">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -264,7 +264,7 @@
                         </div>
 
                         <!-- Scene 4: Fixed (hidden) -->
-                        <div class="scene absolute inset-0 flex flex-col justify-center items-center p-6 md:p-10" style="opacity: 0; z-index: 1;">
+                        <div class="scene" style="display: none; flex-direction: column; justify-content: center; align-items: center; padding: 1.5rem; min-height: 500px;">
                             <div class="w-full max-w-lg text-center">
                                 <div class="inline-flex items-center gap-2 bg-green-50 border border-green-300 rounded-full px-4 py-1.5 text-sm text-green-700 font-medium mb-4">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
@@ -565,7 +565,7 @@
             });
         }
 
-        // Story demo: global showScene for inline onclick handlers
+        // Story demo: display block/none toggle
         (function() {
             var scenes = document.querySelectorAll('.scene');
             var dots = document.querySelectorAll('.dot');
@@ -573,15 +573,13 @@
             window.showScene = function(index) {
                 if (!scenes.length) return;
                 for (var i = 0; i < scenes.length; i++) {
-                    scenes[i].style.opacity = (i === index) ? '1' : '0';
-                    scenes[i].style.zIndex = (i === index) ? '10' : '1';
+                    scenes[i].style.display = (i === index) ? 'flex' : 'none';
                 }
                 for (var j = 0; j < dots.length; j++) {
                     dots[j].className = 'dot w-2.5 h-2.5 rounded-full ' + (j === index ? 'bg-accent' : 'bg-gray-300');
                 }
             };
 
-            // Dots navigation
             for (var k = 0; k < dots.length; k++) {
                 (function(idx) {
                     dots[k].addEventListener('click', function() {
@@ -593,10 +591,6 @@
             window.showScene(0);
         })();
 
-            // Initial state
-            showScene(0);
-        })();
     </script>
-    </body>
+</body>
 </html>
-<!-- dummy -->
