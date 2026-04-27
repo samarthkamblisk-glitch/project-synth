@@ -573,10 +573,9 @@
             window.showScene = function(index) {
                 if (!scenes.length) return;
                 for (var i = 0; i < scenes.length; i++) {
-                    scenes[i].style.display = (i === index) ? 'flex' : 'none';
-                }
-                for (var j = 0; j < dots.length; j++) {
-                    dots[j].className = 'dot w-3 h-3 rounded-full ' + (j === index ? 'bg-accent' : 'bg-gray-300');
+                    scenes[i].style.opacity = (i === index) ? '1' : '0';
+                    scenes[i].style.zIndex = (i === index) ? '10' : '1';
+                    scenes[i].style.display = 'flex';
                 }
             };
 
