@@ -64,7 +64,7 @@
         }
 
             .scene {
-            transition: opacity 0.7s ease;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
         }
 </style>
     <script type="application/ld+json">
@@ -155,9 +155,8 @@
     </main>
 
     <!-- Story Demo: Interactive rescue story -->
-    <section class="py-0 border-b border-subtle">
-        <div class="container mx-auto px-6">
-            <div class="max-w-5xl mx-auto">
+    <section class="py-0 border-b border-subtle px-4 md:px-8">
+        <div class="max-w-full mx-auto">
 
                 <!-- Story Box -->
                 <div class="bg-white border border-gray-200 rounded-3xl shadow-lg relative">
@@ -165,7 +164,7 @@
 
                         <!-- Scene 1: Agent failing (visible by default) -->
                         <div class="scene" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; opacity: 1; z-index: 10;">
-                            <div class="w-full max-w-lg text-center">
+                            <div class="w-full max-w-2xl text-center">
                                 <div class="inline-flex items-center gap-2 bg-red-50 border border-red-200 rounded-full px-5 py-2 text-base text-red-600 font-medium mb-5">
                                     <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
                                     Agent trouble detected
@@ -174,7 +173,7 @@
                                 <p class="text-lg md:text-xl text-gray-600 mb-6 max-w-md mx-auto">
                                     Customer satisfaction dropped 40% in one day. The agent is deflecting. Nobody knows why yet.
                                 </p>
-                                <div class="bg-gray-50 border border-gray-200 rounded-2xl p-8 text-left max-w-md mx-auto mb-6">
+                                <div class="bg-gray-50 border border-gray-200 rounded-2xl p-8 text-left max-w-xl mx-auto mb-6">
                                     <div class="font-mono text-sm text-gray-500 mb-2 uppercase tracking-wider">support_bot_v3 &middot; Status: Active</div>
                                     <div class="space-y-2">
                                         <div class="flex justify-between text-base">
@@ -203,7 +202,7 @@
 
                         <!-- Scene 2: Open management view (hidden) -->
                         <div class="scene" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; opacity: 0; z-index: 1;">
-                            <div class="w-full max-w-lg text-center">
+                            <div class="w-full max-w-2xl text-center">
                                 <div class="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-full px-5 py-2 text-base text-blue-600 font-medium mb-5">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                     SynthForce insight
@@ -212,7 +211,7 @@
                                 <p class="text-lg md:text-xl text-gray-600 mb-6 max-w-md mx-auto">
                                     One click. No terminal. No engineer. The business manager opens the agent performance review like any employee record.
                                 </p>
-                                <div class="bg-gray-50 border border-gray-200 rounded-2xl p-8 text-left max-w-md mx-auto mb-6">
+                                <div class="bg-gray-50 border border-gray-200 rounded-2xl p-8 text-left max-w-xl mx-auto mb-6">
                                     <div class="font-mono text-sm text-gray-500 mb-2 uppercase tracking-wider">Agent: support_bot_v3</div>
                                     <div class="w-full bg-gray-200 rounded-full h-3 mb-3">
                                         <div class="bg-yellow-400 h-2.5 rounded-full" style="width: 42%"></div>
@@ -234,7 +233,7 @@
 
                         <!-- Scene 3: Optimization suggestion (hidden) -->
                         <div class="scene" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; opacity: 0; z-index: 1;">
-                            <div class="w-full max-w-lg text-center">
+                            <div class="w-full max-w-2xl text-center">
                                 <div class="inline-flex items-center gap-2 bg-green-50 border border-green-200 rounded-full px-5 py-2 text-base text-green-600 font-medium mb-5">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                     Optimized automatically
@@ -243,7 +242,7 @@
                                 <p class="text-lg md:text-xl text-gray-600 mb-6 max-w-md mx-auto">
                                     No code changes. No ticket to engineering. The system proposes a configuration update based on the diagnosis.
                                 </p>
-                                <div class="bg-gray-50 border border-gray-200 rounded-2xl p-8 text-left max-w-md mx-auto mb-6">
+                                <div class="bg-gray-50 border border-gray-200 rounded-2xl p-8 text-left max-w-xl mx-auto mb-6">
                                     <div class="font-mono text-sm text-gray-500 mb-2 uppercase tracking-wider">Auto-diagnosis result</div>
                                     <div class="bg-green-100 text-green-800 text-sm font-medium rounded-lg p-3 mb-3 border border-green-200">
                                         <span class="font-bold">Root cause:</span> Agent response style does not match escalated inquiries. Escalation threshold too low.
@@ -265,7 +264,7 @@
 
                         <!-- Scene 4: Fixed (hidden) -->
                         <div class="scene" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; opacity: 0; z-index: 1;">
-                            <div class="w-full max-w-lg text-center">
+                            <div class="w-full max-w-2xl text-center">
                                 <div class="inline-flex items-center gap-2 bg-green-50 border border-green-300 rounded-full px-5 py-2 text-base text-green-700 font-medium mb-5">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                                     Agent rescued
@@ -274,7 +273,7 @@
                                 <p class="text-lg md:text-xl text-gray-600 mb-6 max-w-md mx-auto">
                                     The business owner clicked one button. The fix was applied in seconds. No developer needed.
                                 </p>
-                                <div class="bg-gray-50 border border-gray-200 rounded-2xl p-8 text-left max-w-md mx-auto mb-6">
+                                <div class="bg-gray-50 border border-gray-200 rounded-2xl p-8 text-left max-w-xl mx-auto mb-6">
                                     <div class="font-mono text-sm text-gray-500 mb-2 uppercase tracking-wider">support_bot_v3 &middot; Status: Healthy</div>
                                     <div class="space-y-2">
                                         <div class="flex justify-between text-base">
@@ -303,10 +302,10 @@
 
                         <!-- Dots -->
                         <div class="absolute bottom-6 left-0 right-0 flex justify-center gap-2 z-20">
-                            <span class="dot w-3 h-3 rounded-full bg-accent"></span>
-                            <span class="dot w-3 h-3 rounded-full bg-gray-300"></span>
-                            <span class="dot w-3 h-3 rounded-full bg-gray-300"></span>
-                            <span class="dot w-3 h-3 rounded-full bg-gray-300"></span>
+                            <span class="dot w-3 h-3 rounded-full" style="background-color: #00B2FF;"></span>
+                            <span class="dot w-3 h-3 rounded-full" style="background-color: #D1D5DB;"></span>
+                            <span class="dot w-3 h-3 rounded-full" style="background-color: #D1D5DB;"></span>
+                            <span class="dot w-3 h-3 rounded-full" style="background-color: #D1D5DB;"></span>
                         </div>
 
                     </div>
@@ -569,14 +568,29 @@
         (function() {
             var scenes = document.querySelectorAll('.scene');
             var dots = document.querySelectorAll('.dot');
+            var current = 0;
 
             window.showScene = function(index) {
                 if (!scenes.length) return;
+                var direction = (index > current) ? 'right' : (index < current) ? 'left' : 'none';
                 for (var i = 0; i < scenes.length; i++) {
-                    scenes[i].style.opacity = (i === index) ? '1' : '0';
-                    scenes[i].style.zIndex = (i === index) ? '10' : '1';
                     scenes[i].style.display = 'flex';
+                    scenes[i].style.zIndex = (i === index) ? '10' : '1';
+                    if (i === index) {
+                        scenes[i].style.transform = 'translateX(0)';
+                        scenes[i].style.opacity = '1';
+                    } else if (i === current && direction !== 'none') {
+                        scenes[i].style.transform = (direction === 'right') ? 'translateX(-100%)' : 'translateX(100%)';
+                        scenes[i].style.opacity = '0';
+                    } else {
+                        scenes[i].style.transform = (direction === 'right') ? 'translateX(100%)' : 'translateX(-100%)';
+                        scenes[i].style.opacity = '0';
+                    }
                 }
+                for (var j = 0; j < dots.length; j++) {
+                    dots[j].style.backgroundColor = (j === index) ? '#00B2FF' : '#D1D5DB';
+                }
+                current = index;
             };
 
             for (var k = 0; k < dots.length; k++) {
