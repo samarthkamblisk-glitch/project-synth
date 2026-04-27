@@ -160,7 +160,7 @@
             <div class="max-w-4xl mx-auto">
 
                 <!-- Story Box -->
-                <div class="bg-white border border-gray-200 rounded-3xl shadow-lg overflow-hidden relative">
+                <div class="bg-white border border-gray-200 rounded-3xl shadow-lg relative">
                     <div class="relative min-h-[500px] md:min-h-[600px]">
 
                         <!-- Scene 1: Agent failing (visible by default) -->
@@ -194,7 +194,7 @@
                                         AI-powered anomaly detection flagged this agent automatically.
                                     </div>
                                 </div>
-                                <button class="scene-next inline-flex items-center gap-2 bg-accent hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl shadow-sm transition" data-next="1">
+                                <button onclick="showScene(1)" class="inline-flex items-center gap-2 bg-accent hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl shadow-sm transition">
                                     View performance report
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                                 </button>
@@ -225,7 +225,7 @@
                                         <span class="bg-gray-100 text-gray-600 text-xs px-2.5 py-1 rounded-full">Set budget</span>
                                     </div>
                                 </div>
-                                <button class="scene-next inline-flex items-center gap-2 bg-accent hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl shadow-sm transition" data-next="2">
+                                <button onclick="showScene(2)" class="inline-flex items-center gap-2 bg-accent hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl shadow-sm transition">
                                     Run auto-diagnosis
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                                 </button>
@@ -256,7 +256,7 @@
                                         <span class="bg-accent text-white text-sm font-semibold px-4 py-2 rounded-lg shadow-sm">Apply fix</span>
                                     </div>
                                 </div>
-                                <button class="scene-next inline-flex items-center gap-2 bg-accent hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl shadow-sm transition" data-next="3">
+                                <button onclick="showScene(3)" class="inline-flex items-center gap-2 bg-accent hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl shadow-sm transition">
                                     Apply optimization
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                                 </button>
@@ -294,7 +294,7 @@
                                         Fixed by: Automated optimization. Time: 2.4 seconds.
                                     </div>
                                 </div>
-                                <button class="scene-next inline-flex items-center gap-2 bg-gray-700 hover:bg-gray-800 text-white font-semibold px-6 py-3 rounded-xl shadow-sm transition" data-next="0">
+                                <button onclick="showScene(0)" class="inline-flex items-center gap-2 bg-gray-700 hover:bg-gray-800 text-white font-semibold px-6 py-3 rounded-xl shadow-sm transition">
                                     Watch again
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                                 </button>
@@ -565,13 +565,12 @@
             });
         }
 
-        // Story demo: clickable action buttons
+        // Story demo: global showScene for inline onclick handlers
         (function() {
             var scenes = document.querySelectorAll('.scene');
             var dots = document.querySelectorAll('.dot');
-            var current = 0;
 
-            function showScene(index) {
+            window.showScene = function(index) {
                 if (!scenes.length) return;
                 for (var i = 0; i < scenes.length; i++) {
                     scenes[i].style.opacity = (i === index) ? '1' : '0';
@@ -580,33 +579,18 @@
                 for (var j = 0; j < dots.length; j++) {
                     dots[j].className = 'dot w-2.5 h-2.5 rounded-full ' + (j === index ? 'bg-accent' : 'bg-gray-300');
                 }
-                current = index;
-            }
-
-            // Next buttons - each button has data-next attribute
-            var buttons = document.querySelectorAll('.scene-next');
-            for (var b = 0; b < buttons.length; b++) {
-                (function(btn) {
-                    btn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        var target = parseInt(btn.getAttribute('data-next'));
-                        if (!isNaN(target) && target >= 0 && target < scenes.length) {
-                            showScene(target);
-                        }
-                    });
-                })(buttons[b]);
-            }
+            };
 
             // Dots navigation
             for (var k = 0; k < dots.length; k++) {
                 (function(idx) {
                     dots[k].addEventListener('click', function() {
-                        showScene(idx);
+                        window.showScene(idx);
                     });
                 })(k);
             }
 
-            showScene(0);
+            window.showScene(0);
         })();
 
             // Initial state
