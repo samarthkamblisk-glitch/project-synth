@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Join the SynthForce waitlist for early access, a free agent‑audit report, and 6 months free for your first 5 AI agents. No code, no jargon.">
-    <title>Join the Waitlist | SynthForce - Early Access to HR for AI Agents</title>
-    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="description" content="SynthForce is building the HR platform for AI agents. Our team page is coming soon.">
+    <title>SynthForce | About – Coming Soon</title>
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
@@ -15,17 +16,18 @@
                         void: '#000000',
                         paper: '#FFFFFF',
                         subtle: '#e5e5e5',
-                        accent: '#00B2FF'
+                        accent: '#00B2FF' 
                     },
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif']
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif']
                     }
                 }
             }
         }
     </script>
     <style>
-        body { background-color: #ffffff; color: #1a1a1a; font-family: 'Inter', sans-serif; }
+        body { background-color: #ffffff; color: #1a1a1a; font-family: 'Inter', sans-serif; overflow-x: hidden; }
         .btn-primary {
             background: #00B2FF; color: #fff; border: 1px solid #00B2FF;
             transition: all 0.2s ease;
@@ -34,7 +36,6 @@
         .btn-primary:hover {
             background: transparent; color: #00B2FF;
         }
-        iframe { min-height: 100vh; }
     </style>
 <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script></head>
 <body class="min-h-screen bg-white">
@@ -44,7 +45,7 @@
         <div class="container mx-auto px-6 h-16 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <a href="/">
-                    <img src="https://raw.githubusercontent.com/samarthkamblisk-glitch/project-synth/main/assets/logo_top_corner.png" class="h-8 max-h-8 w-auto object-contain" alt="SynthForce Logo">
+                    <img src="../assets/logo_top_corner.png" class="h-8 max-h-8 w-auto object-contain" alt="SynthForce Logo">
                 </a>
             </div>
             <!-- Desktop Navigation -->
@@ -77,30 +78,21 @@
     </nav>
 
     <main class="pt-12 pb-20 container mx-auto px-6">
-        <div class="max-w-4xl mx-auto text-center mb-12">
-            <h1 class="text-5xl md:text-6xl font-bold text-gray-900 mb-6">Join the Waitlist</h1>
-            <p class="text-xl text-gray-600 mb-10">Be the first to get early access, a free agent‑audit report, and manage your first 5 agents free for 6 months.</p>
-            <p class="text-sm text-gray-500">Fill out the form below. No spam. Unsubscribe anytime.</p>
-        </div>
-
-        <!-- Tally Embed -->
-        <div class="max-w-3xl mx-auto border border-subtle rounded-2xl overflow-hidden shadow-lg">
-            <iframe data-tally-src="https://tally.so/r/D4DGyq?transparentBackground=1" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0" title="SynthForce Waiting List"></iframe>
-        </div>
-
-        <div class="mt-12 text-center">
-            <a href="/" class="btn-primary px-8 py-4 font-sans font-semibold text-sm uppercase rounded-lg inline-block">
-                ← Back to Home
-            </a>
+        <div class="max-w-4xl mx-auto text-center">
+            <h1 class="text-5xl font-bold text-gray-900 mb-6">About SynthForce</h1>
+            <p class="text-xl text-gray-600 mb-10">Our team page is coming soon.</p>
+            <p class="text-gray-600">We’re currently focused on building the product. Check back later for founder story, mission details, and team bios.</p>
+            <p class="mt-8"><a href="/product" class="text-accent hover:underline">View our product →</a></p>
         </div>
     </main>
 
-    <footer class="py-8 border-t border-subtle bg-gray-50">
+    <!-- Footer -->
+    <footer class="border-t border-subtle py-12 bg-gray-50">
         <div class="container mx-auto px-6">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="mb-6 md:mb-0">
                     <div class="flex items-center gap-3">
-                        <img src="https://raw.githubusercontent.com/samarthkamblisk-glitch/project-synth/main/assets/logo_top_corner.png" class="h-8 max-h-8 w-auto object-contain" alt="SynthForce Logo">
+                        <img src="../assets/logo_top_corner.png" class="h-8 max-h-8 w-auto object-contain" alt="SynthForce Logo">
                     </div>
                     <p class="text-sm text-gray-600 mt-2">HR for AI agents. Manage your synthetic workforce.</p>
                 </div>
@@ -120,9 +112,6 @@
             </div>
         </div>
     </footer>
-
-    <!-- Tally script -->
-    <script async src="https://tally.so/widgets/embed.js"></script>
     <script>
         // Mobile menu toggle
         const toggle = document.getElementById('mobile-menu-toggle');
